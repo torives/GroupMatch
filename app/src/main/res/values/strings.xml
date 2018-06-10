@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">GroupMatch</string>
+    <string name="app_log_id">GroupMatch</string>
 </resources>
