@@ -16,54 +16,40 @@ import br.com.yves.groupmatch.R.id.serverButton
 import kotlinx.android.synthetic.main.fragment_connection_role.*
 import org.jetbrains.anko.support.v4.toast
 
-class ConnectionRoleFragment: Fragment() {
+interface ConnectionRoleView {
+    fun getBluetoothManager(): BluetoothManager?
+    fun getPackageManager(): PackageManager?
+}
 
-    private var mBluetoothManager: BluetoothManager? = null
-    private var mBluetoothAdapter: BluetoothAdapter? = null
+class ConnectionRoleFragment: Fragment(), ConnectionRoleView {
+
+    private var mInteractor: ConnectionRoleInteractor? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        mInteractor = ConnectionRoleInteractor(this)
+        lifecycle.addObserver(mInteractor!!)
         return inflater.inflate(R.layout.fragment_connection_role, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        mBluetoothManager = activity?.getSystemService(Context.BLUETOOTH_SERVICE) as BluetoothManager?
-        mBluetoothAdapter = mBluetoothManager?.adapter
-
         setupButtonsOnClickListener()
     }
+
 
     private fun setupButtonsOnClickListener() {
         serverButton.setOnClickListener { toast("server") }
         clientButton.setOnClickListener { toast("client") }
     }
 
-    override fun onResume() {
-        super.onResume()
 
-        // Check if bluetooth is enabled
-        if (mBluetoothAdapter?.isEnabled == false) {
-            // Request user to enable it
-            val enableBtIntent = Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE)
-            startActivity(enableBtIntent)
-            return
-        }
+    /*
+    *    ConnectionRoleView Implementation
+    */
 
-        // Check low energy support
-        if (activity?.packageManager?.hasSystemFeature(PackageManager.FEATURE_BLUETOOTH_LE) == false) {
-            // Get a newer device
-//            log("No LE Support.")
-            activity?.finish()
-            return
-        }
+    override fun getBluetoothManager(): BluetoothManager? = activity?.getSystemService(Context.BLUETOOTH_SERVICE) as BluetoothManager
 
-        // Check advertising
-        if (mBluetoothAdapter?.isMultipleAdvertisementSupported == false) {
-            // Unable to run the server on this device, get a better device
-//            log("No Advertising Support.")
-            activity?.finish()
-            return
-        }
-    }
+    override fun getPackageManager(): PackageManager? = activity?.packageManager
+
 }
