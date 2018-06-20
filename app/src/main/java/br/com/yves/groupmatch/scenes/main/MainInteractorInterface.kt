@@ -1,4 +1,4 @@
-package br.com.yves.groupmatch
+package br.com.yves.groupmatch.scenes.main
 
 interface MainInteractorInterface {
     fun displayCalendar()

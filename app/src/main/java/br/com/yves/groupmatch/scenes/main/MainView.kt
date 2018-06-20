@@ -1,7 +1,7 @@
-package br.com.yves.groupmatch.ui.main
+package br.com.yves.groupmatch.scenes.main
 
 interface MainView {
     fun displayCalendarScene()
-    fun displaySearchScene()
+    fun displayConnectionRoleScene()
     fun displaySettingsScene()
 }
