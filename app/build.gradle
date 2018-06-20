@@ -38,6 +38,7 @@ dependencies {
     implementation "android.arch.navigation:navigation-ui-ktx:$nav_version"
 
     // Custom
+    implementation "org.jetbrains.anko:anko-appcompat-v7-commons:$anko_version"
 
     // Tests
     testImplementation 'junit:junit:4.12'
