@@ -1,6 +1,13 @@
 <resources>
-    <string name="app_name">GroupMatch</string>
-    <string name="app_log_id">GroupMatch</string>
-    <string name="fragment_connection_role_server_button">Servidor</string>
-    <string name="fragment_connection_role_client_button">Cliente</string>
+    <string name="app_name" translatable="false">GroupMatch</string>
+    <string name="app_log_id" translatable="false">GroupMatch</string>
+
+    <!--ConnectionRoleFragment UI Elements-->
+    <string name="fragment_connection_role_server_button">Server</string>
+    <string name="fragment_connection_role_client_button">Client</string>
+
+    <!--BottomNavigationMenut UI Elements-->
+    <string name="bottom_navigation_menu_calendar_item">Calendar</string>
+    <string name="bottom_navigation_menu_search_item">Search</string>
+    <string name="bottom_navigation_menu_settings_item">Settings</string>
 </resources>

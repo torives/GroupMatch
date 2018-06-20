@@ -9,14 +9,14 @@
             android:id="@+id/calendarTabIcon"
             android:checked="true"
             android:icon="@drawable/ic_calendar"
-            android:title="Agenda" />
+            android:title="@string/bottom_navigation_menu_calendar_item" />
         <item
             android:id="@+id/searchTabIcon"
             android:icon="@drawable/ic_search"
-            android:title="Buscar" />
+            android:title="@string/bottom_navigation_menu_search_item" />
         <item
             android:id="@+id/settingsTabIcon"
             android:icon="@drawable/ic_settings"
-            android:title="Configurações" />
+            android:title="@string/bottom_navigation_menu_settings_item" />
     </group>
 </menu>
