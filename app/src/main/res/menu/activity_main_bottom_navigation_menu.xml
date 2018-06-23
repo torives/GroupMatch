@@ -11,7 +11,7 @@
             android:icon="@drawable/ic_calendar"
             android:title="@string/bottom_navigation_menu_calendar_item" />
         <item
-            android:id="@id/connectionRoleFragment"
+            android:id="@id/nav_search"
             android:icon="@drawable/ic_search"
             android:title="@string/bottom_navigation_menu_search_item" />
         <item

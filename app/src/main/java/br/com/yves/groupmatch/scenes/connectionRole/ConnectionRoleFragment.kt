@@ -7,17 +7,24 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.support.v4.content.ContextCompat.startActivity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.NavHost
+import androidx.navigation.Navigation
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.fragment.findNavController
 import br.com.yves.groupmatch.R
 import br.com.yves.groupmatch.R.id.clientButton
 import br.com.yves.groupmatch.R.id.serverButton
 import kotlinx.android.synthetic.main.fragment_connection_role.*
+import kotlinx.android.synthetic.main.fragment_connection_role.view.*
+import kotlinx.android.synthetic.main.main_activity.*
 import org.jetbrains.anko.support.v4.toast
 
-class ConnectionRoleFragment: NavHostFragment() {
+class ConnectionRoleFragment: Fragment() {
 
     private var mBluetoothManager: BluetoothManager? = null
     private var mBluetoothAdapter: BluetoothAdapter? = null
@@ -36,7 +43,11 @@ class ConnectionRoleFragment: NavHostFragment() {
     }
 
     private fun setupButtonsOnClickListener() {
-        serverButton.setOnClickListener { toast("server") }
+
+        serverButton.setOnClickListener {
+            val navController = NavHostFragment.findNavController(this)
+            navController.navigate(R.id.action_connectionRoleFragment_to_searchBluetoothClientsFragment)
+        }
         clientButton.setOnClickListener { toast("client") }
     }
 
