@@ -24,12 +24,9 @@ class MainActivity : AppCompatActivity() {
         val navController = navHost.findNavController()
 
         bottomNavigationView.setupWithNavController(navController)
-        setupActionBarWithNavController(navController)
 
-        //FIXME: WHAT IS THIS LINE DOING?
-//        bottomNavigationView.setOnNavigationItemSelectedListener {
-//            onNavDestinationSelected(it, navController)
-//        }
+        //FIXME: Descobrir como esconder o Up Button nos primeiros fragments das abas
+//        setupActionBarWithNavController(navController)
     }
 
     override fun onSupportNavigateUp() =
