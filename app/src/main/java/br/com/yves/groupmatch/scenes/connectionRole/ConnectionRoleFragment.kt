@@ -19,6 +19,7 @@ import androidx.navigation.fragment.findNavController
 import br.com.yves.groupmatch.R
 import br.com.yves.groupmatch.R.id.clientButton
 import br.com.yves.groupmatch.R.id.serverButton
+import br.com.yves.groupmatch.scenes.main.MainActivity
 import kotlinx.android.synthetic.main.fragment_connection_role.*
 import kotlinx.android.synthetic.main.fragment_connection_role.view.*
 import kotlinx.android.synthetic.main.main_activity.*
@@ -30,6 +31,7 @@ class ConnectionRoleFragment: Fragment() {
     private var mBluetoothAdapter: BluetoothAdapter? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        (activity as MainActivity).supportActionBar?.setDisplayHomeAsUpEnabled(false)
         return inflater.inflate(R.layout.fragment_connection_role, container, false)
     }
 

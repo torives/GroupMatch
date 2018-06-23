@@ -4,6 +4,7 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.NavigationUI.onNavDestinationSelected
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
@@ -20,10 +21,10 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setupNavigation() {
-        val navController = findNavController(R.id.navHost)
+        val navController = navHost.findNavController()
 
         bottomNavigationView.setupWithNavController(navController)
-        //setupActionBarWithNavController(navController)
+        setupActionBarWithNavController(navController)
 
         //FIXME: WHAT IS THIS LINE DOING?
 //        bottomNavigationView.setOnNavigationItemSelectedListener {
@@ -32,5 +33,5 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onSupportNavigateUp() =
-            findNavController(R.id.navHost).navigateUp()
+            navHost.findNavController().navigateUp()
 }
