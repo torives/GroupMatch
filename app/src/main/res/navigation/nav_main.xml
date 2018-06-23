@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_main"
+    app:startDestination="@id/calendarFragment">
+
+    <fragment
+        android:id="@+id/calendarFragment"
+        android:name="br.com.yves.groupmatch.scenes.calendar.CalendarFragment"
+        android:label="CalendarFragment"
+        tools:layout="@layout/fragment_calendar"/>
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="br.com.yves.groupmatch.scenes.settings.SettingsFragment"
+        android:label="SettingsFragment"
+        tools:layout="@layout/fragment_settings"/>
+    <fragment
+        android:id="@+id/connectionRoleFragment"
+        android:name="br.com.yves.groupmatch.scenes.connectionRole.ConnectionRoleFragment"
+        android:label="ConnectionRoleFragment"
+        tools:layout="@layout/fragment_connection_role"/>
+</navigation>

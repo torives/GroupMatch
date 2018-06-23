@@ -10,13 +10,14 @@ import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.fragment.NavHostFragment
 import br.com.yves.groupmatch.R
 import br.com.yves.groupmatch.R.id.clientButton
 import br.com.yves.groupmatch.R.id.serverButton
 import kotlinx.android.synthetic.main.fragment_connection_role.*
 import org.jetbrains.anko.support.v4.toast
 
-class ConnectionRoleFragment: Fragment() {
+class ConnectionRoleFragment: NavHostFragment() {
 
     private var mBluetoothManager: BluetoothManager? = null
     private var mBluetoothAdapter: BluetoothAdapter? = null
