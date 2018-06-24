@@ -49,7 +49,10 @@ class ConnectionRoleFragment: Fragment() {
             val navController = NavHostFragment.findNavController(this)
             navController.navigate(R.id.action_connectionRoleFragment_to_searchBluetoothClientsFragment)
         }
-        clientButton.setOnClickListener { toast("client") }
+        clientButton.setOnClickListener {
+            val navController = NavHostFragment.findNavController(this)
+            navController.navigate(R.id.action_connectionRoleFragment_to_searchBluetoothServer)
+        }
     }
 
     override fun onResume() {
