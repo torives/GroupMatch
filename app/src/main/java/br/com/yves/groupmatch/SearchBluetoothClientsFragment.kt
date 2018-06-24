@@ -1,6 +1,7 @@
 package br.com.yves.groupmatch
 
 
+import android.annotation.SuppressLint
 import android.bluetooth.*
 import android.bluetooth.le.AdvertiseCallback
 import android.bluetooth.le.AdvertiseData
@@ -16,10 +17,10 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import java.io.UnsupportedEncodingException
+import kotlinx.android.synthetic.main.fragment_search_bluetooth_clients.*
+import kotlinx.android.synthetic.main.view_log.*
+import kotlinx.android.synthetic.main.view_log.view.*
 import java.util.*
-import kotlin.experimental.and
-
 
 
 const val SERVICE_STRING = "7D2EA28A-F7BD-485A-BD9D-92AD6ECFE93E"
@@ -85,6 +86,10 @@ class SearchBluetoothClientsFragment : Fragment() {
                 log("Peripheral advertising failed: $errorCode")
             }
         }
+
+        restartServerButton.setOnClickListener { restartServer() }
+        clearLogButton.setOnClickListener { clearLogs() }
+
     }
 
     override fun onResume() {
@@ -136,9 +141,9 @@ class SearchBluetoothClientsFragment : Fragment() {
             }
         })
 
-//        @SuppressLint("HardwareIds")
+        @SuppressLint("HardwareIds")
         val deviceInfo = "Device Info \nName: ${mBluetoothAdapter?.name} \nAddress: ${mBluetoothAdapter?.address}"
-//        mBinding.serverDeviceInfoTextView.setText(deviceInfo)
+        serverDeviceInfoTextView.text = deviceInfo
 
         setupServer()
         startAdvertising()
@@ -196,13 +201,13 @@ class SearchBluetoothClientsFragment : Fragment() {
     fun log(msg: String) {
         Log.d(TAG, msg)
         mLogHandler.post {
-//            mBinding.viewServerLog.logTextView.append(msg + "\n")
-//            mBinding.viewServerLog.logScrollView.post({ mBinding.viewServerLog.logScrollView.fullScroll(View.FOCUS_DOWN) })
+            serverLogView.logTextView.append(msg + "\n")
+            serverLogView.logScrollView.post { serverLogView.logScrollView.fullScroll(View.FOCUS_DOWN) }
         }
     }
 
     private fun clearLogs() {
-//        mLogHandler.post { mBinding.viewServerLog.logTextView.setText("") }
+        mLogHandler.post { serverLogView.logTextView.text = "" }
     }
 
     // Notifications
