@@ -2,6 +2,8 @@ package br.com.yves.groupmatch
 
 
 import android.Manifest
+import android.annotation.SuppressLint
+import android.arch.lifecycle.Observer
 import android.bluetooth.*
 import android.bluetooth.le.*
 import android.content.Intent
@@ -17,9 +19,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import br.com.yves.groupmatch.SearchBluetoothClientsFragment.Companion.TAG
+import kotlinx.android.synthetic.main.fragment_search_bluetooth_server.*
+import kotlinx.android.synthetic.main.view_log.view.*
+import kotlinx.android.synthetic.main.widget_server_list_item.*
 import java.util.ArrayList
 import java.util.HashMap
 import kotlin.system.exitProcess
+import android.arch.lifecycle.ViewModelProviders
+import android.support.v4.app.ActivityCompat.requestPermissions
+import android.support.v4.app.ActivityCompat.startActivityForResult
+import android.widget.LinearLayout
+import kotlinx.android.synthetic.main.widget_server_list_item.view.*
 
 
 const val SCAN_PERIOD: Long = 5000
@@ -70,8 +80,17 @@ class SearchBluetoothServer : Fragment() {
 
         mLogHandler = Handler(Looper.getMainLooper())
 
-        //BluetoothManager bluetoothManager = (BluetoothManager) getSystemService(BLUETOOTH_SERVICE);
-        mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter()//bluetoothManager.getAdapter();
+        mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter()
+
+        @SuppressLint("HardwareIds")
+        val deviceInfo = "Device Info \nName: ${mBluetoothAdapter?.name} \nAddress: ${mBluetoothAdapter?.address}"
+        clientDeviceInfoTextView.text = deviceInfo
+
+        startScanningButton.setOnClickListener { startScan() }
+        stopScanningButton.setOnClickListener { stopScan() }
+        sendMessageButton.setOnClickListener { sendMessage() }
+        disconnectButton.setOnClickListener { disconnectGattServer() }
+        clientLogView.clearLogButton.setOnClickListener { clearLogs() }
         mScanCallback = BtleScanCallback()
     }
 
@@ -141,11 +160,19 @@ class SearchBluetoothServer : Fragment() {
 
         for (deviceAddress in mScanResults!!.keys) {
             val device = mScanResults!![deviceAddress]
-            val viewModel = GattServerViewModel(device)
 
-//            val binding = DataBindingUtil.inflate(LayoutInflater.from(this), R.layout.view_gatt_server, mBinding.serverListContainer, true)
-//            binding.setViewModel(viewModel)
-//            binding.connectGattServerButton.setOnClickListener({ v -> connectDevice(device) })
+            val layout = serverListTextView.parent as LinearLayout
+            val index = layout.indexOfChild(serverListTextView)
+            val widget = ServerListItemWidget(context!!)
+
+            layout.addView(widget,index + 1)
+
+            val model = ViewModelProviders.of(this).get(GattServerViewModel::class.java)
+            model.bluetoothDevice = device
+            model.getName().observe(this, Observer {
+                widget.serverNameTextView.text = it
+            })
+            widget.connectToServerButton.setOnClickListener { connectDevice(device!!) }
         }
     }
 

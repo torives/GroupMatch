@@ -5,14 +5,12 @@ import android.arch.lifecycle.ViewModel
 import android.bluetooth.BluetoothDevice
 import android.arch.lifecycle.MutableLiveData
 
-class GattServerViewModel(private val mBluetoothDevice: BluetoothDevice?) : ViewModel() {
+class GattServerViewModel : ViewModel() {
+    var bluetoothDevice: BluetoothDevice? = null
     private var serverName = MutableLiveData<String>()
 
     fun getName(): LiveData<String> {
-        serverName.value = when(mBluetoothDevice) {
-            null -> ""
-            else -> mBluetoothDevice.address
-        }
+        serverName.value = bluetoothDevice?.address ?: ""
         return serverName
     }
 }
