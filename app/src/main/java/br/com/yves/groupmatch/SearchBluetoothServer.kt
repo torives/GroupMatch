@@ -21,35 +21,21 @@ import android.view.ViewGroup
 import br.com.yves.groupmatch.SearchBluetoothClientsFragment.Companion.TAG
 import kotlinx.android.synthetic.main.fragment_search_bluetooth_server.*
 import kotlinx.android.synthetic.main.view_log.view.*
-import kotlinx.android.synthetic.main.widget_server_list_item.*
 import java.util.ArrayList
 import java.util.HashMap
 import kotlin.system.exitProcess
 import android.arch.lifecycle.ViewModelProviders
-import android.support.v4.app.ActivityCompat.requestPermissions
-import android.support.v4.app.ActivityCompat.startActivityForResult
 import android.widget.LinearLayout
+import android.widget.ScrollView
+import android.widget.TextView
+import br.com.yves.groupmatch.R.id.clientLogView
+import kotlinx.android.synthetic.main.fragment_search_bluetooth_clients.*
 import kotlinx.android.synthetic.main.widget_server_list_item.view.*
 
 
 const val SCAN_PERIOD: Long = 5000
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-
-/**
- * A simple [Fragment] subclass.
- * Use the [SearchBluetoothServer.newInstance] factory method to
- * create an instance of this fragment.
- *
- */
 class SearchBluetoothServer : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
 
     private val TAG = "ClientActivity"
 
@@ -58,7 +44,7 @@ class SearchBluetoothServer : Fragment() {
 
     private var mScanning: Boolean = false
     private var mHandler: Handler? = null
-    private var mLogHandler: Handler? = null
+    private var mLogHandler: Handler = Handler(Looper.getMainLooper())
     private var mScanResults: Map<String, BluetoothDevice>? = null
 
     private var mConnected: Boolean = false
@@ -70,15 +56,12 @@ class SearchBluetoothServer : Fragment() {
 
     //Lifecycle
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        return inflater.inflate(R.layout.fragment_search_bluetooth_server, container, false)
+    }
 
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-
-        mLogHandler = Handler(Looper.getMainLooper())
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter()
 
@@ -91,11 +74,6 @@ class SearchBluetoothServer : Fragment() {
         sendMessageButton.setOnClickListener { sendMessage() }
         disconnectButton.setOnClickListener { disconnectGattServer() }
         clientLogView.clearLogButton.setOnClickListener { clearLogs() }
-        mScanCallback = BtleScanCallback()
-    }
-
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_search_bluetooth_server, container, false)
     }
 
     override fun onResume() {
@@ -118,6 +96,7 @@ class SearchBluetoothServer : Fragment() {
         disconnectGattServer()
 
         mScanResults = HashMap()
+        mScanCallback = BtleScanCallback(clientLogView)
         mScanCallback!!.scanResults = mScanResults as MutableMap<String, BluetoothDevice>
         mBluetoothLeScanner = mBluetoothAdapter?.bluetoothLeScanner
 
@@ -345,15 +324,15 @@ class SearchBluetoothServer : Fragment() {
     // Logging
 
     private fun clearLogs() {
-//        mLogHandler.post { mBinding.viewClientLog.logTextView.setText("") }
+        mLogHandler.post { clientLogView.logTextView.text = "" }
     }
 
     fun log(msg: String) {
         Log.d(TAG, msg)
-//        mLogHandler.post {
-//            mBinding.viewClientLog.logTextView.append(msg + "\n")
-//            mBinding.viewClientLog.logScrollView.post({ mBinding.viewClientLog.logScrollView.fullScroll(View.FOCUS_DOWN) })
-//        }
+        mLogHandler.post {
+            clientLogView.logTextView.append(msg + "\n")
+            clientLogView.logScrollView.post { clientLogView.logScrollView.fullScroll(View.FOCUS_DOWN) }
+        }
     }
 
     fun logError(msg: String) {
@@ -391,16 +370,15 @@ class SearchBluetoothServer : Fragment() {
          */
         // TODO: Rename and change types and number of parameters
         @JvmStatic
-        fun newInstance(param1: String, param2: String) = SearchBluetoothServer().apply {
-            arguments = Bundle().apply {
-                putString(ARG_PARAM1, param1)
-                putString(ARG_PARAM2, param2)
-            }
-        }
+        fun newInstance() = SearchBluetoothServer()
     }
 }
 
-class BtleScanCallback(var scanResults: MutableMap<String, BluetoothDevice>? = null) : ScanCallback() {
+class BtleScanCallback(var scanResults: MutableMap<String, BluetoothDevice>? = null, private var logView: View?) : ScanCallback() {
+    constructor(logView: View?) : this(null, logView)
+
+    private val mLogHandler = Handler(Looper.getMainLooper())
+
     override fun onScanResult(callbackType: Int, result: ScanResult) {
         addScanResult(result)
     }
@@ -423,15 +401,16 @@ class BtleScanCallback(var scanResults: MutableMap<String, BluetoothDevice>? = n
         }
     }
 
-    fun log(msg: String) {
+    private fun log(msg: String) {
         Log.d(TAG, msg)
-//        mLogHandler.post {
-//            mBinding.viewClientLog.logTextView.append(msg + "\n")
-//            mBinding.viewClientLog.logScrollView.post({ mBinding.viewClientLog.logScrollView.fullScroll(View.FOCUS_DOWN) })
-//        }
+        mLogHandler.post {
+            logView?.findViewById<TextView>(R.id.logTextView)?.append(msg + "\n")
+            val logScrollView = logView?.findViewById<ScrollView>(R.id.logScrollView)
+            logScrollView?.post { logScrollView.fullScroll(View.FOCUS_DOWN) }
+        }
     }
 
-    fun logError(msg: String) {
+    private fun logError(msg: String) {
         log("Error: $msg")
     }
 }
