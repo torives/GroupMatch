@@ -1,21 +1,24 @@
 package br.com.yves.groupmatch.scenes.calendar
 
 import android.content.Context
+import android.graphics.Color
+import android.graphics.Rect
 import android.os.Bundle
-import android.support.v4.app.Fragment
+import android.support.annotation.DimenRes
+import android.support.v7.widget.CardView
 import android.support.v7.widget.GridLayoutManager
-import android.support.v7.widget.RecyclerView
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
-import android.widget.TextView
 import androidx.navigation.fragment.NavHostFragment
 import br.com.yves.groupmatch.R
 import kotlinx.android.synthetic.main.fragment_calendar.*
+import java.time.DayOfWeek
+import android.support.v7.widget.RecyclerView
 
-class CalendarFragment: NavHostFragment(), DaysAdapter.ItemClickListener {
+
+class CalendarFragment: NavHostFragment(), TimeSlotAdapter.ItemClickListener {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_calendar, container, false)
@@ -24,43 +27,32 @@ class CalendarFragment: NavHostFragment(), DaysAdapter.ItemClickListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val adapter = DaysAdapter(context!!, arrayOf("treta", "tretinha", "tretosa"))
+        val colors: ArrayList<Int> = ArrayList(168)
+        repeat(168) {
+            colors.add(it, Color.parseColor("#B26EEF"))
+        }
+
+        val adapter = TimeSlotAdapter(context!!, colors)
         adapter.listener = this
-        daysRecyclerView.layoutManager = GridLayoutManager(context!!, 3)
+
+        val layoutManager = GridLayoutManager(context!!, 7)
+
+        daysRecyclerView.layoutManager = layoutManager
+        daysRecyclerView.addItemDecoration(ItemOffsetDecoration(context!!, R.dimen.time_slot_item_spacing))
         daysRecyclerView.adapter = adapter
     }
 
     override fun onItemClick(view: View, position: Int) {
-        Log.d("treta", view.findViewById<TextView>(R.id.info_text).text.toString())
+        Log.d("treta", view.findViewById<CardView>(R.id.cardView).cardBackgroundColor.toString())
     }
-
 }
 
-class DaysAdapter(context: Context, private var data: Array<String>): RecyclerView.Adapter<DaysAdapter.DayViewHolder>() {
-    private val layoutInflater: LayoutInflater = LayoutInflater.from(context)
-    var listener: ItemClickListener? = null
+class ItemOffsetDecoration(private val mItemOffset: Int) : RecyclerView.ItemDecoration() {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DaysAdapter.DayViewHolder {
-        val view = layoutInflater.inflate(R.layout.calendar_day_recyclerview_item, parent, false)
-        return DayViewHolder(view)
-    }
+    constructor(context: Context, @DimenRes itemOffsetId: Int) : this(context.resources.getDimensionPixelSize(itemOffsetId))
 
-    override fun getItemCount(): Int {
-        return data.count()
-    }
-
-    override fun onBindViewHolder(holder: DaysAdapter.DayViewHolder, position: Int) {
-        holder.textView.text = data[position]
-    }
-
-    interface ItemClickListener {
-        fun onItemClick(view: View, position: Int)
-    }
-
-    inner class DayViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val textView: TextView = view.findViewById(R.id.info_text)
-        init {
-            view.setOnClickListener { listener?.onItemClick(view, adapterPosition) }
-        }
+    override fun getItemOffsets(outRect: Rect, view: View, parent: RecyclerView, state: RecyclerView.State?) {
+        super.getItemOffsets(outRect, view, parent, state)
+        outRect.set(mItemOffset, mItemOffset, mItemOffset, mItemOffset)
     }
 }
