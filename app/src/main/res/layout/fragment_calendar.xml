@@ -18,8 +18,7 @@
             android:id="@+id/daysRecyclerView"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            tools:itemCount="3"
-            tools:listitem="@layout/calendar_day_recyclerview_item" />
+            app:layoutManager="android.support.v7.widget.GridLayoutManager"/>
     </HorizontalScrollView>
 
 </android.support.constraint.ConstraintLayout>

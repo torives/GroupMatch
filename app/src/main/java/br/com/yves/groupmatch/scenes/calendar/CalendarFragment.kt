@@ -16,6 +16,7 @@ import br.com.yves.groupmatch.R
 import kotlinx.android.synthetic.main.fragment_calendar.*
 import java.time.DayOfWeek
 import android.support.v7.widget.RecyclerView
+import kotlinx.android.synthetic.main.fragment_calendar.view.*
 
 
 class CalendarFragment: NavHostFragment(), TimeSlotAdapter.ItemClickListener {
@@ -27,19 +28,21 @@ class CalendarFragment: NavHostFragment(), TimeSlotAdapter.ItemClickListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val colors: ArrayList<Int> = ArrayList(168)
-        repeat(168) {
-            colors.add(it, Color.parseColor("#B26EEF"))
-        }
-
-        val adapter = TimeSlotAdapter(context!!, colors)
+        val days = arrayOf(
+                Day("Seg"),
+                Day("Ter"),
+                Day("Qua"),
+                Day("Qui"),
+                Day("Sex"),
+                Day("Sab"),
+                Day("Dom")
+        )
+        val adapter = TimeSlotAdapter(days)
         adapter.listener = this
 
-        val layoutManager = GridLayoutManager(context!!, 7)
-
-        daysRecyclerView.layoutManager = layoutManager
         daysRecyclerView.addItemDecoration(ItemOffsetDecoration(context!!, R.dimen.time_slot_item_spacing))
         daysRecyclerView.adapter = adapter
+        (daysRecyclerView.layoutManager as GridLayoutManager).spanCount = days.count()
     }
 
     override fun onItemClick(view: View, position: Int) {
