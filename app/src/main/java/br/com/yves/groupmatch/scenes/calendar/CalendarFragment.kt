@@ -37,6 +37,7 @@ class CalendarFragment: NavHostFragment(), TimeSlotAdapter.ItemClickListener {
                 Day("Sab"),
                 Day("Dom")
         )
+
         val adapter = TimeSlotAdapter(days)
         adapter.listener = this
 
