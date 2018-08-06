@@ -22,7 +22,6 @@ class Day(val weekDay: String, val hours: Array<Hour> = Array(24) { Hour("$it"+"
 
 class TimeSlotAdapter(private val days: Array<Day>): RecyclerView.Adapter<TimeSlotAdapter.TimeSlotViewHolder>() {
     private val totalColumns = days.size
-    private val rowsPerColumn = days.first().hours.size
     var listener: ItemClickListener? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TimeSlotAdapter.TimeSlotViewHolder {
@@ -32,7 +31,6 @@ class TimeSlotAdapter(private val days: Array<Day>): RecyclerView.Adapter<TimeSl
 
     override fun getItemCount(): Int {
         return days.map { it.hours.count() }.reduce { acc, i -> acc + i }
-        //return day.hours.count()
     }
 
     override fun onBindViewHolder(holder: TimeSlotAdapter.TimeSlotViewHolder, position: Int) {
@@ -47,27 +45,22 @@ class TimeSlotAdapter(private val days: Array<Day>): RecyclerView.Adapter<TimeSl
     }
 
     private fun getHourAt(position: Int): Hour? {
-        fun columnAt(position: Int): Int? {
-            for (currentColumn in 1..totalColumns) {
-                if (position in 0..(rowsPerColumn*currentColumn - 1)) {
-                    return currentColumn
-                }
-            }
-            return null
+
+        fun columnAt(position: Int): Int {
+            val matrixPosition = position+1
+            val reminder = matrixPosition.rem(totalColumns)
+
+            return if(reminder == 0) totalColumns else reminder
         }
 
-        fun hourIndexAt(column: Int, position: Int): Int {
-            return if (column == 1) position
-            else position - rowsPerColumn * (column - 1)
-        }
+        fun rowAt(position: Int) = position/totalColumns + 1
 
-        val column = columnAt(position)
-        column?.let {
-            val index = hourIndexAt(column, position)
-            return days[column-1].hours[index]
-        } ?: run {
-            return null
-        }
+        val columnIndex = columnAt(position) - 1
+        val rowIndex = rowAt(position) - 1
+
+        return if (days.indices.contains(columnIndex) && days[columnIndex].hours.indices.contains(rowIndex))
+            days[columnIndex].hours[rowIndex]
+        else null
     }
 
     interface ItemClickListener {
