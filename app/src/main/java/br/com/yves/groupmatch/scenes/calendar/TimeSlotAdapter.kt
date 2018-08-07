@@ -44,7 +44,7 @@ class TimeSlotAdapter(private val days: Array<Day>): RecyclerView.Adapter<TimeSl
         }
     }
 
-    private fun getHourAt(position: Int): Hour? {
+    fun getHourAt(position: Int): Hour? {
 
         fun columnAt(position: Int): Int {
             val matrixPosition = position+1

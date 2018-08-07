@@ -20,6 +20,7 @@ import kotlinx.android.synthetic.main.fragment_calendar.view.*
 
 
 class CalendarFragment: NavHostFragment(), TimeSlotAdapter.ItemClickListener {
+    var mAdapter: TimeSlotAdapter? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_calendar, container, false)
@@ -38,16 +39,25 @@ class CalendarFragment: NavHostFragment(), TimeSlotAdapter.ItemClickListener {
                 Day("Dom")
         )
 
-        val adapter = TimeSlotAdapter(days)
-        adapter.listener = this
+        mAdapter = TimeSlotAdapter(days)
+        mAdapter?.listener = this
 
         daysRecyclerView.addItemDecoration(ItemOffsetDecoration(context!!, R.dimen.time_slot_item_spacing))
-        daysRecyclerView.adapter = adapter
+        daysRecyclerView.adapter = mAdapter
         (daysRecyclerView.layoutManager as GridLayoutManager).spanCount = days.count()
     }
 
     override fun onItemClick(view: View, position: Int) {
-        Log.d("treta", view.findViewById<CardView>(R.id.cardView).cardBackgroundColor.toString())
+        val hour = mAdapter?.getHourAt(position)
+        hour?.let { toggleStatus(it) }
+        mAdapter?.notifyItemChanged(position)
+    }
+
+    private fun toggleStatus(hour: Hour) {
+        hour.status = when(hour.status) {
+            ScheduleStatus.Available -> ScheduleStatus.Busy
+            ScheduleStatus.Busy -> ScheduleStatus.Available
+        }
     }
 }
 
