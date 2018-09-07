@@ -1,5 +1,6 @@
 package br.com.yves.groupmatch.scenes.calendar
 
+import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
 import android.graphics.Color
 import android.graphics.Rect
@@ -22,12 +23,19 @@ import kotlinx.android.synthetic.main.fragment_calendar.view.*
 class CalendarFragment: NavHostFragment(), TimeSlotAdapter.ItemClickListener {
     var mAdapter: TimeSlotAdapter? = null
 
+    lateinit var viewModel: CalendarEventViewModel
+
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_calendar, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        viewModel = ViewModelProviders
+                .of(this)
+                .get(CalendarEventViewModel::class.java)
 
         val days = arrayOf(
                 Day("Seg"),
