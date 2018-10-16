@@ -1,30 +1,24 @@
 package br.com.yves.groupmatch.scenes.calendar
 
-import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
-import android.graphics.Color
 import android.graphics.Rect
 import android.os.Bundle
 import android.support.annotation.DimenRes
-import android.support.v7.widget.CardView
-import android.support.v7.widget.GridLayoutManager
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.NavHostFragment
 import br.com.yves.groupmatch.R
-import kotlinx.android.synthetic.main.fragment_calendar.*
-import java.time.DayOfWeek
 import android.support.v7.widget.RecyclerView
-import kotlinx.android.synthetic.main.fragment_calendar.view.*
+import java.time.LocalDate
+import java.time.LocalDateTime
+import java.time.temporal.WeekFields
 
 
-class CalendarFragment: NavHostFragment(), TimeSlotAdapter.ItemClickListener {
+class CalendarFragment : NavHostFragment(), CalendarView, TimeSlotAdapter.ItemClickListener {
     var mAdapter: TimeSlotAdapter? = null
 
     lateinit var viewModel: CalendarEventViewModel
-
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_calendar, container, false)
@@ -32,41 +26,9 @@ class CalendarFragment: NavHostFragment(), TimeSlotAdapter.ItemClickListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        viewModel = ViewModelProviders
-                .of(this)
-                .get(CalendarEventViewModel::class.java)
-
-        val days = arrayOf(
-                Day("Seg"),
-                Day("Ter"),
-                Day("Qua"),
-                Day("Qui"),
-                Day("Sex"),
-                Day("Sab"),
-                Day("Dom")
-        )
-
-        mAdapter = TimeSlotAdapter(days)
-        mAdapter?.listener = this
-
-        daysRecyclerView.addItemDecoration(ItemOffsetDecoration(context!!, R.dimen.time_slot_item_spacing))
-        daysRecyclerView.adapter = mAdapter
-        (daysRecyclerView.layoutManager as GridLayoutManager).spanCount = days.count()
     }
 
-    override fun onItemClick(view: View, position: Int) {
-        val hour = mAdapter?.getHourAt(position)
-        hour?.let { toggleStatus(it) }
-        mAdapter?.notifyItemChanged(position)
-    }
-
-    private fun toggleStatus(hour: Hour) {
-        hour.status = when(hour.status) {
-            ScheduleStatus.Available -> ScheduleStatus.Busy
-            ScheduleStatus.Busy -> ScheduleStatus.Available
-        }
-    }
+   override fun onItemClick(view: View, position: Int){}
 }
 
 class ItemOffsetDecoration(private val mItemOffset: Int) : RecyclerView.ItemDecoration() {
@@ -77,4 +39,49 @@ class ItemOffsetDecoration(private val mItemOffset: Int) : RecyclerView.ItemDeco
         super.getItemOffsets(outRect, view, parent, state)
         outRect.set(mItemOffset, mItemOffset, mItemOffset, mItemOffset)
     }
+}
+
+//TODO:
+data class EventViewModel(val date: Day)
+
+interface CalendarView {
+    fun showEvents(events: List<EventViewModel>)
+    fun showLoading()
+}
+
+interface CalendarPresenter {
+    fun onViewCreated()
+}
+
+class GetEventsFromCurrentWeek(private val eventRepository: EventRepository, private val dateRepository: DateRepository) : UseCase<Unit>() {
+    private lateinit var callback: GetEventsFromCurrentWeekCallback
+
+    //TODO:
+    override fun execute() {
+        callback.onGetEventsFromCurrentWeekSuccess(listOf(Event()))
+    }
+
+    fun with(callback: GetEventsFromCurrentWeekCallback): GetEventsFromCurrentWeek {
+        this.callback = callback
+        return this
+    }
+}
+
+interface EventRepository{
+    fun getEventsAt(date: LocalDateTime): List<Event>
+    fun getEventsBetween(initialDate: LocalDateTime, finalDate: LocalDateTime): List<Event>
+}
+
+interface DateRepository{
+    fun getCurrentDate(): LocalDateTime
+}
+
+interface GetEventsFromCurrentWeekCallback {
+    fun onGetEventsFromCurrentWeekSuccess(events: List<Event>)
+}
+
+class Event()
+
+abstract class UseCase<out T> {
+    abstract fun execute(): T
 }

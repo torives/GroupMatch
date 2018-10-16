@@ -16,11 +16,20 @@ enum class ScheduleStatus(val hexColor: String) {
     Available("#b3d044"),
     Busy("#c9232d")
 }
-class Hour(val label: String, var status: ScheduleStatus)
-class Day(val weekDay: String, val hours: Array<Hour> = Array(24) { Hour("$it"+"h", ScheduleStatus.Available)})
+
+class Hour(val label: String,
+           var status: ScheduleStatus
+)
+
+class Day(val weekDay: String,
+          val hours: Array<Hour> =
+        Array(24) {
+            Hour("$it"+"h", ScheduleStatus.Available)
+        }
+)
 
 
-class TimeSlotAdapter(private val days: Array<Day>): RecyclerView.Adapter<TimeSlotAdapter.TimeSlotViewHolder>() {
+class TimeSlotAdapter(private val days: Array<Day>) : RecyclerView.Adapter<TimeSlotAdapter.TimeSlotViewHolder>() {
     private val totalColumns = days.size
     var listener: ItemClickListener? = null
 
