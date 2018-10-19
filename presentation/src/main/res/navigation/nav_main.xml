@@ -7,12 +7,12 @@
 
     <fragment
         android:id="@+id/settingsFragment"
-        android:name="br.com.yves.groupmatch.ui.settings.SettingsFragment"
+        android:name="br.com.yves.groupmatch.presentation.ui.settings.SettingsFragment"
         android:label="SettingsFragment"
         tools:layout="@layout/fragment_settings"/>
     <fragment
         android:id="@+id/calendarFragment"
-        android:name="br.com.yves.groupmatch.ui.calendar.CalendarFragment"
+        android:name="br.com.yves.groupmatch.presentation.ui.loadEvents.CalendarFragment"
         android:label="CalendarFragment"
         tools:layout="@layout/fragment_calendar"/>
     <navigation
@@ -20,12 +20,12 @@
         app:startDestination="@id/connectionRoleFragment">
         <fragment
             android:id="@+id/searchBluetoothClientsFragment"
-            android:name="br.com.yves.groupmatch.SearchBluetoothClientsFragment"
+            android:name="br.com.yves.groupmatch.presentation.SearchBluetoothClientsFragment"
             android:label="SearchBluetoothClientsFragment"
             tools:layout="@layout/fragment_search_bluetooth_clients"/>
         <fragment
             android:id="@+id/connectionRoleFragment"
-            android:name="br.com.yves.groupmatch.ui.connectionRole.ConnectionRoleFragment"
+            android:name="br.com.yves.groupmatch.presentation.ui.connectionRole.ConnectionRoleFragment"
             android:label="ConnectionRoleFragment"
             tools:layout="@layout/fragment_connection_role">
             <action
@@ -45,7 +45,7 @@
         </fragment>
         <fragment
             android:id="@+id/searchBluetoothServer"
-            android:name="br.com.yves.groupmatch.SearchBluetoothServer"
+            android:name="br.com.yves.groupmatch.presentation.SearchBluetoothServer"
             android:label="fragment_search_bluetooth_server"
             tools:layout="@layout/fragment_search_bluetooth_server" />
     </navigation>

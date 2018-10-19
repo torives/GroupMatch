@@ -31,7 +31,8 @@ ext {
             navigation_fragment     : "android.arch.navigation:navigation-fragment-ktx:$navigationVersion",
             navigation_ui           : "android.arch.navigation:navigation-ui-ktx:$navigationVersion",
             anko                    : "org.jetbrains.anko:anko-appcompat-v7-commons:0.10.5",
-            kotlin                  : "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion"
+            kotlin                  : "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion",
+            threetenabp             : 'com.jakewharton.threetenabp:threetenabp:1.1.1'
     ]
 
     testDependencies = [

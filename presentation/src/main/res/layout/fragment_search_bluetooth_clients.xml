@@ -8,7 +8,7 @@
     android:paddingLeft="16dp"
     android:paddingRight="16dp"
     android:paddingTop="16dp"
-    tools:context=".SearchBluetoothClientsFragment">
+    tools:context="br.com.yves.groupmatch.presentation.SearchBluetoothClientsFragment">
 
     <TextView
         android:id="@+id/serverDeviceInfoTextView"
