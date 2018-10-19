@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_main"
+    app:startDestination="@id/calendarFragment">
+
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="br.com.yves.groupmatch.ui.settings.SettingsFragment"
+        android:label="SettingsFragment"
+        tools:layout="@layout/fragment_settings"/>
+    <fragment
+        android:id="@+id/calendarFragment"
+        android:name="br.com.yves.groupmatch.ui.calendar.CalendarFragment"
+        android:label="CalendarFragment"
+        tools:layout="@layout/fragment_calendar"/>
+    <navigation
+        android:id="@+id/nav_search"
+        app:startDestination="@id/connectionRoleFragment">
+        <fragment
+            android:id="@+id/searchBluetoothClientsFragment"
+            android:name="br.com.yves.groupmatch.SearchBluetoothClientsFragment"
+            android:label="SearchBluetoothClientsFragment"
+            tools:layout="@layout/fragment_search_bluetooth_clients"/>
+        <fragment
+            android:id="@+id/connectionRoleFragment"
+            android:name="br.com.yves.groupmatch.ui.connectionRole.ConnectionRoleFragment"
+            android:label="ConnectionRoleFragment"
+            tools:layout="@layout/fragment_connection_role">
+            <action
+                android:id="@+id/action_connectionRoleFragment_to_searchBluetoothClientsFragment"
+                app:destination="@id/searchBluetoothClientsFragment"
+                app:enterAnim="@anim/nav_default_enter_anim"
+                app:exitAnim="@anim/nav_default_exit_anim"
+                app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+                app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+            <action
+                android:id="@+id/action_connectionRoleFragment_to_searchBluetoothServer"
+                app:destination="@id/searchBluetoothServer"
+                app:enterAnim="@anim/nav_default_enter_anim"
+                app:exitAnim="@anim/nav_default_exit_anim"
+                app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+                app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+        </fragment>
+        <fragment
+            android:id="@+id/searchBluetoothServer"
+            android:name="br.com.yves.groupmatch.SearchBluetoothServer"
+            android:label="fragment_search_bluetooth_server"
+            tools:layout="@layout/fragment_search_bluetooth_server" />
+    </navigation>
+</navigation>

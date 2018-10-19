@@ -1,0 +1,56 @@
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
+
+Map<String, String> baseDependencies = rootProject.ext.dependencies
+Map<String, String> testDependencies = rootProject.ext.testDependencies
+Map<String, String> application = rootProject.ext.application
+Map<String, String> versions = rootProject.ext.versions
+
+android {
+    compileSdkVersion versions.compileSdk
+
+    defaultConfig {
+        applicationId "br.com.yves.groupmatch"
+        minSdkVersion versions.minSdk
+        targetSdkVersion versions.targetSdk
+        versionCode application.versionCode
+        versionName application.versionName
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+kapt {
+    generateStubs = true
+}
+
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation project(path: ':data')
+    implementation project(path: ':domain')
+
+    implementation baseDependencies.kotlin
+    implementation baseDependencies.support_v4
+    implementation baseDependencies.app_compat
+    implementation baseDependencies.design
+    implementation baseDependencies.recycler_view
+    implementation baseDependencies.card_view
+    implementation baseDependencies.constraint_layout
+    implementation baseDependencies.lifecycle
+    implementation baseDependencies.navigation_fragment
+    implementation baseDependencies.navigation_ui
+    implementation baseDependencies.anko
+
+    // Tests
+    testImplementation testDependencies.junit
+    testImplementation testDependencies.mockito
+}

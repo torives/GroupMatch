@@ -1,0 +1,46 @@
+apply plugin: 'java-library'
+apply plugin: 'kotlin'
+
+Map<String, String> baseDependencies = rootProject.ext.dependencies
+Map<String, String> testDependencies = rootProject.ext.testDependencies
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+
+    implementation baseDependencies.kotlin
+
+    testImplementation testDependencies.junit
+    testImplementation testDependencies.mockito
+
+}
+
+sourceCompatibility = "1.8"
+targetCompatibility = "1.8"
+
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
+        classpath "org.jetbrains.kotlin:kotlin-android-extensions:$kotlinVersion"
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+compileKotlin {
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
+}
+
+compileTestKotlin {
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
+}
+
+
