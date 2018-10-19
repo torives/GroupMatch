@@ -1,0 +1,41 @@
+/**
+ * File created to organize dependencies for all the modules.
+ * All dependencies must be placed here
+ */
+
+ext {
+    application = [
+            versionCode: 2,
+            versionName: "0.0.1"
+    ]
+
+    versions = [
+            buildTools: "28.0.3",
+            minSdk    : 21,
+            targetSdk : 28,
+            compileSdk: 28
+    ]
+
+    def supportVersion = '28.0.0'
+    def navigationVersion = '1.0.0-alpha06'
+
+
+    dependencies = [
+            support_v4              : "com.android.support:support-v4:$supportVersion",
+            app_compat              : "com.android.support:appcompat-v7:$supportVersion",
+            design                  : "com.android.support:design:$supportVersion",
+            recycler_view           : "com.android.support:recyclerview-v7:$supportVersion",
+            card_view               : "com.android.support:cardview-v7:$supportVersion",
+            constraint_layout       : "com.android.support.constraint:constraint-layout:1.1.3",
+            lifecycle               : "android.arch.lifecycle:extensions:1.1.1",
+            navigation_fragment     : "android.arch.navigation:navigation-fragment-ktx:$navigationVersion",
+            navigation_ui           : "android.arch.navigation:navigation-ui-ktx:$navigationVersion",
+            anko                    : "org.jetbrains.anko:anko-appcompat-v7-commons:0.10.5",
+            kotlin                  : "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion"
+    ]
+
+    testDependencies = [
+            junit                   : "junit:junit:4.12",
+            mockito                 : "org.mockito:mockito-core:2.10.0",
+    ]
+}
