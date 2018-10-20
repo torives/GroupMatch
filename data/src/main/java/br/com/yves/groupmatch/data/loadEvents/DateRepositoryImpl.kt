@@ -3,7 +3,9 @@ package br.com.yves.groupmatch.data.loadEvents
 import br.com.yves.groupmatch.domain.loadEvents.DateRepository
 import org.threeten.bp.DayOfWeek
 import org.threeten.bp.LocalDateTime
+import org.threeten.bp.LocalTime
 import org.threeten.bp.ZoneId
+import org.threeten.bp.temporal.TemporalAccessor
 import org.threeten.bp.temporal.TemporalAdjusters
 
 class DateRepositoryImpl : DateRepository {
@@ -12,7 +14,7 @@ class DateRepositoryImpl : DateRepository {
         val today = getCurrentDay()
         var firstWeekDay = today.with(TemporalAdjusters.previous(DayOfWeek.MONDAY))
 
-        val lastWeekDay = when(today.dayOfWeek) {
+        var lastWeekDay = when(today.dayOfWeek) {
             DayOfWeek.MONDAY -> {
                 firstWeekDay = today
                 today.with(TemporalAdjusters.next(DayOfWeek.SUNDAY))
@@ -21,6 +23,8 @@ class DateRepositoryImpl : DateRepository {
             else -> today.with(TemporalAdjusters.next(DayOfWeek.SUNDAY))
         }
 
+        firstWeekDay = firstWeekDay.with(LocalTime.MIN)
+        lastWeekDay = lastWeekDay.with(LocalTime.MAX)
         return firstWeekDay.rangeTo(lastWeekDay)
     }
 
