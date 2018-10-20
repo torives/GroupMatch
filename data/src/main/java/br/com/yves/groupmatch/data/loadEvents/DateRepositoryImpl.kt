@@ -1,15 +1,35 @@
 package br.com.yves.groupmatch.data.loadEvents
 
 import br.com.yves.groupmatch.domain.loadEvents.DateRepository
+import org.threeten.bp.DayOfWeek
 import org.threeten.bp.LocalDateTime
+import org.threeten.bp.ZoneId
+import org.threeten.bp.temporal.TemporalAdjusters
 
 class DateRepositoryImpl : DateRepository {
-    override fun getCurrentDate(): LocalDateTime {
-        return LocalDateTime.now()
-    }
 
     override fun getCurrentWeek(): ClosedRange<LocalDateTime> {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        val today = getCurrentDay()
+        var firstWeekDay = today.with(TemporalAdjusters.previous(DayOfWeek.MONDAY))
+
+        val lastWeekDay = when(today.dayOfWeek) {
+            DayOfWeek.MONDAY -> {
+                firstWeekDay = today
+                today.with(TemporalAdjusters.next(DayOfWeek.SUNDAY))
+            }
+            DayOfWeek.SUNDAY -> today.with(TemporalAdjusters.previous(DayOfWeek.MONDAY))
+            else -> today.with(TemporalAdjusters.next(DayOfWeek.SUNDAY))
+        }
+
+        return firstWeekDay.rangeTo(lastWeekDay)
     }
 
+    private fun getCurrentDay(): LocalDateTime {
+        val zoneId = ZoneId.of("America/Sao_Paulo")
+        return LocalDateTime.now(zoneId)
+    }
 }
+
+
+
+

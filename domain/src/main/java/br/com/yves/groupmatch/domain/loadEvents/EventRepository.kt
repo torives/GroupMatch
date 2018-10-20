@@ -1,6 +1,6 @@
 package br.com.yves.groupmatch.domain.loadEvents
 
-import java.time.LocalDateTime
+import org.threeten.bp.LocalDateTime
 
 interface EventRepository{
     fun getEventsAt(date: LocalDateTime): List<Event>

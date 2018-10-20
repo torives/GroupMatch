@@ -2,7 +2,7 @@ package br.com.yves.groupmatch.data.loadEvents
 
 import br.com.yves.groupmatch.domain.loadEvents.Event
 import br.com.yves.groupmatch.domain.loadEvents.EventRepository
-import java.time.LocalDateTime
+import org.threeten.bp.LocalDateTime
 
 class EventRepositoryImpl : EventRepository {
     override fun getEventsAt(date: LocalDateTime): List<Event> {
