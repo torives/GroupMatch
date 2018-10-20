@@ -4,7 +4,7 @@ import br.com.yves.groupmatch.domain.loadEvents.Event
 import br.com.yves.groupmatch.domain.loadEvents.LoadEvents
 import br.com.yves.groupmatch.domain.loadEvents.LoadEventsCallback
 
-class CalendarPresenterImpl(private val view: CalendarView,
+class CalendarPresenterImpl(private val view: LoadEventsView,
                             private val loadEvents: LoadEvents
 ) : CalendarPresenter, LoadEventsCallback {
 

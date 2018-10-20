@@ -9,7 +9,7 @@ import groupmatch.com.yves.groupmatch.R
 import br.com.yves.groupmatch.presentation.loadEvents.CalendarPresenterFactory
 
 
-class CalendarFragment : NavHostFragment(), CalendarView, TimeSlotAdapter.ItemClickListener {
+class CalendarFragment : NavHostFragment(), LoadEventsView, TimeSlotAdapter.ItemClickListener {
 
     var mAdapter: TimeSlotAdapter? = null
     lateinit var viewModel: CalendarEventViewModel
@@ -24,7 +24,7 @@ class CalendarFragment : NavHostFragment(), CalendarView, TimeSlotAdapter.ItemCl
         presenter.onViewCreated()
     }
 
-    //region CalendarView
+    //region LoadEventsView
     override fun showEvents(events: List<EventViewModel>) {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }

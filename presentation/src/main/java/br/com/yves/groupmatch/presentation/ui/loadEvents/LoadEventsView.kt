@@ -1,6 +1,6 @@
 package br.com.yves.groupmatch.presentation.ui.loadEvents
 
-interface CalendarView {
+interface LoadEventsView {
     fun showEvents(events: List<EventViewModel>)
     fun showLoading()
 }
