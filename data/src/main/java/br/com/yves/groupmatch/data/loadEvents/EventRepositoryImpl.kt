@@ -2,10 +2,11 @@ package br.com.yves.groupmatch.data.loadEvents
 
 import br.com.yves.groupmatch.domain.loadEvents.Event
 import br.com.yves.groupmatch.domain.loadEvents.EventRepository
+import org.threeten.bp.LocalDate
 import org.threeten.bp.LocalDateTime
 
 class EventRepositoryImpl : EventRepository {
-    override fun getEventsAt(date: LocalDateTime): List<Event> {
+    override fun getEventsAt(date: LocalDate): List<Event> {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
