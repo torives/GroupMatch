@@ -35,6 +35,8 @@ dependencies {
 
     implementation baseDependencies.kotlin
     implementation baseDependencies.app_compat
+    implementation baseDependencies.room
+    kapt baseDependencies.room_compiler
 
     testImplementation testDependencies.junit
     androidTestImplementation testDependencies.mockito
