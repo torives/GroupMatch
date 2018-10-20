@@ -3,7 +3,7 @@ package br.com.yves.groupmatch.presentation
 
 import android.Manifest
 import android.annotation.SuppressLint
-import android.arch.lifecycle.Observer
+import androidx.lifecycle.Observer
 import android.bluetooth.*
 import android.bluetooth.le.*
 import android.content.Intent
@@ -12,23 +12,23 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.os.ParcelUuid
-import android.support.v4.app.Fragment
-import android.support.v4.content.ContextCompat.checkSelfPermission
+import androidx.fragment.app.Fragment
+import androidx.core.content.ContextCompat.checkSelfPermission
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import br.com.yves.groupmatch.presentation.SearchBluetoothClientsFragment.Companion.TAG
-import kotlinx.android.synthetic.main.fragment_search_bluetooth_server.*
-import kotlinx.android.synthetic.main.view_log.view.*
 import java.util.ArrayList
 import java.util.HashMap
 import kotlin.system.exitProcess
-import android.arch.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProviders
 import android.widget.LinearLayout
 import android.widget.ScrollView
 import android.widget.TextView
-import groupmatch.com.yves.groupmatch.R
+import br.com.yves.groupmatch.R
+import kotlinx.android.synthetic.main.fragment_search_bluetooth_server.*
+import kotlinx.android.synthetic.main.view_log.view.*
 import kotlinx.android.synthetic.main.widget_server_list_item.view.*
 
 

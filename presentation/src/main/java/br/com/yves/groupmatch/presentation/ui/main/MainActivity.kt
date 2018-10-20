@@ -1,11 +1,11 @@
 package br.com.yves.groupmatch.presentation.ui.main
 
-import android.support.v7.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.setupWithNavController
-import groupmatch.com.yves.groupmatch.R
 import kotlinx.android.synthetic.main.main_activity.*
+import br.com.yves.groupmatch.R
 
 class MainActivity : AppCompatActivity() {
 

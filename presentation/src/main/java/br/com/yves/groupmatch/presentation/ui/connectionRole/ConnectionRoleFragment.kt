@@ -6,12 +6,12 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
-import android.support.v4.app.Fragment
+import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.NavHostFragment
-import groupmatch.com.yves.groupmatch.R
+import br.com.yves.groupmatch.R
 import kotlinx.android.synthetic.main.fragment_connection_role.*
 
 class ConnectionRoleFragment: Fragment() {

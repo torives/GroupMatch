@@ -1,15 +1,12 @@
 package br.com.yves.groupmatch.data.db
 
 import android.content.Context
-import android.service.autofill.FillEventHistory
 import androidx.room.*
 import br.com.yves.groupmatch.data.db.EventRoom.Companion.COLUMN_ID
-import org.threeten.bp.LocalDateTime
 import br.com.yves.groupmatch.data.db.EventRoom.Companion.TABLE_NAME
-import br.com.yves.groupmatch.domain.loadEvents.Event
-import com.yves.groupmatch.data.R
+import org.threeten.bp.LocalDateTime
 import org.threeten.bp.format.DateTimeFormatter
-
+import br.com.yves.groupmatch.data.R
 
 @Database(
         entities = [EventRoom::class],

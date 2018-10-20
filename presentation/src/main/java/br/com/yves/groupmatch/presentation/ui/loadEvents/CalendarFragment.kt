@@ -5,7 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.NavHostFragment
-import groupmatch.com.yves.groupmatch.R
+import br.com.yves.groupmatch.R
 import br.com.yves.groupmatch.presentation.loadEvents.CalendarPresenterFactory
 
 

@@ -12,12 +12,12 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.os.ParcelUuid
-import android.support.v4.app.Fragment
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import groupmatch.com.yves.groupmatch.R
+import androidx.fragment.app.Fragment
+import br.com.yves.groupmatch.R
 import kotlinx.android.synthetic.main.fragment_search_bluetooth_clients.*
 import kotlinx.android.synthetic.main.view_log.*
 import kotlinx.android.synthetic.main.view_log.view.*
