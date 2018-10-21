@@ -4,7 +4,7 @@ import androidx.room.*
 import org.threeten.bp.LocalDateTime
 
 @Dao
-interface EventDAO {
+interface EventRoomDAO {
     //region Insert
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertOrReplace(event: EventRoom)

@@ -45,5 +45,11 @@ dependencies {
     kapt baseDependencies.room_compiler
 
     testImplementation testDependencies.junit
-    androidTestImplementation testDependencies.mockito
+    testImplementation testDependencies.kotlinJUnit
+    testImplementation testDependencies.mockitoKotlin
+
+    androidTestImplementation testDependencies.mockitoKotlin
+//    androidTestImplementation "org.mockito:mockito-inline:2.23.0"
+    androidTestImplementation testDependencies.mockitoAndroid
+    androidTestImplementation testDependencies.supportRunner
 }

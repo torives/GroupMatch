@@ -11,7 +11,7 @@ dependencies {
     implementation baseDependencies.kotlin
 
     testImplementation testDependencies.junit
-    testImplementation testDependencies.mockito
+    testImplementation testDependencies.mockitoKotlin
 
 }
 

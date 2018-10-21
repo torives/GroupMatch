@@ -3,7 +3,7 @@ package br.com.yves.groupmatch.data.db
 import android.content.Context
 import androidx.room.*
 import br.com.yves.groupmatch.data.R
-import br.com.yves.groupmatch.data.db.event.EventDAO
+import br.com.yves.groupmatch.data.db.event.EventRoomDAO
 import br.com.yves.groupmatch.data.db.event.EventRoom
 
 @Database(
@@ -12,7 +12,7 @@ import br.com.yves.groupmatch.data.db.event.EventRoom
 @TypeConverters(RoomTypeConverter::class)
 abstract class RoomDB : RoomDatabase() {
 
-    abstract fun eventDAO(): EventDAO
+    abstract fun eventDAO(): EventRoomDAO
 
     companion object {
         private var INSTANCE: RoomDB? = null

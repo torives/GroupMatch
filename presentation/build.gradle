@@ -52,5 +52,5 @@ dependencies {
 
     // Tests
     testImplementation testDependencies.junit
-    testImplementation testDependencies.mockito
+    testImplementation testDependencies.mockitoKotlin
 }

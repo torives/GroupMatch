@@ -19,6 +19,8 @@ ext {
     def supportVersion = '1.0.0-beta01'
     def navigationVersion = '1.0.0-alpha06'
     def roomVersion = '2.0.0'
+    def mockitoVersion = '2.23.0'
+    def mockitoKotlinVersion = '2.0.0-RC3'
 
     dependencies = [
             support_v4              : "androidx.legacy:legacy-support-v4:$supportVersion",
@@ -39,6 +41,9 @@ ext {
 
     testDependencies = [
             junit                   : "junit:junit:4.12",
-            mockito                 : "org.mockito:mockito-core:2.10.0",
+            kotlinJUnit             : "org.jetbrains.kotlin:kotlin-test-junit:$kotlinVersion",
+            mockitoKotlin           : "com.nhaarman.mockitokotlin2:mockito-kotlin:$mockitoKotlinVersion",
+            mockitoAndroid          : "org.mockito:mockito-android:$mockitoVersion",
+            supportRunner           : "com.android.support.test:runner:1.0.2"
     ]
 }
