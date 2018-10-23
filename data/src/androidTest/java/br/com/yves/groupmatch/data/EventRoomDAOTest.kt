@@ -6,13 +6,12 @@ import androidx.test.runner.AndroidJUnit4
 import br.com.yves.groupmatch.data.db.RoomDB
 import br.com.yves.groupmatch.data.db.event.EventRoom
 import com.jakewharton.threetenabp.AndroidThreeTen
-import com.nhaarman.mockitokotlin2.doReturn
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
-import com.nhaarman.mockitokotlin2.mock
 import org.threeten.bp.LocalDateTime
+import org.threeten.bp.temporal.TemporalAdjusters
 
 @RunWith(AndroidJUnit4::class)
 open class EventRoomDAOTest {
@@ -44,6 +43,69 @@ open class EventRoomDAOTest {
         //region Then
         val cursor = roomDB.query("SELECT * FROM ${EventRoom.TABLE_NAME}", null)
         assert(cursor.count == 1)
+        //endregion
+    }
+
+    @Test
+    fun loadEventBetweenDates() {
+        //region Given
+        val eventRoomDao = roomDB.eventDAO()
+        val initialDay = LocalDateTime.now().with(TemporalAdjusters.firstDayOfMonth())
+        val finalDay = LocalDateTime.now().with(TemporalAdjusters.lastDayOfMonth())
+        val event = EventRoom(0, LocalDateTime.now())
+
+        eventRoomDao.insertOrReplace(event)
+        //endregion
+
+
+        //region When
+        val response = eventRoomDao.getAllEventsBetween(initialDay.toString(), finalDay.toString())
+        //endregion
+
+        //region Then
+        assert(response.isNotEmpty())
+        //endregion
+    }
+
+    @Test
+    fun loadEventBetweenDatesAndWithSameDayOfTheFirstDate() {
+        //region Given
+        val eventRoomDao = roomDB.eventDAO()
+        val initialDay = LocalDateTime.now().with(TemporalAdjusters.firstDayOfMonth())
+        val finalDay = LocalDateTime.now().with(TemporalAdjusters.lastDayOfMonth())
+        val event = EventRoom(0, initialDay)
+
+        eventRoomDao.insertOrReplace(event)
+        //endregion
+
+
+        //region When
+        val response = eventRoomDao.getAllEventsBetween(initialDay.toString(), finalDay.toString())
+        //endregion
+
+        //region Then
+        assert(response.isNotEmpty())
+        //endregion
+    }
+
+    @Test
+    fun loadEventOutsideDates() {
+        //region Given
+        val eventRoomDao = roomDB.eventDAO()
+        val initialDay = LocalDateTime.now().with(TemporalAdjusters.firstDayOfMonth())
+        val finalDay = LocalDateTime.now().with(TemporalAdjusters.lastDayOfMonth())
+        val event = EventRoom(0, initialDay.with(TemporalAdjusters.firstDayOfNextMonth()))
+
+        eventRoomDao.insertOrReplace(event)
+        //endregion
+
+
+        //region When
+        val response = eventRoomDao.getAllEventsBetween(initialDay.toString(), finalDay.toString())
+        //endregion
+
+        //region Then
+        assert(response.isEmpty())
         //endregion
     }
 }

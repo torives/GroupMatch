@@ -9,21 +9,25 @@ interface EventRoomDAO {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertOrReplace(event: EventRoom)
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertOrReplace(events: List<EventRoom>)
+//    @Insert(onConflict = OnConflictStrategy.REPLACE)
+//    fun insertOrReplace(events: List<EventRoom>)
     //endregion
 
-    //region Delete
-    @Delete
-    fun delete(event: EventRoom)
+//    //region Delete
+//    @Query("""
+//        DELETE FROM ${EventRoom.TABLE_NAME}
+//        WHERE ${EventRoom.COLUMN_ID} == :eventId
+//    """)
+//    fun delete(eventId: Int)
 
-    @Delete
-    fun delete(events: List<EventRoom>)
+    @Query(value = "DELETE FROM ${EventRoom.TABLE_NAME}")
+    fun clear()
     //endregion
 
     @Query("""
         SELECT * FROM ${EventRoom.TABLE_NAME}
         WHERE ${EventRoom.COLUMN_DATE} >= :firstDate
-        AND ${EventRoom.COLUMN_DATE} <= :lastDate""")
+        AND ${EventRoom.COLUMN_DATE} <= :lastDate
+    """)
     fun getAllEventsBetween(firstDate: String, lastDate: String): List<EventRoom>
 }
