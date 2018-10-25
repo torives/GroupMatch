@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.navigation.fragment.NavHostFragment
 import br.com.yves.groupmatch.R
 import br.com.yves.groupmatch.presentation.loadEvents.CalendarPresenterFactory
+import br.com.yves.groupmatch.presentation.runOnBackground
 
 
 class CalendarFragment : NavHostFragment(), LoadEventsView, TimeSlotAdapter.ItemClickListener {
@@ -21,16 +22,23 @@ class CalendarFragment : NavHostFragment(), LoadEventsView, TimeSlotAdapter.Item
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        presenter.onViewCreated()
+
+        runOnBackground {
+            presenter.onViewCreated()
+        }
     }
 
     //region LoadEventsView
     override fun showEvents(events: List<EventViewModel>) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        activity?.runOnUiThread {
+            TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        }
     }
 
     override fun showLoading() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        activity?.runOnUiThread {
+            TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        }
     }
     //endregion
 
