@@ -11,7 +11,7 @@ import org.threeten.bp.LocalDateTime
 @Entity(tableName = TABLE_NAME,
         indices = [Index(COLUMN_ID, unique = true)])
 open class EventRoom(
-        @ColumnInfo(name = COLUMN_ID) @PrimaryKey val id: Int,
+        @ColumnInfo(name = COLUMN_ID) @PrimaryKey(autoGenerate = true) val id: Int,
         @ColumnInfo(name = COLUMN_DATE) val date: LocalDateTime
 ) {
     companion object {

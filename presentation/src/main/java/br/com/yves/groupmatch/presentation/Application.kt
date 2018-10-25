@@ -9,7 +9,13 @@ class Application : Application() {
     override fun onCreate() {
         super.onCreate()
 
+        INSTANCE = this
+
         AndroidThreeTen.init(this)
         RoomDB.init(this)
+    }
+
+    companion object {
+        lateinit var INSTANCE: Application
     }
 }
