@@ -1,6 +1,7 @@
 package br.com.yves.groupmatch.data.loadEvents
 
 import br.com.yves.groupmatch.domain.loadEvents.DateRepository
+import br.com.yves.groupmatch.domain.loadEvents.Week
 import org.threeten.bp.DayOfWeek
 import org.threeten.bp.LocalDateTime
 import org.threeten.bp.LocalTime
@@ -27,9 +28,36 @@ class DateRepositoryImpl : DateRepository {
         return firstWeekDay.rangeTo(lastWeekDay)
     }
 
+    override fun getAllHoursFrom(week: Week): List<LocalDateTime> {
+        val weekTimeSlots = mutableListOf<LocalDateTime>()
+        var currentDay = week.start
+
+        while (!currentDay.toLocalDate().isAfter(week.endInclusive.toLocalDate())) {
+            val currentDayTimeSlots = getAllHoursFrom(currentDay)
+
+            weekTimeSlots.addAll(currentDayTimeSlots)
+            currentDay = currentDay.plusDays(1)
+        }
+
+        return weekTimeSlots
+    }
+
+    //FIXME: Considerar as diferentes TimeZones
     private fun getCurrentDay(): LocalDateTime {
         val zoneId = ZoneId.of("America/Sao_Paulo")
         return LocalDateTime.now(zoneId)
+    }
+
+    private fun getAllHoursFrom(day: LocalDateTime): List<LocalDateTime> {
+        val nextDay = day.plusDays(1)
+        var currentDateTime = day
+        val timeSlots = mutableListOf<LocalDateTime>()
+
+        while (currentDateTime.isBefore(nextDay)) {
+            timeSlots.add(currentDateTime)
+            currentDateTime = currentDateTime.plusHours(1)
+        }
+        return timeSlots
     }
 }
 
