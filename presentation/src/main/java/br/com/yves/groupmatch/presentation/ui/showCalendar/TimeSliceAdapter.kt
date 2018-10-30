@@ -11,8 +11,8 @@ import android.widget.LinearLayout
 import br.com.yves.groupmatch.R
 import kotlinx.android.synthetic.main.timeslot_view.view.*
 
-class TimeSlotAdapter(private val days: Array<DayViewModel>) : RecyclerView.Adapter<TimeSlotAdapter.TimeSlotViewHolder>() {
-    private val totalColumns = days.size
+class TimeSliceAdapter(private val calendar: CalendarViewModel) : RecyclerView.Adapter<TimeSliceAdapter.TimeSlotViewHolder>() {
+    private val totalColumns = calendar.days.size
     var listener: ItemClickListener? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TimeSlotViewHolder {
@@ -21,7 +21,7 @@ class TimeSlotAdapter(private val days: Array<DayViewModel>) : RecyclerView.Adap
     }
 
     override fun getItemCount(): Int {
-        return days.map { it.hours.count() }.reduce { acc, i -> acc + i }
+        return calendar.days.asSequence().map { it.hours.count() }.reduce { acc, i -> acc + i }
     }
 
     override fun onBindViewHolder(holder: TimeSlotViewHolder, position: Int) {
@@ -31,7 +31,7 @@ class TimeSlotAdapter(private val days: Array<DayViewModel>) : RecyclerView.Adap
             holder.itemView.hourTextView.text = hour.label
             holder.itemView.cardView.setCardBackgroundColor(Color.parseColor(hour.status.hexColor))
         } ?: run {
-            Log.d("TimeSlotAdapter", "Could not find a model to bind ViewHolder at position: $position")
+            Log.d("TimeSliceAdapter", "Could not find a model to bind ViewHolder at position: $position")
         }
     }
 
@@ -49,8 +49,8 @@ class TimeSlotAdapter(private val days: Array<DayViewModel>) : RecyclerView.Adap
         val columnIndex = columnAt(position) - 1
         val rowIndex = rowAt(position) - 1
 
-        return if (days.indices.contains(columnIndex) && days[columnIndex].hours.indices.contains(rowIndex))
-            days[columnIndex].hours[rowIndex]
+        return if (calendar.days.indices.contains(columnIndex) && calendar.days[columnIndex].hours.indices.contains(rowIndex))
+            calendar.days[columnIndex].hours[rowIndex]
         else null
     }
 
