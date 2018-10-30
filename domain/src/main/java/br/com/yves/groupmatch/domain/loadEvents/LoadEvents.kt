@@ -1,18 +1,22 @@
 package br.com.yves.groupmatch.domain.loadEvents
 
 import br.com.yves.groupmatch.domain.UseCase
+import br.com.yves.groupmatch.domain.showCalendar.Week
 
 
-class LoadEvents(private val eventsRepository: EventRepository,
-                 private val dateRepository: DateRepository
-) : UseCase<List<Event>>() {
+class LoadEvents(private val eventsRepository: EventRepository) : UseCase<List<Event>>() {
+
+    private lateinit var week: Week
+
+    fun from(week: Week): LoadEvents {
+        this.week = week
+        return this
+    }
 
     override fun execute(): List<Event> {
-        val currentWeek = dateRepository.getCurrentWeek()
-
         return eventsRepository.getEventsBetween(
-                currentWeek.start,
-                currentWeek.endInclusive
+            week.start,
+            week.endInclusive
         )
     }
 }

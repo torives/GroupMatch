@@ -1,4 +1,4 @@
-package br.com.yves.groupmatch.presentation.ui.loadEvents
+package br.com.yves.groupmatch.presentation.ui.showCalendar
 
 import android.content.Context
 import android.graphics.Color
@@ -11,25 +11,7 @@ import android.widget.LinearLayout
 import br.com.yves.groupmatch.R
 import kotlinx.android.synthetic.main.timeslot_view.view.*
 
-
-enum class ScheduleStatus(val hexColor: String) {
-    Available("#b3d044"),
-    Busy("#c9232d")
-}
-
-class Hour(val label: String,
-           var status: ScheduleStatus
-)
-
-class Day(val weekDay: String,
-          val hours: Array<Hour> =
-        Array(24) {
-            Hour("$it" + "h", ScheduleStatus.Available)
-        }
-)
-
-
-class TimeSlotAdapter(private val days: Array<Day>) : RecyclerView.Adapter<TimeSlotAdapter.TimeSlotViewHolder>() {
+class TimeSlotAdapter(private val days: Array<DayViewModel>) : RecyclerView.Adapter<TimeSlotAdapter.TimeSlotViewHolder>() {
     private val totalColumns = days.size
     var listener: ItemClickListener? = null
 
@@ -53,7 +35,7 @@ class TimeSlotAdapter(private val days: Array<Day>) : RecyclerView.Adapter<TimeS
         }
     }
 
-    fun getHourAt(position: Int): Hour? {
+    fun getHourAt(position: Int): HourViewModel? {
 
         fun columnAt(position: Int): Int {
             val matrixPosition = position+1

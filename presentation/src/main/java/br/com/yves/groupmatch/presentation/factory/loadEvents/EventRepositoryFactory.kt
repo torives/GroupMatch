@@ -1,4 +1,4 @@
-package br.com.yves.groupmatch.presentation.loadEvents
+package br.com.yves.groupmatch.presentation.factory.loadEvents
 
 import br.com.yves.groupmatch.data.loadEvents.EventRepositoryImpl
 import br.com.yves.groupmatch.domain.loadEvents.EventRepository

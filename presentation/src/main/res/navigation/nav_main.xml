@@ -12,7 +12,7 @@
         tools:layout="@layout/fragment_settings"/>
     <fragment
         android:id="@+id/calendarFragment"
-        android:name="br.com.yves.groupmatch.presentation.ui.loadEvents.CalendarFragment"
+        android:name="br.com.yves.groupmatch.presentation.ui.showCalendar.CalendarFragment"
         android:label="CalendarFragment"
         tools:layout="@layout/fragment_calendar"/>
     <navigation

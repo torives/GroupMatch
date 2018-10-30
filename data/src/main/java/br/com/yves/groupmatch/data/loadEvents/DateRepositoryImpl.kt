@@ -1,7 +1,7 @@
 package br.com.yves.groupmatch.data.loadEvents
 
-import br.com.yves.groupmatch.domain.loadEvents.DateRepository
-import br.com.yves.groupmatch.domain.loadEvents.Week
+import br.com.yves.groupmatch.domain.showCalendar.DateRepository
+import br.com.yves.groupmatch.domain.showCalendar.Week
 import org.threeten.bp.DayOfWeek
 import org.threeten.bp.LocalDateTime
 import org.threeten.bp.LocalTime
@@ -28,7 +28,7 @@ class DateRepositoryImpl : DateRepository {
         return firstWeekDay.rangeTo(lastWeekDay)
     }
 
-    override fun getAllHoursFrom(week: Week): List<LocalDateTime> {
+    override fun getAllDatesFrom(week: Week): List<LocalDateTime> {
         val weekTimeSlots = mutableListOf<LocalDateTime>()
         var currentDay = week.start
 

@@ -1,4 +1,4 @@
-package br.com.yves.groupmatch.presentation.ui.loadEvents
+package br.com.yves.groupmatch.presentation.ui.showCalendar
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -6,15 +6,14 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.NavHostFragment
 import br.com.yves.groupmatch.R
-import br.com.yves.groupmatch.presentation.loadEvents.CalendarPresenterFactory
+import br.com.yves.groupmatch.presentation.factory.showCalendar.CalendarPresenterFactory
 import br.com.yves.groupmatch.presentation.runOnBackground
 
 
-class CalendarFragment : NavHostFragment(), LoadEventsView, TimeSlotAdapter.ItemClickListener {
+class CalendarFragment : NavHostFragment(), ShowCalendarView, TimeSlotAdapter.ItemClickListener {
 
     var mAdapter: TimeSlotAdapter? = null
-    lateinit var viewModel: CalendarEventViewModel
-    private var presenter: CalendarPresenter = CalendarPresenterFactory.create(this)
+    private var presenter: ShowCalendarPresenter = CalendarPresenterFactory.create(this)
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_calendar, container, false)
@@ -28,8 +27,7 @@ class CalendarFragment : NavHostFragment(), LoadEventsView, TimeSlotAdapter.Item
         }
     }
 
-    //region LoadEventsView
-    override fun showEvents(events: List<EventViewModel>) {
+    override fun showCalendar(calendar: CalendarViewModel) {
         activity?.runOnUiThread {
             TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
         }
