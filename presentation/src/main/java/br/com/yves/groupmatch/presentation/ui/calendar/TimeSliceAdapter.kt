@@ -1,4 +1,4 @@
-package br.com.yves.groupmatch.presentation.ui.showCalendar
+package br.com.yves.groupmatch.presentation.ui.calendar
 
 import android.content.Context
 import android.graphics.Color

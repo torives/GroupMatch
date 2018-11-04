@@ -1,12 +1,13 @@
-package br.com.yves.groupmatch.presentation.ui.showCalendar
+package br.com.yves.groupmatch.presentation.ui.calendar
 
 import br.com.yves.groupmatch.domain.showCalendar.ShowCalendar
 import org.threeten.bp.format.TextStyle
 import java.util.*
 
-class ShowCalendarPresenter(
-	private val view: ShowCalendarView,
-	private val showCalendar: ShowCalendar
+class CalendarPresenter(
+	private val view: CalendarView,
+	private val showCalendar: ShowCalendar,
+	private val updateCalendar: UpdateCalendar
 ) {
 
 	fun onViewCreated() {

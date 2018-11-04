@@ -1,4 +1,4 @@
-package br.com.yves.groupmatch.presentation.ui.showCalendar
+package br.com.yves.groupmatch.presentation.ui.calendar
 
 import android.content.Context
 import android.graphics.Rect
@@ -16,10 +16,10 @@ import br.com.yves.groupmatch.presentation.runOnBackground
 import kotlinx.android.synthetic.main.fragment_calendar.*
 
 
-class CalendarFragment : NavHostFragment(), ShowCalendarView, TimeSliceAdapter.ItemClickListener {
+class CalendarFragment : NavHostFragment(), CalendarView, TimeSliceAdapter.ItemClickListener {
 
 	var adapter: TimeSliceAdapter? = null
-	private var presenter: ShowCalendarPresenter = CalendarPresenterFactory.create(this)
+	private var presenter: CalendarPresenter = CalendarPresenterFactory.create(this)
 
 	override fun onCreateView(
 		inflater: LayoutInflater,
