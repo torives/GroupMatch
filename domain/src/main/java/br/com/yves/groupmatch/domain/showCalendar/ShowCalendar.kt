@@ -1,23 +1,26 @@
 package br.com.yves.groupmatch.domain.showCalendar
 
 import br.com.yves.groupmatch.domain.UseCase
-import br.com.yves.groupmatch.domain.loadEvents.LoadEvents
 
-class ShowCalendar(private val dateRepository: DateRepository,
-                   private val loadEvents: LoadEvents
+typealias Calendar = List<TimeSlot>
+
+class ShowCalendar(
+	private val dateRepository: DateRepository,
+	private val timeSlotRepository: TimeSlotRepository
 ) : UseCase<Calendar>() {
 
-    override fun execute(): Calendar {
-        val currentWeek = dateRepository.getCurrentWeek()
-        val calendar = dateRepository.getAllDatesFrom(currentWeek)
-        val events = loadEvents.from(currentWeek).execute()
-        val timeSlices = mutableListOf<TimeSlice>()
+	override fun execute(): Calendar {
+		val currentWeek = dateRepository.getCurrentWeek()
+		val weekDates = dateRepository.getAllDatesFrom(currentWeek)
+		val busyTimeSlots = timeSlotRepository.getTimeSlotsBetween(
+			currentWeek.start,
+			currentWeek.endInclusive
+		)
 
-        for (dateTime in calendar) {
-            val isBusy = events.find { it.date == dateTime } != null
-            timeSlices.add(TimeSlice(dateTime, isBusy))
-        }
-        return Calendar(timeSlices)
-    }
+		return weekDates.map { dateTime ->
+			val isBusy = busyTimeSlots.find { it.date == dateTime && it.isBusy } != null
+			TimeSlot(dateTime, isBusy)
+		}
+	}
 }
 

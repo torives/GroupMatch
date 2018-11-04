@@ -1,10 +1,7 @@
 package br.com.yves.groupmatch.presentation.factory.showCalendar
 
-import br.com.yves.groupmatch.data.loadEvents.DateRepositoryImpl
-import br.com.yves.groupmatch.domain.showCalendar.DateRepository
+import br.com.yves.groupmatch.data.showCalendar.DateRepositoryImpl
 
 object DateRepositoryFactory {
-    fun create(): DateRepository {
-        return DateRepositoryImpl()
-    }
+	fun create() = DateRepositoryImpl()
 }

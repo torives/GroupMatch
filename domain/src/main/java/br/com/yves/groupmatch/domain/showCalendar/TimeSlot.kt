@@ -2,6 +2,7 @@ package br.com.yves.groupmatch.domain.showCalendar
 
 import org.threeten.bp.LocalDateTime
 
-data class TimeSlice(val dateTime: LocalDateTime,
-                     val isBusy: Boolean
+data class TimeSlot(
+	val date: LocalDateTime,
+	val isBusy: Boolean
 )

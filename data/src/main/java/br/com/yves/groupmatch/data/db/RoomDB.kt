@@ -1,34 +1,38 @@
 package br.com.yves.groupmatch.data.db
 
 import android.content.Context
-import androidx.room.*
+import androidx.room.Database
+import androidx.room.Room
+import androidx.room.RoomDatabase
+import androidx.room.TypeConverters
 import br.com.yves.groupmatch.data.R
-import br.com.yves.groupmatch.data.db.event.EventRoomDAO
-import br.com.yves.groupmatch.data.db.event.EventRoom
+import br.com.yves.groupmatch.data.db.timeSlot.TimeSlotRoom
+import br.com.yves.groupmatch.data.db.timeSlot.TimeSlotRoomDAO
 
 @Database(
-        entities = [EventRoom::class],
-        version = 1)
+	entities = [TimeSlotRoom::class],
+	version = 2
+)
 @TypeConverters(RoomTypeConverter::class)
 abstract class RoomDB : RoomDatabase() {
 
-    abstract fun eventDAO(): EventRoomDAO
+	abstract fun timeSlotDAO(): TimeSlotRoomDAO
 
-    companion object {
-        private var INSTANCE: RoomDB? = null
+	companion object {
+		private var INSTANCE: RoomDB? = null
 
-        fun getInstance(): RoomDB {
-            return INSTANCE ?: throw IllegalStateException("Must initialize RoomDB on Application")
-        }
+		fun getInstance(): RoomDB {
+			return INSTANCE ?: throw IllegalStateException("Must initialize RoomDB on Application")
+		}
 
-        fun init(applicationContext: Context) {
-            INSTANCE = Room.databaseBuilder(
-                    applicationContext,
-                    RoomDB::class.java,
-                    applicationContext.getString(R.string.database_name)
-            ).build()
-        }
-    }
+		fun init(applicationContext: Context) {
+			INSTANCE = Room.databaseBuilder(
+				applicationContext,
+				RoomDB::class.java,
+				applicationContext.getString(R.string.database_name)
+			).build()
+		}
+	}
 }
 
 

@@ -6,16 +6,16 @@ import com.jakewharton.threetenabp.AndroidThreeTen
 
 class Application : Application() {
 
-    override fun onCreate() {
-        super.onCreate()
+	override fun onCreate() {
+		super.onCreate()
 
-        INSTANCE = this
+		INSTANCE = this
 
-        AndroidThreeTen.init(this)
-        RoomDB.init(this)
-    }
+		AndroidThreeTen.init(this)
+		RoomDB.init(this)
+	}
 
-    companion object {
-        lateinit var INSTANCE: Application
-    }
+	companion object {
+		lateinit var INSTANCE: Application
+	}
 }
