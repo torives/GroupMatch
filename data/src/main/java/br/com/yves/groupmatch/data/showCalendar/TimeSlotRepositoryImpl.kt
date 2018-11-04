@@ -10,6 +10,7 @@ import br.com.yves.groupmatch.domain.showCalendar.TimeSlotRepository
 import org.threeten.bp.LocalDateTime
 
 class TimeSlotRepositoryImpl(context: Context) : TimeSlotRepository {
+
 	private val database: RoomDB =
 		Room.databaseBuilder(context, RoomDB::class.java, context.getString(R.string.database_name))
 			.fallbackToDestructiveMigration() //FIXME: Add Migrations when necessary
@@ -22,6 +23,10 @@ class TimeSlotRepositoryImpl(context: Context) : TimeSlotRepository {
 		val timeSlots = database.timeSlotDAO()
 			.getAllTimeSlotsBetween(initialDate.toString(), finalDate.toString())
 		return timeSlots.map { TimeSlotMapper.from(it) }
+	}
+
+	override fun deleteTimeSlot(timeSlot: TimeSlot) {
+		database.timeSlotDAO().delete(TimeSlotMapper.from(timeSlot))
 	}
 }
 

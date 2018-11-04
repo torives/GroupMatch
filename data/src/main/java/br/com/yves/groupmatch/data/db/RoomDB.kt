@@ -11,7 +11,7 @@ import br.com.yves.groupmatch.data.db.timeSlot.TimeSlotRoomDAO
 
 @Database(
 	entities = [TimeSlotRoom::class],
-	version = 2
+	version = 3
 )
 @TypeConverters(RoomTypeConverter::class)
 abstract class RoomDB : RoomDatabase() {

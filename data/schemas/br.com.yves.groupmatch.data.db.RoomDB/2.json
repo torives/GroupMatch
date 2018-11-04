@@ -2,18 +2,12 @@
   "formatVersion": 1,
   "database": {
     "version": 2,
-    "identityHash": "337f88810a90a62e24a77c36b3d0c3a6",
+    "identityHash": "e52009a7b9b30961bea7721d9f1dfeac",
     "entities": [
       {
         "tableName": "time_slot",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `date` TEXT NOT NULL, `is_busy` INTEGER NOT NULL)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`date` TEXT NOT NULL, `is_busy` INTEGER NOT NULL, PRIMARY KEY(`date`))",
         "fields": [
-          {
-            "fieldPath": "id",
-            "columnName": "id",
-            "affinity": "INTEGER",
-            "notNull": true
-          },
           {
             "fieldPath": "date",
             "columnName": "date",
@@ -29,18 +23,18 @@
         ],
         "primaryKey": {
           "columnNames": [
-            "id"
+            "date"
           ],
-          "autoGenerate": true
+          "autoGenerate": false
         },
         "indices": [
           {
-            "name": "index_time_slot_id",
+            "name": "index_time_slot_date",
             "unique": true,
             "columnNames": [
-              "id"
+              "date"
             ],
-            "createSql": "CREATE UNIQUE INDEX `index_time_slot_id` ON `${TABLE_NAME}` (`id`)"
+            "createSql": "CREATE UNIQUE INDEX `index_time_slot_date` ON `${TABLE_NAME}` (`date`)"
           }
         ],
         "foreignKeys": []
@@ -48,7 +42,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"337f88810a90a62e24a77c36b3d0c3a6\")"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"e52009a7b9b30961bea7721d9f1dfeac\")"
     ]
   }
 }

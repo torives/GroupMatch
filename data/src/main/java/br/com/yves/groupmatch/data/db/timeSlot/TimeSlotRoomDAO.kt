@@ -1,9 +1,6 @@
 package br.com.yves.groupmatch.data.db.timeSlot
 
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
-import androidx.room.Query
+import androidx.room.*
 
 @Dao
 interface TimeSlotRoomDAO {
@@ -15,12 +12,13 @@ interface TimeSlotRoomDAO {
 //    fun insertOrReplace(events: List<TimeSlotRoom>)
 	//endregion
 
-//    //region Delete
+    //region Delete
 //    @Query("""
 //        DELETE FROM ${TimeSlotRoom.TABLE_NAME}
-//        WHERE ${TimeSlotRoom.COLUMN_ID} == :eventId
+//        WHERE ${TimeSlotRoom.COLUMN_DATE} == :timeSlotDate
 //    """)
-//    fun delete(eventId: Int)
+	@Delete
+    fun delete(timeSlot: TimeSlotRoom)
 
 	@Query(value = "DELETE FROM ${TimeSlotRoom.TABLE_NAME}")
 	fun clear()
