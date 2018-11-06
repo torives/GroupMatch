@@ -1,0 +1,48 @@
+{
+  "formatVersion": 1,
+  "database": {
+    "version": 3,
+    "identityHash": "e52009a7b9b30961bea7721d9f1dfeac",
+    "entities": [
+      {
+        "tableName": "time_slot",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`date` TEXT NOT NULL, `is_busy` INTEGER NOT NULL, PRIMARY KEY(`date`))",
+        "fields": [
+          {
+            "fieldPath": "date",
+            "columnName": "date",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "isBusy",
+            "columnName": "is_busy",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "date"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [
+          {
+            "name": "index_time_slot_date",
+            "unique": true,
+            "columnNames": [
+              "date"
+            ],
+            "createSql": "CREATE UNIQUE INDEX `index_time_slot_date` ON `${TABLE_NAME}` (`date`)"
+          }
+        ],
+        "foreignKeys": []
+      }
+    ],
+    "setupQueries": [
+      "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"e52009a7b9b30961bea7721d9f1dfeac\")"
+    ]
+  }
+}
