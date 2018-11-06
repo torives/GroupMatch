@@ -5,8 +5,8 @@ import androidx.room.Room
 import br.com.yves.groupmatch.data.R
 import br.com.yves.groupmatch.data.db.RoomDB
 import br.com.yves.groupmatch.data.db.timeSlot.TimeSlotMapper
+import br.com.yves.groupmatch.domain.TimeSlotRepository
 import br.com.yves.groupmatch.domain.showCalendar.TimeSlot
-import br.com.yves.groupmatch.domain.showCalendar.TimeSlotRepository
 import org.threeten.bp.LocalDateTime
 
 class TimeSlotRepositoryImpl(context: Context) : TimeSlotRepository {
@@ -16,7 +16,15 @@ class TimeSlotRepositoryImpl(context: Context) : TimeSlotRepository {
 			.fallbackToDestructiveMigration() //FIXME: Add Migrations when necessary
 			.build()
 
-	override fun getTimeSlotsBetween(
+	override fun insert(timeSlot: TimeSlot) {
+		database.timeSlotDAO().insertOrReplace(TimeSlotMapper.from(timeSlot))
+	}
+
+	override fun insert(timeSlots: Collection<TimeSlot>) {
+		timeSlots.forEach { insert(it) }
+	}
+
+	override fun timeSlotsBetween(
 		initialDate: LocalDateTime,
 		finalDate: LocalDateTime
 	): List<TimeSlot> {
@@ -25,7 +33,7 @@ class TimeSlotRepositoryImpl(context: Context) : TimeSlotRepository {
 		return timeSlots.map { TimeSlotMapper.from(it) }
 	}
 
-	override fun deleteTimeSlot(timeSlot: TimeSlot) {
+	override fun delete(timeSlot: TimeSlot) {
 		database.timeSlotDAO().delete(TimeSlotMapper.from(timeSlot))
 	}
 }

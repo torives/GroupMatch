@@ -5,6 +5,7 @@ import br.com.yves.groupmatch.presentation.ui.calendar.CalendarPresenter
 import br.com.yves.groupmatch.presentation.ui.calendar.CalendarView
 
 object CalendarPresenterFactory {
-	fun create(view: CalendarView) = CalendarPresenter(view, ShowCalendarFactory.create(), UpdateCalendarFactory.create())
+	fun create(view: CalendarView) =
+		CalendarPresenter(view, ShowCalendarFactory.create(), UpdateCalendarFactory.create())
 }
 

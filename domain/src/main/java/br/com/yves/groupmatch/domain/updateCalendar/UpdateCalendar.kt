@@ -2,7 +2,7 @@ package br.com.yves.groupmatch.domain.updateCalendar
 
 import br.com.yves.groupmatch.domain.UseCase
 import br.com.yves.groupmatch.domain.showCalendar.TimeSlot
-import br.com.yves.groupmatch.domain.showCalendar.TimeSlotRepository
+import br.com.yves.groupmatch.domain.TimeSlotRepository
 
 class UpdateCalendar(private val repository: TimeSlotRepository) : UseCase<Unit>() {
 	private lateinit var timeSlot: TimeSlot
@@ -13,6 +13,6 @@ class UpdateCalendar(private val repository: TimeSlotRepository) : UseCase<Unit>
 	}
 
 	override fun execute() {
-		repository.deleteTimeSlot(timeSlot)
+		repository.delete(timeSlot)
 	}
 }

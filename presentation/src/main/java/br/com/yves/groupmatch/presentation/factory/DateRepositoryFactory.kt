@@ -1,4 +1,4 @@
-package br.com.yves.groupmatch.presentation.factory.showCalendar
+package br.com.yves.groupmatch.presentation.factory
 
 import br.com.yves.groupmatch.data.showCalendar.DateRepositoryImpl
 
