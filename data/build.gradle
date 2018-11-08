@@ -17,7 +17,13 @@ android {
         versionCode application.versionCode
         versionName application.versionName
 
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        kapt {
+            arguments {
+                arg("room.schemaLocation", "$projectDir/schemas".toString())
+            }
+        }
     }
 
     buildTypes {
@@ -35,7 +41,15 @@ dependencies {
 
     implementation baseDependencies.kotlin
     implementation baseDependencies.app_compat
+    implementation baseDependencies.room
+    kapt baseDependencies.room_compiler
 
     testImplementation testDependencies.junit
-    androidTestImplementation testDependencies.mockito
+    testImplementation testDependencies.kotlinJUnit
+    testImplementation testDependencies.mockitoKotlin
+
+    androidTestImplementation testDependencies.mockitoKotlin
+//    androidTestImplementation "org.mockito:mockito-inline:2.23.0"
+    androidTestImplementation testDependencies.mockitoAndroid
+    androidTestImplementation testDependencies.supportRunner
 }

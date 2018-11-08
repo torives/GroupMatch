@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">data</string>
+    <string name="database_name">groupmatch-db</string>
 </resources>

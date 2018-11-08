@@ -17,7 +17,7 @@ android {
         targetSdkVersion versions.targetSdk
         versionCode application.versionCode
         versionName application.versionName
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
     buildTypes {
@@ -52,5 +52,5 @@ dependencies {
 
     // Tests
     testImplementation testDependencies.junit
-    testImplementation testDependencies.mockito
+    testImplementation testDependencies.mockitoKotlin
 }

@@ -7,10 +7,11 @@ Map<String, String> testDependencies = rootProject.ext.testDependencies
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
+    api baseDependencies.threetenabp
     implementation baseDependencies.kotlin
 
     testImplementation testDependencies.junit
-    testImplementation testDependencies.mockito
+    testImplementation testDependencies.mockitoKotlin
 
 }
 
