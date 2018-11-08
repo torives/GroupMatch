@@ -18,7 +18,6 @@ import kotlinx.android.synthetic.main.fragment_calendar.*
 
 class CalendarFragment : NavHostFragment(), CalendarView, TimeSliceAdapter.ItemClickListener {
 
-	var adapter: TimeSliceAdapter? = null
 	private var presenter: CalendarPresenter = CalendarPresenterFactory.create(this)
 
 	override fun onCreateView(
@@ -39,19 +38,26 @@ class CalendarFragment : NavHostFragment(), CalendarView, TimeSliceAdapter.ItemC
 
 	override fun showCalendar(calendar: CalendarViewModel) {
 		activity?.runOnUiThread {
-			adapter = TimeSliceAdapter(calendar)
-			daysRecyclerView?.adapter = adapter
 
-			adapter?.listener = this
+			var adapter = daysRecyclerView?.adapter as? TimeSliceAdapter
+			adapter?.apply {
+				this.calendar = calendar
+				notifyDataSetChanged()
+			} ?: run {
+				adapter = TimeSliceAdapter(calendar)
+				adapter?.listener = this
+				daysRecyclerView?.adapter = adapter
 
-			daysRecyclerView?.addItemDecoration(
-				ItemOffsetDecoration(
-					context!!,
-					R.dimen.time_slot_item_spacing
+				daysRecyclerView?.addItemDecoration(
+					ItemOffsetDecoration(
+						context!!,
+						R.dimen.time_slot_item_spacing
+					)
 				)
-			)
-			daysRecyclerView?.adapter = adapter
-			(daysRecyclerView?.layoutManager as GridLayoutManager).spanCount = calendar.days.count()
+				(daysRecyclerView?.layoutManager as GridLayoutManager).spanCount =
+						calendar.days.count()
+
+			}
 		}
 	}
 
@@ -63,15 +69,14 @@ class CalendarFragment : NavHostFragment(), CalendarView, TimeSliceAdapter.ItemC
 	//endregion
 
 	override fun onItemClick(view: View, position: Int) {
+		val adapter = daysRecyclerView.adapter as? TimeSliceAdapter
+		val day = adapter?.getDayAt(position)
 		val hour = adapter?.getHourAt(position)
-		hour?.let { toggleStatus(it) }
-		adapter?.notifyItemChanged(position)
-	}
 
-	private fun toggleStatus(hour: HourViewModel) {
-		hour.status = when (hour.status) {
-			ScheduleStatus.Available -> ScheduleStatus.Busy
-			ScheduleStatus.Busy -> ScheduleStatus.Available
+		if (day != null && hour != null) {
+			runOnBackground {
+				presenter.onTimeSlotClicked(day, hour)
+			}
 		}
 	}
 }

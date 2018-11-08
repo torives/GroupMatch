@@ -4,25 +4,25 @@ import androidx.room.*
 
 @Dao
 interface TimeSlotRoomDAO {
+
+	@Query("SELECT * FROM ${TimeSlotRoom.TABLE_NAME}")
+	fun getAllTimeSlots(): List<TimeSlotRoom>
+
 	//region Insert
 	@Insert(onConflict = OnConflictStrategy.REPLACE)
 	fun insertOrReplace(timeSlot: TimeSlotRoom)
-
-//    @Insert(onConflict = OnConflictStrategy.REPLACE)
-//    fun insertOrReplace(events: List<TimeSlotRoom>)
 	//endregion
 
     //region Delete
-//    @Query("""
-//        DELETE FROM ${TimeSlotRoom.TABLE_NAME}
-//        WHERE ${TimeSlotRoom.COLUMN_DATE} == :timeSlotDate
-//    """)
 	@Delete
     fun delete(timeSlot: TimeSlotRoom)
 
 	@Query(value = "DELETE FROM ${TimeSlotRoom.TABLE_NAME}")
 	fun clear()
 	//endregion
+
+	@Update
+	fun update(timeSlot: TimeSlotRoom)
 
 	@Query(
 		"""

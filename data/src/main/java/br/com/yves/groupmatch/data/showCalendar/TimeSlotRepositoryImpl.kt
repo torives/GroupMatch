@@ -24,6 +24,10 @@ class TimeSlotRepositoryImpl(context: Context) : TimeSlotRepository {
 		timeSlots.forEach { insert(it) }
 	}
 
+	override fun update(timeSlot: TimeSlot) {
+		database.timeSlotDAO().update(TimeSlotMapper.from(timeSlot))
+	}
+
 	override fun timeSlotsBetween(
 		initialDate: LocalDateTime,
 		finalDate: LocalDateTime

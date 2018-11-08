@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import br.com.yves.groupmatch.R
 import kotlinx.android.synthetic.main.timeslot_view.view.*
 
-class TimeSliceAdapter(private val calendar: CalendarViewModel) :
+class TimeSliceAdapter(var calendar: CalendarViewModel) :
 	RecyclerView.Adapter<TimeSliceAdapter.TimeSlotViewHolder>() {
 	private val totalColumns = calendar.days.size
 	var listener: ItemClickListener? = null
@@ -39,26 +39,27 @@ class TimeSliceAdapter(private val calendar: CalendarViewModel) :
 		}
 	}
 
+	private fun columnAt(position: Int): Int {
+		val matrixPosition = position + 1
+		val reminder = matrixPosition.rem(totalColumns)
+
+		return if (reminder == 0) totalColumns else reminder
+	}
+
 	fun getHourAt(position: Int): HourViewModel? {
-
-		fun columnAt(position: Int): Int {
-			val matrixPosition = position + 1
-			val reminder = matrixPosition.rem(totalColumns)
-
-			return if (reminder == 0) totalColumns else reminder
-		}
 
 		fun rowAt(position: Int) = position / totalColumns + 1
 
-		val columnIndex = columnAt(position) - 1
 		val rowIndex = rowAt(position) - 1
+		val day = getDayAt(position)
 
-		return if (calendar.days.indices.contains(columnIndex) && calendar.days[columnIndex].hours.indices.contains(
-				rowIndex
-			)
-		)
-			calendar.days[columnIndex].hours[rowIndex]
-		else null
+		return day?.hours?.getOrNull(rowIndex)
+	}
+
+	fun getDayAt(position: Int): DayViewModel? {
+		val index = columnAt(position) - 1
+
+		return calendar.days.getOrNull(index)
 	}
 
 	interface ItemClickListener {

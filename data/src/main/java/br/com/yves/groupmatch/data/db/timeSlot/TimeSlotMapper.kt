@@ -4,6 +4,7 @@ import br.com.yves.groupmatch.domain.showCalendar.TimeSlot
 import org.threeten.bp.LocalDate
 import org.threeten.bp.LocalDateTime
 import org.threeten.bp.LocalTime
+import org.threeten.bp.format.DateTimeFormatter
 
 object TimeSlotMapper {
 
@@ -13,8 +14,8 @@ object TimeSlotMapper {
 
 	fun from(day: String, hour: String, isBusy: Boolean) = TimeSlot(
 		LocalDateTime.of(
-			LocalDate.parse(day),
-			LocalTime.parse(hour)
+			LocalDate.parse(day, DateTimeFormatter.ofPattern("dd/MM/yyyy")),
+			LocalTime.parse(hour, DateTimeFormatter.ofPattern("HH:mm"))
 		), isBusy
 	)
 }

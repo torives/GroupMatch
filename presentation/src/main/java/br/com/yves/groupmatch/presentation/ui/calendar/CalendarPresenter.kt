@@ -13,14 +13,24 @@ class CalendarPresenter(
 	private val showCalendar: ShowCalendar,
 	private val updateCalendar: UpdateCalendar
 ) {
-	private lateinit var calendar: Calendar
+	//private lateinit var calendar: Calendar
 
 	fun onViewCreated() {
-		this.calendar = showCalendar.execute()
+		showCalendar()
+	}
+
+	private fun showCalendar() {
+		val calendar = showCalendar.execute()
+		val calendarViewModel = createCalendarViewModel(calendar)
+
+		view.showCalendar(calendarViewModel)
+	}
+
+	private fun createCalendarViewModel(calendar: Calendar): CalendarViewModel {
 		val days = calendar.groupBy { it.date.toLocalDate() }
 
 		val dayViewModels = days.map { day ->
-			val dayAndMonth = day.key.format(DateTimeFormatter.ofPattern("dd/MM"))
+			val dayAndMonth = day.key.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"))
 			val weekDay = day.key.dayOfWeek.getDisplayName(TextStyle.NARROW, Locale.getDefault())
 				.toUpperCase()
 			val hours = day.value.map {
@@ -31,11 +41,11 @@ class CalendarPresenter(
 			}
 			DayViewModel(dayAndMonth, weekDay, hours)
 		}
-		view.showCalendar(CalendarViewModel(dayViewModels))
+		return CalendarViewModel(dayViewModels)
 	}
 
-	fun onTimeSlotClicked(day: DayViewModel, hour: HourViewModel, status: ScheduleStatus) {
-		val isBusy = status == ScheduleStatus.Busy
+	fun onTimeSlotClicked(day: DayViewModel, hour: HourViewModel) {
+		val isBusy = hour.status == ScheduleStatus.Busy
 		updateCalendar.with(
 			TimeSlotMapper.from(
 				day.dayAndMonth,
@@ -43,6 +53,8 @@ class CalendarPresenter(
 				isBusy
 			)
 		).execute()
+
+		showCalendar()
 	}
 }
 
