@@ -188,7 +188,7 @@ class SearchBluetoothServer : Fragment() {
 	}
 
 
-	// Gatt connection
+	// Gatt bluetooth
 
 	private fun connectDevice(device: BluetoothDevice) {
 		log("Connecting to " + device.address)
@@ -371,7 +371,7 @@ class SearchBluetoothServer : Fragment() {
 	}
 
 	fun disconnectGattServer() {
-		log("Closing Gatt connection")
+		log("Closing Gatt bluetooth")
 		clearLogs()
 		mConnected = false
 		mEchoInitialized = false
