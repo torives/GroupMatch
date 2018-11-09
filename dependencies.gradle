@@ -32,7 +32,7 @@ ext {
             lifecycle               : 'androidx.lifecycle:lifecycle-extensions:2.0.0',
             navigation_fragment     : "android.arch.navigation:navigation-fragment-ktx:$navigationVersion",
             navigation_ui           : "android.arch.navigation:navigation-ui-ktx:$navigationVersion",
-            anko                    : "org.jetbrains.anko:anko-appcompat-v7-commons:0.10.5",
+            anko                    : "org.jetbrains.anko:anko-appcompat-v7-commons:0.10.7",
             kotlin                  : "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion",
             threetenabp             : 'com.jakewharton.threetenabp:threetenabp:1.1.1',
             room                    : "androidx.room:room-runtime:$roomVersion",
