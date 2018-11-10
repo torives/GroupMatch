@@ -7,9 +7,9 @@ interface BluetoothAvailabilityView {
 	fun displayErrorDialog(
 		title: String,
 		message: String,
-		callback: ((isAnswerPositive: Boolean) -> Unit)? = null
+		positiveCallback: (() -> Unit)? = null,
+		negativeCallback: (() -> Unit)? = null
 	)
-
 	fun navigateToBluetoothOptions()
 	fun navigateToBluetoothServerView()
 	fun navigateToBluetoothClientView()
@@ -27,18 +27,15 @@ class BluetoothAvailabilityPresenter(
 
 	private fun checkBluetoothAvailability() {
 		when (checkBluetoothAvailability.execute()) {
-			BluetoohStatus.Available -> {}
+			BluetoohStatus.Available -> {
+			}
 			BluetoohStatus.TurnedOff -> {
 				view.displayErrorDialog(
 					"Ops!",
-					"Você precisa habilitar o Bluetooth para continuar. Deseja fazer isto agora?"
-				) { isAnswerPositive ->
-					if (isAnswerPositive) {
-						view.navigateToBluetoothOptions()
-					} else {
-						view.navigateToCalendarView()
-					}
-				}
+					"Você precisa habilitar o Bluetooth para continuar. Deseja fazer isto agora?",
+					positiveCallback = { view.navigateToBluetoothOptions() },
+					negativeCallback = { view.navigateToCalendarView() }
+				)
 			}
 			BluetoohStatus.NoBLESupport -> {
 				displayNoFeatureAvailableErrorDialog()
@@ -52,10 +49,9 @@ class BluetoothAvailabilityPresenter(
 	private fun displayNoFeatureAvailableErrorDialog() {
 		view.displayErrorDialog(
 			"Ops!",
-			"Infelizmente o seu aparelho não suporta esta funcionalidade 😔"
-		) {
-			view.navigateToCalendarView()
-		}
+			"Infelizmente o seu aparelho não suporta esta funcionalidade 😔",
+			positiveCallback = { view.navigateToCalendarView() }
+		)
 	}
 
 	fun onServerButtonClicked() {

@@ -13,9 +13,7 @@ import br.com.yves.groupmatch.presentation.factory.checkBluetoothAvailability.Bl
 import br.com.yves.groupmatch.presentation.runOnBackground
 import kotlinx.android.synthetic.main.fragment_connection_role.*
 import org.jetbrains.anko.noButton
-import org.jetbrains.anko.okButton
 import org.jetbrains.anko.support.v4.alert
-import org.jetbrains.anko.support.v4.toast
 import org.jetbrains.anko.yesButton
 
 class ConnectionRoleFragment : Fragment(), BluetoothAvailabilityView {
@@ -56,12 +54,13 @@ class ConnectionRoleFragment : Fragment(), BluetoothAvailabilityView {
 	override fun displayErrorDialog(
 		title: String,
 		message: String,
-		callback: ((isAnswerPositive: Boolean) -> Unit)?
+		positiveCallback: (() -> Unit)?,
+		negativeCallback: (() -> Unit)?
 	) {
 		activity?.runOnUiThread {
 			alert(message, title) {
-				yesButton { callback?.invoke(true) }
-				noButton { callback?.invoke(false) }
+				positiveCallback?.let { yesButton { positiveCallback.invoke() } }
+				negativeCallback?.let { noButton { negativeCallback.invoke() } }
 			}.show()
 		}
 	}
