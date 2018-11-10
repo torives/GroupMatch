@@ -63,6 +63,6 @@ class BluetoothAvailabilityPresenter(
 	}
 
 	fun onBluetoothEnabled() {
-
+		//TODO: O presenter precisa ser notificado que o Bluetooth foi habilitado?
 	}
 }

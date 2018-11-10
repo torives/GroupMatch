@@ -17,7 +17,7 @@ ext {
     ]
 
     def supportVersion = '1.0.0-beta01'
-    def navigationVersion = '1.0.0-alpha06'
+    def navigationVersion = '1.0.0-alpha07'
     def roomVersion = '2.0.0'
     def mockitoVersion = '2.23.0'
     def mockitoKotlinVersion = '2.0.0-RC3'
