@@ -37,13 +37,20 @@ class BluetoothAvailabilityPresenter(
 				}
 			}
 			BluetoohStatus.NoBLESupport -> {
-				view.displayErrorDialog(
-					"Ops!",
-					"Você precisa habilitar o Bluetooth para continuar. Deseja fazer isto agora?"
-				)
+				displayNoFeatureAvailableErrorDialog()
 			}
 			BluetoohStatus.NoAdvertisementSupport -> {
+				displayNoFeatureAvailableErrorDialog()
 			}
+		}
+	}
+
+	private fun displayNoFeatureAvailableErrorDialog() {
+		view.displayErrorDialog(
+			"Ops!",
+			"Infelizmente o seu aparelho não suporta esta funcionalidade 😔"
+		) {
+			view.navigateToCalendarView()
 		}
 	}
 

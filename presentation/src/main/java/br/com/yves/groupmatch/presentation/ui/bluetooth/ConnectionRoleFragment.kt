@@ -69,7 +69,7 @@ class ConnectionRoleFragment : Fragment(), BluetoothAvailabilityView {
 	override fun navigateToBluetoothOptions() {
 		activity?.runOnUiThread {
 			val enableBtIntent = Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE)
-			startActivityForResult(enableBtIntent, 100)
+			startActivityForResult(enableBtIntent, ENABLE_BLUETOOTH_REQUEST_CODE)
 		}
 	}
 
@@ -97,9 +97,15 @@ class ConnectionRoleFragment : Fragment(), BluetoothAvailabilityView {
 
 
 	override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-		if (requestCode == 100) {
-			toast("Habilitou")
+		if (requestCode == ENABLE_BLUETOOTH_REQUEST_CODE) {
+			runOnBackground {
+				presenter.onBluetoothEnabled()
+			}
 		}
 		super.onActivityResult(requestCode, resultCode, data)
+	}
+
+	companion object {
+		const val ENABLE_BLUETOOTH_REQUEST_CODE = 100
 	}
 }
