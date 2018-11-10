@@ -22,6 +22,10 @@ class BluetoothAvailabilityPresenter(
 ) {
 
 	fun onViewCreated() {
+		checkBluetoothAvailability()
+	}
+
+	private fun checkBluetoothAvailability() {
 		when (checkBluetoothAvailability.execute()) {
 			BluetoohStatus.Available -> {}
 			BluetoohStatus.TurnedOff -> {
@@ -63,6 +67,6 @@ class BluetoothAvailabilityPresenter(
 	}
 
 	fun onBluetoothEnabled() {
-		//TODO: O presenter precisa ser notificado que o Bluetooth foi habilitado?
+		checkBluetoothAvailability()
 	}
 }
