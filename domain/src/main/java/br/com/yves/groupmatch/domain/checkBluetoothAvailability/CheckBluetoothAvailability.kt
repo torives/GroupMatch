@@ -16,7 +16,8 @@ class CheckBluetoothAvailability(private val bluetoothService: BluetoothService)
 				if(bluetoothService.isAdvertisementSupported()){
 					BluetoohStatus.Available
 				} else {
-					BluetoohStatus.NoAdvertisementSupport
+					//BluetoohStatus.NoAdvertisementSupport
+					BluetoohStatus.Available
 				}
 			} else {
 				BluetoohStatus.NoBLESupport

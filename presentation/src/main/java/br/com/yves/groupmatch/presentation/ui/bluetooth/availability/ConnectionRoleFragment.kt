@@ -1,4 +1,4 @@
-package br.com.yves.groupmatch.presentation.ui.bluetooth
+package br.com.yves.groupmatch.presentation.ui.bluetooth.availability
 
 import android.bluetooth.BluetoothAdapter
 import android.content.Intent
@@ -16,7 +16,8 @@ import org.jetbrains.anko.noButton
 import org.jetbrains.anko.support.v4.alert
 import org.jetbrains.anko.yesButton
 
-class ConnectionRoleFragment : Fragment(), BluetoothAvailabilityView {
+class ConnectionRoleFragment : Fragment(),
+	BluetoothAvailabilityView {
 
 	private var presenter = BluetoothAvailabilityPresenterFactory.create(this)
 
@@ -68,7 +69,9 @@ class ConnectionRoleFragment : Fragment(), BluetoothAvailabilityView {
 	override fun navigateToBluetoothOptions() {
 		activity?.runOnUiThread {
 			val enableBtIntent = Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE)
-			startActivityForResult(enableBtIntent, ENABLE_BLUETOOTH_REQUEST_CODE)
+			startActivityForResult(enableBtIntent,
+				ENABLE_BLUETOOTH_REQUEST_CODE
+			)
 		}
 	}
 

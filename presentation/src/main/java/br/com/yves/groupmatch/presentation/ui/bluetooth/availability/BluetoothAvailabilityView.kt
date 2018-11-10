@@ -1,4 +1,4 @@
-package br.com.yves.groupmatch.presentation.ui.bluetooth
+package br.com.yves.groupmatch.presentation.ui.bluetooth.availability
 
 interface BluetoothAvailabilityView {
 	fun displayErrorDialog(

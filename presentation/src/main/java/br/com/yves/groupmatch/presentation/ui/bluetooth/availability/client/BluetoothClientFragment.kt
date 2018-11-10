@@ -1,4 +1,4 @@
-package br.com.yves.groupmatch.presentation
+package br.com.yves.groupmatch.presentation.ui.bluetooth.availability.client
 
 
 import android.Manifest
@@ -23,17 +23,18 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import br.com.yves.groupmatch.R
-import br.com.yves.groupmatch.presentation.SearchBluetoothClientsFragment.Companion.TAG
+import br.com.yves.groupmatch.presentation.*
+import br.com.yves.groupmatch.presentation.ui.bluetooth.availability.server.BluetoothServerFragment.Companion.TAG
+import br.com.yves.groupmatch.presentation.ui.bluetooth.availability.server.SERVICE_UUID
 import kotlinx.android.synthetic.main.fragment_search_bluetooth_server.*
 import kotlinx.android.synthetic.main.view_log.view.*
 import kotlinx.android.synthetic.main.widget_server_list_item.view.*
 import java.util.*
-import kotlin.system.exitProcess
 
 
 const val SCAN_PERIOD: Long = 5000
 
-class SearchBluetoothServer : Fragment() {
+class BluetoothClientFragment : Fragment() {
 
 	private val TAG = "ClientActivity"
 
@@ -82,11 +83,6 @@ class SearchBluetoothServer : Fragment() {
 	override fun onResume() {
 		super.onResume()
 		// Check low energy support
-		if (activity?.packageManager?.hasSystemFeature(PackageManager.FEATURE_BLUETOOTH_LE) == null) {
-			// Get a newer device
-			logError("No LE Support.")
-			exitProcess(-1)
-		}
 	}
 
 	// Scanning
@@ -99,7 +95,10 @@ class SearchBluetoothServer : Fragment() {
 		disconnectGattServer()
 
 		mScanResults = HashMap()
-		mScanCallback = BtleScanCallback(clientLogView)
+		mScanCallback =
+				BtleScanCallback(
+					clientLogView
+				)
 		mScanCallback!!.scanResults = mScanResults as MutableMap<String, BluetoothDevice>
 		mBluetoothLeScanner = mBluetoothAdapter?.bluetoothLeScanner
 
@@ -117,7 +116,10 @@ class SearchBluetoothServer : Fragment() {
 		mBluetoothLeScanner?.startScan(filters, settings, mScanCallback)
 
 		mHandler = Handler()
-		mHandler?.postDelayed({ this.stopScan() }, SCAN_PERIOD)
+		mHandler?.postDelayed(
+			{ this.stopScan() },
+			SCAN_PERIOD
+		)
 
 		mScanning = true
 		log("Started scanning.")
@@ -227,7 +229,10 @@ class SearchBluetoothServer : Fragment() {
 					return
 				}
 
-				val matchingCharacteristics = BluetoothUtils.findCharacteristics(gatt)
+				val matchingCharacteristics =
+					BluetoothUtils.findCharacteristics(
+						gatt
+					)
 				if (matchingCharacteristics.isEmpty()) {
 					logError("Unable to find characteristics.")
 					return
@@ -288,7 +293,10 @@ class SearchBluetoothServer : Fragment() {
 					gatt.setCharacteristicNotification(characteristic, true)
 				if (characteristicWriteSuccess) {
 					log("Characteristic notification set successfully for " + characteristic.uuid.toString())
-					if (BluetoothUtils.isEchoCharacteristic(characteristic)) {
+					if (BluetoothUtils.isEchoCharacteristic(
+							characteristic
+						)
+					) {
 						initializeEcho()
 					}
 				} else {
@@ -298,8 +306,13 @@ class SearchBluetoothServer : Fragment() {
 
 			private fun readCharacteristic(characteristic: BluetoothGattCharacteristic) {
 				val messageBytes = characteristic.value
-				log("Read: " + StringUtils.byteArrayInHexFormat(messageBytes))
-				val message = StringUtils.stringFromBytes(messageBytes)
+				log(
+					"Read: " + StringUtils.byteArrayInHexFormat(
+						messageBytes
+					)
+				)
+				val message =
+					StringUtils.stringFromBytes(messageBytes)
 				if (message == null) {
 					logError("Unable to convert bytes to string")
 					return
@@ -317,7 +330,10 @@ class SearchBluetoothServer : Fragment() {
 			return
 		}
 
-		val characteristic = BluetoothUtils.findEchoCharacteristic(mGatt!!)
+		val characteristic =
+			BluetoothUtils.findEchoCharacteristic(
+				mGatt!!
+			)
 		if (characteristic == null) {
 			logError("Unable to find echo characteristic.")
 			disconnectGattServer()
@@ -336,7 +352,11 @@ class SearchBluetoothServer : Fragment() {
 		characteristic!!.setValue(messageBytes)
 		val success = mGatt!!.writeCharacteristic(characteristic)
 		if (success) {
-			log("Wrote: " + StringUtils.byteArrayInHexFormat(messageBytes))
+			log(
+				"Wrote: " + StringUtils.byteArrayInHexFormat(
+					messageBytes
+				)
+			)
 		} else {
 			logError("Failed to write data")
 		}
@@ -387,11 +407,12 @@ class SearchBluetoothServer : Fragment() {
 		 *
 		 * @param param1 Parameter 1.
 		 * @param param2 Parameter 2.
-		 * @return A new instance of fragment SearchBluetoothServer.
+		 * @return A new instance of fragment BluetoothClientFragment.
 		 */
 		// TODO: Rename and change types and number of parameters
 		@JvmStatic
-		fun newInstance() = SearchBluetoothServer()
+		fun newInstance() =
+			BluetoothClientFragment()
 	}
 }
 

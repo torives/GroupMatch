@@ -1,4 +1,4 @@
-package br.com.yves.groupmatch.presentation.ui.bluetooth
+package br.com.yves.groupmatch.presentation.ui.bluetooth.availability
 
 import br.com.yves.groupmatch.domain.checkBluetoothAvailability.BluetoohStatus
 import br.com.yves.groupmatch.domain.checkBluetoothAvailability.CheckBluetoothAvailability

@@ -3,6 +3,8 @@ package br.com.yves.groupmatch.presentation
 import android.bluetooth.BluetoothGatt
 import android.bluetooth.BluetoothGattCharacteristic
 import android.bluetooth.BluetoothGattService
+import br.com.yves.groupmatch.presentation.ui.bluetooth.availability.server.CHARACTERISTIC_ECHO_STRING
+import br.com.yves.groupmatch.presentation.ui.bluetooth.availability.server.SERVICE_STRING
 import java.util.*
 
 class BluetoothUtils {
@@ -45,7 +47,9 @@ class BluetoothUtils {
 		}
 
 		fun isEchoCharacteristic(characteristic: BluetoothGattCharacteristic): Boolean {
-			return characteristicMatches(characteristic, CHARACTERISTIC_ECHO_STRING)
+			return characteristicMatches(characteristic,
+				CHARACTERISTIC_ECHO_STRING
+			)
 		}
 
 		private fun characteristicMatches(
@@ -68,17 +72,23 @@ class BluetoothUtils {
 		}
 
 		private fun matchesCharacteristicUuidString(characteristicIdString: String): Boolean {
-			return uuidMatches(characteristicIdString, CHARACTERISTIC_ECHO_STRING)
+			return uuidMatches(characteristicIdString,
+				CHARACTERISTIC_ECHO_STRING
+			)
 		}
 
 		// Service
 
 		private fun matchesServiceUuidString(serviceIdString: String): Boolean {
-			return uuidMatches(serviceIdString, SERVICE_STRING)
+			return uuidMatches(serviceIdString,
+				SERVICE_STRING
+			)
 		}
 
 		fun findEchoCharacteristic(bluetoothGatt: BluetoothGatt): BluetoothGattCharacteristic? {
-			return findCharacteristic(bluetoothGatt, CHARACTERISTIC_ECHO_STRING)
+			return findCharacteristic(bluetoothGatt,
+				CHARACTERISTIC_ECHO_STRING
+			)
 		}
 
 		fun requiresResponse(characteristic: BluetoothGattCharacteristic): Boolean {

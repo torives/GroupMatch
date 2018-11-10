@@ -1,4 +1,4 @@
-package br.com.yves.groupmatch.presentation
+package br.com.yves.groupmatch.presentation.ui.bluetooth.availability.server
 
 
 import android.annotation.SuppressLint
@@ -18,6 +18,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import br.com.yves.groupmatch.R
+import br.com.yves.groupmatch.presentation.BluetoothUtils
+import br.com.yves.groupmatch.presentation.ByteUtils
+import br.com.yves.groupmatch.presentation.StringUtils
 import kotlinx.android.synthetic.main.fragment_search_bluetooth_clients.*
 import kotlinx.android.synthetic.main.view_log.*
 import kotlinx.android.synthetic.main.view_log.view.*
@@ -25,11 +28,12 @@ import java.util.*
 
 
 const val SERVICE_STRING = "7D2EA28A-F7BD-485A-BD9D-92AD6ECFE93E"
-const val CHARACTERISTIC_ECHO_STRING = SERVICE_STRING
+const val CHARACTERISTIC_ECHO_STRING =
+	SERVICE_STRING
 val SERVICE_UUID: UUID = UUID.fromString(SERVICE_STRING)
 val CHARACTERISTIC_ECHO_UUID: UUID = UUID.fromString(CHARACTERISTIC_ECHO_STRING)
 
-class SearchBluetoothClientsFragment : Fragment() {
+class BluetoothServerFragment : Fragment() {
 
 	private var mBluetoothManager: BluetoothManager? = null //FIXME: Receber por parâmetro?
 	private var mBluetoothAdapter: BluetoothAdapter? = null //FIXME: Receber por parâmetro?
@@ -106,7 +110,10 @@ class SearchBluetoothClientsFragment : Fragment() {
 
 						log("onCharacteristicReadRequest " + characteristic.uuid.toString())
 
-						if (BluetoothUtils.requiresResponse(characteristic)) {
+						if (BluetoothUtils.requiresResponse(
+								characteristic
+							)
+						) {
 							// Unknown read characteristic requiring response, send failure
 							sendResponse(device, requestId, BluetoothGatt.GATT_FAILURE, 0, null)
 						}
@@ -240,7 +247,10 @@ class SearchBluetoothClientsFragment : Fragment() {
 			)
 
 			characteristic.value = value
-			val confirm = BluetoothUtils.requiresConfirmation(characteristic)
+			val confirm =
+				BluetoothUtils.requiresConfirmation(
+					characteristic
+				)
 			for (device in mDevices) {
 				mGattServer?.notifyCharacteristicChanged(device, characteristic, confirm)
 			}
@@ -273,19 +283,25 @@ class SearchBluetoothClientsFragment : Fragment() {
 		mHandler.post {
 			// Reverse message to differentiate original message & response
 			val response = ByteUtils.reverse(message)
-			log("Sending: " + StringUtils.byteArrayInHexFormat(response))
+			log("Sending: " + StringUtils.byteArrayInHexFormat(
+				response
+			)
+			)
 			notifyCharacteristicEcho(response)
 		}
 	}
 
 	private fun notifyCharacteristicEcho(value: ByteArray) {
-		notifyCharacteristic(value, CHARACTERISTIC_ECHO_UUID)
+		notifyCharacteristic(value,
+			CHARACTERISTIC_ECHO_UUID
+		)
 	}
 
 	companion object {
 
-		val TAG: String = ::SearchBluetoothClientsFragment.name
+		val TAG: String = ::BluetoothServerFragment.name
 		@JvmStatic
-		fun newInstance() = SearchBluetoothClientsFragment()
+		fun newInstance() =
+			BluetoothServerFragment()
 	}
 }
