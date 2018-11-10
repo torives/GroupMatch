@@ -3,19 +3,6 @@ package br.com.yves.groupmatch.presentation.ui.bluetooth
 import br.com.yves.groupmatch.domain.checkBluetoothAvailability.BluetoohStatus
 import br.com.yves.groupmatch.domain.checkBluetoothAvailability.CheckBluetoothAvailability
 
-interface BluetoothAvailabilityView {
-	fun displayErrorDialog(
-		title: String,
-		message: String,
-		positiveCallback: (() -> Unit)? = null,
-		negativeCallback: (() -> Unit)? = null
-	)
-	fun navigateToBluetoothOptions()
-	fun navigateToBluetoothServerView()
-	fun navigateToBluetoothClientView()
-	fun navigateToCalendarView()
-}
-
 class BluetoothAvailabilityPresenter(
 	private val view: BluetoothAvailabilityView,
 	private val checkBluetoothAvailability: CheckBluetoothAvailability
