@@ -47,6 +47,6 @@
             android:id="@+id/searchBluetoothServer"
             android:name="br.com.yves.groupmatch.presentation.ui.bluetooth.availability.client.BluetoothClientFragment"
             android:label="fragment_search_bluetooth_server"
-            tools:layout="@layout/fragment_search_bluetooth_server" />
+            tools:layout="@layout/fragment_bluetooth_client" />
     </navigation>
 </navigation>
