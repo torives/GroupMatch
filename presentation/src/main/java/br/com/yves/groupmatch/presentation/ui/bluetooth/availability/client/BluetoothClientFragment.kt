@@ -6,7 +6,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.LinearLayoutManager
 import br.com.yves.groupmatch.R
+import kotlinx.android.synthetic.main.fragment_bluetooth_client.*
 
 class BluetoothClientFragment : Fragment() {
 
@@ -16,6 +19,16 @@ class BluetoothClientFragment : Fragment() {
 		savedInstanceState: Bundle?
 	): View? {
 		return inflater.inflate(R.layout.fragment_bluetooth_client, container, false)
+	}
+
+	override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+		super.onViewCreated(view, savedInstanceState)
+
+		foundServersList.layoutManager = LinearLayoutManager(context)
+		foundServersList.adapter = ServerListAdapter(listOf("Tretinha", "Tretosa", "Tretuda"))
+		foundServersList.addItemDecoration(
+			DividerItemDecoration(context, DividerItemDecoration.VERTICAL)
+		)
 	}
 
 
