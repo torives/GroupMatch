@@ -1,34 +1,29 @@
 package br.com.yves.groupmatch.domain.checkBluetoothAvailability
 
+import br.com.yves.groupmatch.domain.BluetoothService
 import br.com.yves.groupmatch.domain.UseCase
 
-interface BluetoothService {
-	fun isBluetoothTurnedOn(): Boolean
-	fun isBLESupported(): Boolean
-	fun isAdvertisementSupported(): Boolean
-}
+class CheckBluetoothAvailability(private val bluetoothService: BluetoothService) : UseCase<BluetoothStatus>() {
 
-class CheckBluetoothAvailability(private val bluetoothService: BluetoothService) : UseCase<BluetoohStatus>() {
-
-	override fun execute(): BluetoohStatus {
+	override fun execute(): BluetoothStatus {
 		return if(bluetoothService.isBluetoothTurnedOn()) {
 			if (bluetoothService.isBLESupported()) {
 				if(bluetoothService.isAdvertisementSupported()){
-					BluetoohStatus.Available
+					BluetoothStatus.Available
 				} else {
-					//BluetoohStatus.NoAdvertisementSupport
-					BluetoohStatus.Available
+					//BluetoothStatus.NoAdvertisementSupport
+					BluetoothStatus.Available
 				}
 			} else {
-				BluetoohStatus.NoBLESupport
+				BluetoothStatus.NoBLESupport
 			}
 		} else {
-			BluetoohStatus.TurnedOff
+			BluetoothStatus.TurnedOff
 		}
 	}
 }
 
-enum class BluetoohStatus {
+enum class BluetoothStatus {
 	Available,
 	TurnedOff,
 	NoBLESupport,

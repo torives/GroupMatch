@@ -1,6 +1,6 @@
 package br.com.yves.groupmatch.presentation.ui.bluetooth.availability
 
-import br.com.yves.groupmatch.domain.checkBluetoothAvailability.BluetoohStatus
+import br.com.yves.groupmatch.domain.checkBluetoothAvailability.BluetoothStatus
 import br.com.yves.groupmatch.domain.checkBluetoothAvailability.CheckBluetoothAvailability
 
 class BluetoothAvailabilityPresenter(
@@ -14,9 +14,9 @@ class BluetoothAvailabilityPresenter(
 
 	private fun checkBluetoothAvailability() {
 		when (checkBluetoothAvailability.execute()) {
-			BluetoohStatus.Available -> {
+			BluetoothStatus.Available -> {
 			}
-			BluetoohStatus.TurnedOff -> {
+			BluetoothStatus.TurnedOff -> {
 				view.displayErrorDialog(
 					"Ops!",
 					"Você precisa habilitar o Bluetooth para continuar. Deseja fazer isto agora?",
@@ -24,10 +24,10 @@ class BluetoothAvailabilityPresenter(
 					negativeCallback = { view.navigateToCalendarView() }
 				)
 			}
-			BluetoohStatus.NoBLESupport -> {
+			BluetoothStatus.NoBLESupport -> {
 				displayNoFeatureAvailableErrorDialog()
 			}
-			BluetoohStatus.NoAdvertisementSupport -> {
+			BluetoothStatus.NoAdvertisementSupport -> {
 				displayNoFeatureAvailableErrorDialog()
 			}
 		}
