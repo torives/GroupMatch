@@ -16,7 +16,7 @@ class BluetoothAvailabilityPresenter(
 		when (checkBluetoothAvailability.execute()) {
 			BluetoothStatus.Available -> {
 			}
-			BluetoothStatus.TurnedOff -> {
+			BluetoothStatus.Disabled -> {
 				view.displayErrorDialog(
 					"Ops!",
 					"Você precisa habilitar o Bluetooth para continuar. Deseja fazer isto agora?",
@@ -24,10 +24,11 @@ class BluetoothAvailabilityPresenter(
 					negativeCallback = { view.navigateToCalendarView() }
 				)
 			}
-			BluetoothStatus.NoBLESupport -> {
+			BluetoothStatus.Unsupported -> {
 				displayNoFeatureAvailableErrorDialog()
 			}
-			BluetoothStatus.NoAdvertisementSupport -> {
+			BluetoothStatus.NoLocationPermission -> {
+				//FIXME: Pedir corretamente pela permissão de localização
 				displayNoFeatureAvailableErrorDialog()
 			}
 		}

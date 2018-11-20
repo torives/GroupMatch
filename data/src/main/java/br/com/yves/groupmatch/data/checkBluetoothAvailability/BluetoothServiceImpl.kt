@@ -14,14 +14,9 @@ class BluetoothServiceImpl(context: Context) : BluetoothService {
 	private val bluetoothManager =
 		this.context.getSystemService(Context.BLUETOOTH_SERVICE) as? BluetoothManager
 
-	override fun isBluetoothTurnedOn() = bluetoothManager?.adapter?.isEnabled == true
+	override fun isBluetoothAvailable() = bluetoothManager?.adapter != null
 
-	override fun isBLESupported() = context.packageManager?.hasSystemFeature(
-		PackageManager.FEATURE_BLUETOOTH_LE
-	) == true
-
-	override fun isAdvertisementSupported() =
-		bluetoothManager?.adapter?.isMultipleAdvertisementSupported == true
+	override fun isBluetoothEnabled() = bluetoothManager?.adapter?.isEnabled == true
 
 	override fun isLocationPermissionGranted() =
 		checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
