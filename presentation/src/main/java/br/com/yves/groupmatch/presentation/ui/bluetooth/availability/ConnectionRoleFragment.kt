@@ -3,6 +3,7 @@ package br.com.yves.groupmatch.presentation.ui.bluetooth.availability
 import android.Manifest
 import android.bluetooth.BluetoothAdapter
 import android.content.Intent
+import android.content.pm.PackageManager.PERMISSION_DENIED
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -14,6 +15,8 @@ import br.com.yves.groupmatch.presentation.factory.checkBluetoothAvailability.Bl
 import br.com.yves.groupmatch.presentation.runOnBackground
 import br.com.yves.groupmatch.presentation.ui.bluetooth.availability.BluetoothAvailabilityView.Companion.ENABLE_BLUETOOTH_REQUEST
 import br.com.yves.groupmatch.presentation.ui.bluetooth.availability.BluetoothAvailabilityView.Companion.LOCATION_PERMISSION_REQUEST
+import br.com.yves.groupmatch.presentation.ui.bluetooth.availability.BluetoothAvailabilityView.Companion.LOCATION_PERMISSION_RESPONSE_ALLOW
+import br.com.yves.groupmatch.presentation.ui.bluetooth.availability.BluetoothAvailabilityView.Companion.LOCATION_PERMISSION_RESPONSE_DENY
 import kotlinx.android.synthetic.main.fragment_connection_role.*
 import org.jetbrains.anko.noButton
 import org.jetbrains.anko.support.v4.alert
@@ -86,10 +89,8 @@ class ConnectionRoleFragment : Fragment(),
 	override fun displayLocationPermissionDialog() {
 		activity?.runOnUiThread {
 			requestPermissions(
-				arrayOf(
-					Manifest.permission.ACCESS_COARSE_LOCATION,
-					Manifest.permission.ACCESS_FINE_LOCATION
-				), LOCATION_PERMISSION_REQUEST
+				arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
+				LOCATION_PERMISSION_REQUEST
 			)
 		}
 	}
@@ -116,21 +117,35 @@ class ConnectionRoleFragment : Fragment(),
 	}
 	//endregion
 
-	//FIXME: Tratar fluxos de erro
 	override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-		runOnBackground {
-			when (requestCode) {
-				ENABLE_BLUETOOTH_REQUEST -> presenter.onBluetoothActivationDialogResult(resultCode)
-				LOCATION_PERMISSION_REQUEST -> presenter.onLocationPermissionGiven()
+		if (requestCode == ENABLE_BLUETOOTH_REQUEST) {
+			runOnBackground {
+				presenter.onBluetoothActivationDialogResult(resultCode)
 			}
 		}
 		super.onActivityResult(requestCode, resultCode, data)
 	}
 
-	companion object {
-//		const val ENABLE_BLUETOOTH_REQUEST = 100
-//		const val ENABLE_BLUETOOTH_RESPONSE_ALLOW = -1
-//		const val ENABLE_BLUETOOTH_RESPONSE_DENY = 0
-//		const val LOCATION_PERMISSION_REQUEST = 200
+	override fun onRequestPermissionsResult(
+		requestCode: Int,
+		permissions: Array<out String>,
+		grantResults: IntArray
+	) {
+		if (requestCode == LOCATION_PERMISSION_REQUEST) {
+			runOnBackground {
+				if (grantResults.isEmpty()) {
+					presenter.onLocationPermissionGiven(LOCATION_PERMISSION_RESPONSE_DENY)
+				} else {
+					grantResults.forEach { result ->
+						if (result == PERMISSION_DENIED) {
+							presenter.onLocationPermissionGiven(LOCATION_PERMISSION_RESPONSE_DENY)
+							return@runOnBackground
+						}
+					}
+					presenter.onLocationPermissionGiven(LOCATION_PERMISSION_RESPONSE_ALLOW)
+				}
+			}
+		}
+		super.onRequestPermissionsResult(requestCode, permissions, grantResults)
 	}
 }

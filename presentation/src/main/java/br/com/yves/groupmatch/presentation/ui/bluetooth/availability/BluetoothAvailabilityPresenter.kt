@@ -60,12 +60,16 @@ class BluetoothAvailabilityPresenter(
 	private fun displayNotPossibleToAdvanceDialog() {
 		view.displayErrorDialog(
 			"Atenção",
-			"Para seguir adiante é necessário habilitar o Bluetooth",
+			"Para seguir adiante é necessário habilitar o Bluetooth e permitir o acesso à localização",
 			{ view.navigateToCalendarView() }
 		)
 	}
 
-	fun onLocationPermissionGiven() {
-		checkBluetoothAvailability()
+	fun onLocationPermissionGiven(result: Int) {
+		if(result == BluetoothAvailabilityView.LOCATION_PERMISSION_RESPONSE_ALLOW) {
+			checkBluetoothAvailability()
+		} else {
+			displayNotPossibleToAdvanceDialog()
+		}
 	}
 }
