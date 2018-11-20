@@ -12,6 +12,8 @@ import androidx.navigation.fragment.NavHostFragment
 import br.com.yves.groupmatch.R
 import br.com.yves.groupmatch.presentation.factory.checkBluetoothAvailability.BluetoothAvailabilityPresenterFactory
 import br.com.yves.groupmatch.presentation.runOnBackground
+import br.com.yves.groupmatch.presentation.ui.bluetooth.availability.BluetoothAvailabilityView.Companion.ENABLE_BLUETOOTH_REQUEST
+import br.com.yves.groupmatch.presentation.ui.bluetooth.availability.BluetoothAvailabilityView.Companion.LOCATION_PERMISSION_REQUEST
 import kotlinx.android.synthetic.main.fragment_connection_role.*
 import org.jetbrains.anko.noButton
 import org.jetbrains.anko.support.v4.alert
@@ -64,7 +66,10 @@ class ConnectionRoleFragment : Fragment(),
 			alert(message, title) {
 				positiveCallback?.let { yesButton { positiveCallback.invoke() } }
 				negativeCallback?.let { noButton { negativeCallback.invoke() } }
-			}.show()
+			}.apply {
+				isCancelable = false
+				show()
+			}
 		}
 	}
 
@@ -115,7 +120,7 @@ class ConnectionRoleFragment : Fragment(),
 	override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
 		runOnBackground {
 			when (requestCode) {
-				ENABLE_BLUETOOTH_REQUEST -> presenter.onBluetoothEnabled()
+				ENABLE_BLUETOOTH_REQUEST -> presenter.onBluetoothActivationDialogResult(resultCode)
 				LOCATION_PERMISSION_REQUEST -> presenter.onLocationPermissionGiven()
 			}
 		}
@@ -123,7 +128,9 @@ class ConnectionRoleFragment : Fragment(),
 	}
 
 	companion object {
-		const val ENABLE_BLUETOOTH_REQUEST = 100
-		const val LOCATION_PERMISSION_REQUEST = 101
+//		const val ENABLE_BLUETOOTH_REQUEST = 100
+//		const val ENABLE_BLUETOOTH_RESPONSE_ALLOW = -1
+//		const val ENABLE_BLUETOOTH_RESPONSE_DENY = 0
+//		const val LOCATION_PERMISSION_REQUEST = 200
 	}
 }

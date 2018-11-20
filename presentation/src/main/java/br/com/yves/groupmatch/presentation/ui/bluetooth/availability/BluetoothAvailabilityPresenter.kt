@@ -21,7 +21,7 @@ class BluetoothAvailabilityPresenter(
 					"Ops!",
 					"Você precisa habilitar o Bluetooth para continuar. Deseja fazer isto agora?",
 					positiveCallback = { view.displayBluetoothActivationDialog() },
-					negativeCallback = { view.navigateToCalendarView() }
+					negativeCallback = { displayNotPossibleToAdvanceDialog() }
 				)
 			}
 			BluetoothStatus.Unsupported -> {
@@ -49,8 +49,20 @@ class BluetoothAvailabilityPresenter(
 		view.navigateToBluetoothClientView()
 	}
 
-	fun onBluetoothEnabled() {
-		checkBluetoothAvailability()
+	fun onBluetoothActivationDialogResult(result: Int) {
+		if (result == BluetoothAvailabilityView.ENABLE_BLUETOOTH_RESPONSE_ALLOW) {
+			checkBluetoothAvailability()
+		} else {
+			displayNotPossibleToAdvanceDialog()
+		}
+	}
+
+	private fun displayNotPossibleToAdvanceDialog() {
+		view.displayErrorDialog(
+			"Atenção",
+			"Para seguir adiante é necessário habilitar o Bluetooth",
+			{ view.navigateToCalendarView() }
+		)
 	}
 
 	fun onLocationPermissionGiven() {

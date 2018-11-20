@@ -12,4 +12,10 @@ interface BluetoothAvailabilityView {
 	fun navigateToBluetoothServerView()
 	fun navigateToBluetoothClientView()
 	fun navigateToCalendarView()
+
+	companion object {
+		const val ENABLE_BLUETOOTH_REQUEST = 100
+		const val ENABLE_BLUETOOTH_RESPONSE_ALLOW = -1
+		const val LOCATION_PERMISSION_REQUEST = 200
+	}
 }
