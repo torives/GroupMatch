@@ -20,7 +20,7 @@ class BluetoothAvailabilityPresenter(
 				view.displayErrorDialog(
 					"Ops!",
 					"Você precisa habilitar o Bluetooth para continuar. Deseja fazer isto agora?",
-					positiveCallback = { view.navigateToBluetoothOptions() },
+					positiveCallback = { view.displayBluetoothActivationDialog() },
 					negativeCallback = { view.navigateToCalendarView() }
 				)
 			}
@@ -28,8 +28,7 @@ class BluetoothAvailabilityPresenter(
 				displayNoFeatureAvailableErrorDialog()
 			}
 			BluetoothStatus.NoLocationPermission -> {
-				//FIXME: Pedir corretamente pela permissão de localização
-				displayNoFeatureAvailableErrorDialog()
+				view.displayLocationPermissionDialog()
 			}
 		}
 	}
@@ -51,6 +50,10 @@ class BluetoothAvailabilityPresenter(
 	}
 
 	fun onBluetoothEnabled() {
+		checkBluetoothAvailability()
+	}
+
+	fun onLocationPermissionGiven() {
 		checkBluetoothAvailability()
 	}
 }

@@ -1,5 +1,6 @@
 package br.com.yves.groupmatch.presentation.ui.bluetooth.availability
 
+import android.Manifest
 import android.bluetooth.BluetoothAdapter
 import android.content.Intent
 import android.os.Bundle
@@ -15,6 +16,7 @@ import kotlinx.android.synthetic.main.fragment_connection_role.*
 import org.jetbrains.anko.noButton
 import org.jetbrains.anko.support.v4.alert
 import org.jetbrains.anko.yesButton
+
 
 class ConnectionRoleFragment : Fragment(),
 	BluetoothAvailabilityView {
@@ -66,11 +68,23 @@ class ConnectionRoleFragment : Fragment(),
 		}
 	}
 
-	override fun navigateToBluetoothOptions() {
+	override fun displayBluetoothActivationDialog() {
 		activity?.runOnUiThread {
 			val enableBtIntent = Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE)
-			startActivityForResult(enableBtIntent,
-				ENABLE_BLUETOOTH_REQUEST_CODE
+			startActivityForResult(
+				enableBtIntent,
+				ENABLE_BLUETOOTH_REQUEST
+			)
+		}
+	}
+
+	override fun displayLocationPermissionDialog() {
+		activity?.runOnUiThread {
+			requestPermissions(
+				arrayOf(
+					Manifest.permission.ACCESS_COARSE_LOCATION,
+					Manifest.permission.ACCESS_FINE_LOCATION
+				), LOCATION_PERMISSION_REQUEST
 			)
 		}
 	}
@@ -97,17 +111,19 @@ class ConnectionRoleFragment : Fragment(),
 	}
 	//endregion
 
-
+	//FIXME: Tratar fluxos de erro
 	override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-		if (requestCode == ENABLE_BLUETOOTH_REQUEST_CODE) {
-			runOnBackground {
-				presenter.onBluetoothEnabled()
+		runOnBackground {
+			when (requestCode) {
+				ENABLE_BLUETOOTH_REQUEST -> presenter.onBluetoothEnabled()
+				LOCATION_PERMISSION_REQUEST -> presenter.onLocationPermissionGiven()
 			}
 		}
 		super.onActivityResult(requestCode, resultCode, data)
 	}
 
 	companion object {
-		const val ENABLE_BLUETOOTH_REQUEST_CODE = 100
+		const val ENABLE_BLUETOOTH_REQUEST = 100
+		const val LOCATION_PERMISSION_REQUEST = 101
 	}
 }

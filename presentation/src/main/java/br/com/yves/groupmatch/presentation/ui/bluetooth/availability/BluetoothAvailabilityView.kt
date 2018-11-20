@@ -7,7 +7,8 @@ interface BluetoothAvailabilityView {
 		positiveCallback: (() -> Unit)? = null,
 		negativeCallback: (() -> Unit)? = null
 	)
-	fun navigateToBluetoothOptions()
+	fun displayBluetoothActivationDialog()
+	fun displayLocationPermissionDialog()
 	fun navigateToBluetoothServerView()
 	fun navigateToBluetoothClientView()
 	fun navigateToCalendarView()
