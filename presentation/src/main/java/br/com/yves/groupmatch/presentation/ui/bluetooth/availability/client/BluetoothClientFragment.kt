@@ -1,6 +1,7 @@
 package br.com.yves.groupmatch.presentation.ui.bluetooth.availability.client
 
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -29,6 +30,9 @@ class BluetoothClientFragment : Fragment() {
 		foundServersList.addItemDecoration(
 			DividerItemDecoration(context, DividerItemDecoration.VERTICAL)
 		)
+
+		val serverIntent = Intent(activity, DeviceListActivity::class.java)
+		startActivityForResult(serverIntent, 1)
 	}
 
 

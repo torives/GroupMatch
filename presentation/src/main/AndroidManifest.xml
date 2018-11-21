@@ -17,6 +17,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity android:name=".presentation.ui.bluetooth.availability.client.DeviceListActivity"></activity>
     </application>
 
 </manifest>
