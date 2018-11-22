@@ -18,7 +18,6 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".presentation.ui.bluetooth.availability.client.DeviceListActivity"></activity>
     </application>
 
 </manifest>

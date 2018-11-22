@@ -7,8 +7,9 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import br.com.yves.groupmatch.R
 
-class ServerListAdapter(private val servers: List<String>) :
+class ServerListAdapter(private val servers: MutableList<String> = mutableListOf()) :
 	RecyclerView.Adapter<ServerListAdapter.ViewHolder>() {
+
 	override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
 		val view = LayoutInflater.from(parent.context).inflate(
 			R.layout.item_server_list,
@@ -36,5 +37,15 @@ class ServerListAdapter(private val servers: List<String>) :
 		fun bind(name: String) {
 			serverName.text = name
 		}
+	}
+
+	fun add(device: String){
+		servers.add(device)
+		notifyItemChanged(servers.lastIndex)
+	}
+
+	fun clear() {
+		servers.clear()
+		notifyDataSetChanged()
 	}
 }
