@@ -7,8 +7,10 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import br.com.yves.groupmatch.R
 
-class ServerListAdapter(private val servers: MutableList<String> = mutableListOf()) :
+class ServerListAdapter(val onItemClick: ((String) -> Unit)? = null) :
 	RecyclerView.Adapter<ServerListAdapter.ViewHolder>() {
+
+	private val servers: MutableList<String> = mutableListOf()
 
 	override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
 		val view = LayoutInflater.from(parent.context).inflate(
@@ -36,6 +38,7 @@ class ServerListAdapter(private val servers: MutableList<String> = mutableListOf
 
 		fun bind(name: String) {
 			serverName.text = name
+			serverName.setOnClickListener { onItemClick?.invoke(name) }
 		}
 	}
 

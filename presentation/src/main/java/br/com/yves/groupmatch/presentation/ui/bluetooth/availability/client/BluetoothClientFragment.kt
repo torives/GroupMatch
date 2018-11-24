@@ -1,6 +1,7 @@
 package br.com.yves.groupmatch.presentation.ui.bluetooth.availability.client
 
 
+import android.app.Activity
 import android.bluetooth.BluetoothAdapter
 import android.bluetooth.BluetoothDevice
 import android.content.BroadcastReceiver
@@ -12,6 +13,8 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
+import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -35,7 +38,14 @@ class BluetoothClientFragment : Fragment() {
 		super.onViewCreated(view, savedInstanceState)
 
 		foundServersList.layoutManager = LinearLayoutManager(context)
-		serverAdapter = ServerListAdapter()
+		serverAdapter = ServerListAdapter { name ->
+			// Cancel discovery because it's costly and we're about to connect
+			bluetoothAdapter.cancelDiscovery()
+
+			// Get the device MAC address, which is the last 17 chars in the View
+//			val info = (v as TextView).text.toString()
+//			val address = info.substring(info.length - 17)
+		}
 		foundServersList.adapter = serverAdapter
 		foundServersList.addItemDecoration(
 			DividerItemDecoration(context, DividerItemDecoration.VERTICAL)
