@@ -1,6 +1,7 @@
 package br.com.yves.groupmatch.presentation.ui.bluetooth.availability.client
 
 
+import android.app.Activity
 import android.bluetooth.BluetoothAdapter
 import android.bluetooth.BluetoothDevice
 import android.content.BroadcastReceiver
@@ -22,6 +23,7 @@ import br.com.yves.groupmatch.R
 import br.com.yves.groupmatch.presentation.ui.bluetooth.availability.server.BluetoothChatService
 import br.com.yves.groupmatch.presentation.ui.bluetooth.availability.server.Constants
 import kotlinx.android.synthetic.main.fragment_bluetooth_client.*
+import java.lang.ref.WeakReference
 
 class BluetoothClientFragment : Fragment() {
 
@@ -29,6 +31,7 @@ class BluetoothClientFragment : Fragment() {
     private lateinit var serverAdapter: ServerListAdapter
     private lateinit var mChatService: BluetoothChatService
     private lateinit var mOutStringBuffer: StringBuffer
+    private lateinit var mHandler: MessageHandler
 
     override fun onCreateView(
             inflater: LayoutInflater,
@@ -47,7 +50,7 @@ class BluetoothClientFragment : Fragment() {
             bluetoothAdapter.cancelDiscovery()
 
             // Get the device MAC address, which is the last 17 chars in the View
-			val address = name.substring(name.length - 17)
+            val address = name.substring(name.length - 17)
             connectDevice(address)
         }
         foundServersList.adapter = serverAdapter
@@ -74,7 +77,7 @@ class BluetoothClientFragment : Fragment() {
         bluetoothAdapter = BluetoothAdapter.getDefaultAdapter()
 
         // Get a set of currently paired devices
-        val pairedDevices = bluetoothAdapter.getBondedDevices()
+        val pairedDevices = bluetoothAdapter.bondedDevices
 
         // If there are paired devices, add each one to the ArrayAdapter
         if (pairedDevices.size > 0) {
@@ -82,6 +85,11 @@ class BluetoothClientFragment : Fragment() {
                 serverAdapter.add(device.name + "\n" + device.address)
             }
         }
+    }
+
+    override fun onAttach(context: Context?) {
+        super.onAttach(context)
+        mHandler = MessageHandler(activity!!)
     }
 
     override fun onStart() {
@@ -136,7 +144,7 @@ class BluetoothClientFragment : Fragment() {
     }
 
     /**
-     * Establish connection with other divice
+     * Establish connection with other device
      *
      * @param data   An [Intent] with [DeviceListActivity.EXTRA_DEVICE_ADDRESS] extra.
      * @param secure Socket Security type - Secure (true) , Insecure (false)
@@ -177,61 +185,62 @@ class BluetoothClientFragment : Fragment() {
         }
     }
 
-    /**
-     * The Handler that gets information back from the BluetoothChatService
-     */
-    private val mHandler = object : Handler() {
-        override fun handleMessage(msg: Message) {
-            val activity = activity
-            when (msg.what) {
-                Constants.MESSAGE_STATE_CHANGE -> when (msg.arg1) {
-                    BluetoothChatService.STATE_CONNECTED -> {
+    companion object {
+        private val TAG = BluetoothClientFragment::class.java.simpleName
+        private const val SCAN_PERIOD = 5000L
+    }
+}
+
+/**
+ * The Handler that gets information back from the BluetoothChatService
+ */
+private class MessageHandler(activity: Activity) : Handler() {
+    private val reference = WeakReference<Activity>(activity)
+    private val activity: Activity?
+        get() = reference.get()
+
+    override fun handleMessage(msg: Message) {
+        when (msg.what) {
+            Constants.MESSAGE_STATE_CHANGE -> when (msg.arg1) {
+                BluetoothChatService.STATE_CONNECTED -> {
 //						setStatus(getString(R.string.title_connected_to, mConnectedDeviceName))
 //						mConversationArrayAdapter.clear()
-                    }
-                    BluetoothChatService.STATE_CONNECTING -> {
-                    }//setStatus(R.string.title_connecting)
-                    BluetoothChatService.STATE_LISTEN, BluetoothChatService.STATE_NONE -> {
-                    }
-//						setStatus(
-//						R.string.title_not_connected
-//					)
                 }
-                Constants.MESSAGE_WRITE -> {
-                    val writeBuf = msg.obj as ByteArray
-                    // construct a string from the buffer
-                    val writeMessage = String(writeBuf)
-                    //mConversationArrayAdapter.add("Me:  $writeMessage")
+                BluetoothChatService.STATE_CONNECTING -> {
+                }//setStatus(R.string.title_connecting)
+                BluetoothChatService.STATE_LISTEN, BluetoothChatService.STATE_NONE -> {
                 }
-                Constants.MESSAGE_READ -> {
-                    val readBuf = msg.obj as ByteArray
-                    // construct a string from the valid bytes in the buffer
-                    val readMessage = String(readBuf, 0, msg.arg1)
-                    //mConversationArrayAdapter.add(mConnectedDeviceName + ":  " + readMessage)
-                }
-                Constants.MESSAGE_DEVICE_NAME -> {
-                    // save the connected device's name
-                    //mConnectedDeviceName = msg.data.getString(Constants.DEVICE_NAME)
-                    activity?.let {
-                        Toast.makeText(
-                                activity,
-                                "nome do device aqui",//"Connected to $mConnectedDeviceName",
-                                Toast.LENGTH_SHORT
-                        ).show()
-                    }
-                }
-                Constants.MESSAGE_TOAST -> activity?.let {
+            }
+            Constants.MESSAGE_WRITE -> {
+                val writeBuf = msg.obj as ByteArray
+                // construct a string from the buffer
+                val writeMessage = String(writeBuf)
+                //mConversationArrayAdapter.add("Me:  $writeMessage")
+            }
+            Constants.MESSAGE_READ -> {
+                val readBuf = msg.obj as ByteArray
+                // construct a string from the valid bytes in the buffer
+                val readMessage = String(readBuf, 0, msg.arg1)
+                //mConversationArrayAdapter.add(mConnectedDeviceName + ":  " + readMessage)
+            }
+            //Acabou de se conectar
+            Constants.MESSAGE_DEVICE_NAME -> {
+                // save the connected device's name
+                //mConnectedDeviceName = msg.data.getString(Constants.DEVICE_NAME)
+                activity?.let {
                     Toast.makeText(
-                            activity, msg.data.getString(Constants.TOAST),
+                            activity,
+                            "nome do device aqui",//"Connected to $mConnectedDeviceName",
                             Toast.LENGTH_SHORT
                     ).show()
                 }
             }
+            Constants.MESSAGE_TOAST -> activity?.let {
+                Toast.makeText(
+                        activity, msg.data.getString(Constants.TOAST),
+                        Toast.LENGTH_SHORT
+                ).show()
+            }
         }
-    }
-
-    companion object {
-        private val TAG = BluetoothClientFragment::class.java.simpleName
-        private const val SCAN_PERIOD = 5000L
     }
 }
