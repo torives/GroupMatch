@@ -134,7 +134,7 @@ class BluetoothServerFragment : Fragment() {
 					if (null != activity) {
 						Toast.makeText(
 							activity,
-							"nome do device aqui",//"Connected to $mConnectedDeviceName",
+								"Connected to $connectedDeviceName",
 							Toast.LENGTH_SHORT
 						).show()
 

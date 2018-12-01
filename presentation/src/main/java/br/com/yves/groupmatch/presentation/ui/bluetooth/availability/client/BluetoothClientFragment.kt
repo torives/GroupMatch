@@ -229,11 +229,11 @@ private class MessageHandler(activity: Activity) : Handler() {
             //Acabou de se conectar
             Constants.MESSAGE_DEVICE_NAME -> {
                 // save the connected device's name
-                //mConnectedDeviceName = msg.data.getString(Constants.DEVICE_NAME)
+                val mConnectedDeviceName = msg.data.getString(Constants.DEVICE_NAME)
                 activity?.let {
                     Toast.makeText(
                             activity,
-                            "nome do device aqui",//"Connected to $mConnectedDeviceName",
+                            "Connected to $mConnectedDeviceName",
                             Toast.LENGTH_SHORT
                     ).show()
                 }
