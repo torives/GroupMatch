@@ -31,11 +31,11 @@ class BluetoothServerFragment : Fragment() {
 
 	//region Lifecycle
 	override fun onCreateView(
-		inflater: LayoutInflater,
-		container: ViewGroup?,
-		savedInstanceState: Bundle?
+			inflater: LayoutInflater,
+			container: ViewGroup?,
+			savedInstanceState: Bundle?
 	): View? {
-		return inflater.inflate(R.layout.fragment_bluetooth_client, container, false)
+		return inflater.inflate(R.layout.fragment_bluetooth_server, container, false)
 	}
 
 	override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -45,12 +45,8 @@ class BluetoothServerFragment : Fragment() {
 		serverAdapter = ServerListAdapter()
 		foundServersList.adapter = serverAdapter
 		foundServersList.addItemDecoration(
-			DividerItemDecoration(context, DividerItemDecoration.VERTICAL)
+				DividerItemDecoration(context, DividerItemDecoration.VERTICAL)
 		)
-
-		fab.setOnClickListener {
-			ensureDiscoverable()
-		}
 	}
 
 	override fun onStart() {
@@ -82,6 +78,8 @@ class BluetoothServerFragment : Fragment() {
 		mBluetoothService = ServerBluetoothService(activity, mHandler)
 		// Initialize the buffer for outgoing messages
 		mOutStringBuffer = StringBuffer("")
+
+		ensureDiscoverable()
 	}
 
 	/**
@@ -133,9 +131,9 @@ class BluetoothServerFragment : Fragment() {
 					val connectedDeviceName = msg.data.getString(Constants.DEVICE_NAME)
 					if (null != activity) {
 						Toast.makeText(
-							activity,
+								activity,
 								"Connected to $connectedDeviceName",
-							Toast.LENGTH_SHORT
+								Toast.LENGTH_SHORT
 						).show()
 
 						serverAdapter.add(connectedDeviceName)
@@ -143,8 +141,8 @@ class BluetoothServerFragment : Fragment() {
 				}
 				Constants.MESSAGE_TOAST -> if (null != activity) {
 					Toast.makeText(
-						activity, msg.data.getString(Constants.TOAST),
-						Toast.LENGTH_SHORT
+							activity, msg.data.getString(Constants.TOAST),
+							Toast.LENGTH_SHORT
 					).show()
 				}
 			}

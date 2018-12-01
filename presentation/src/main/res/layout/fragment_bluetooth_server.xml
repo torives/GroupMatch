@@ -32,7 +32,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
 
-                    android:text="Servidores encontrados:"
+                    android:text="Clientes conectados:"
 
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@id/progressIndicator"
@@ -44,7 +44,7 @@
                     android:layout_width="15dp"
                     android:layout_height="15dp"
 
-                    android:visibility="gone"
+                    android:visibility="visible"
                     tools:visibility="visible"
 
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -68,15 +68,5 @@
         </androidx.recyclerview.widget.RecyclerView>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_margin="16dp"
-        app:srcCompat="@android:drawable/ic_menu_search"
-        android:tint="@android:color/white"
-        />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
