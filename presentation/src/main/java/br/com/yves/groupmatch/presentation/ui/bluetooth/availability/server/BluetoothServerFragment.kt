@@ -102,17 +102,9 @@ class BluetoothServerFragment : Fragment() {
 			val activity = activity
 			when (msg.what) {
 				Constants.MESSAGE_STATE_CHANGE -> when (msg.arg1) {
-					ServerBluetoothService.STATE_CONNECTED -> {
-//						setStatus(getString(R.string.title_connected_to, mConnectedDeviceName))
-//						mConversationArrayAdapter.clear()
-					}
-					ServerBluetoothService.STATE_CONNECTING -> {
-					}//setStatus(R.string.title_connecting)
-					ServerBluetoothService.STATE_LISTEN, ServerBluetoothService.STATE_NONE -> {
-					}
-//						setStatus(
-//						R.string.title_not_connected
-//					)
+					ServerBluetoothService.STATE_CONNECTED -> { }
+					ServerBluetoothService.STATE_CONNECTING -> { }
+					ServerBluetoothService.STATE_LISTEN, ServerBluetoothService.STATE_NONE -> { }
 				}
 				Constants.MESSAGE_WRITE -> {
 					val writeBuf = msg.obj as ByteArray
@@ -124,7 +116,13 @@ class BluetoothServerFragment : Fragment() {
 					val readBuf = msg.obj as ByteArray
 					// construct a string from the valid bytes in the buffer
 					val readMessage = String(readBuf, 0, msg.arg1)
-					//mConversationArrayAdapter.add(mConnectedDeviceName + ":  " + readMessage)
+					if (null != activity) {
+						Toast.makeText(
+								activity,
+								readMessage,
+								Toast.LENGTH_LONG
+						).show()
+					}
 				}
 				Constants.MESSAGE_DEVICE_NAME -> {
 					// save the connected device's name

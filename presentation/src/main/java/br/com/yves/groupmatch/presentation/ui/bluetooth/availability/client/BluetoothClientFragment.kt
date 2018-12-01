@@ -67,6 +67,10 @@ class BluetoothClientFragment : Fragment() {
 			}
 		}
 
+		send.setOnClickListener {
+			mBluetoothService.write("Mutreta Master".toByteArray())
+		}
+
 		// Register for broadcasts when a device is discovered
 		var filter = IntentFilter(BluetoothDevice.ACTION_FOUND)
 		activity?.registerReceiver(mReceiver, filter)
