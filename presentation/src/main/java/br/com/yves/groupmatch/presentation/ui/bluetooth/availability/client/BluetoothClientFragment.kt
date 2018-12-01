@@ -114,42 +114,50 @@ class BluetoothClientFragment : Fragment() {
 		mOutStringBuffer = StringBuffer("")
 	}
 
+
+	private fun toggleDiscovery() {
+		// If we're already discovering, stop it
+		if (bluetoothAdapter.isDiscovering) {
+			stopDiscovery()
+		} else {
+			startDiscovery()
+		}
+	}
+
 	/**
 	 * Start device discover with the BluetoothAdapter
 	 */
-	private fun toggleDiscovery() {
-		Log.d(TAG, "toggleDiscovery()")
+	private fun startDiscovery() {
+		Log.d(TAG, "startDiscovery()")
 
-		// If we're already discovering, stop it
-		if (bluetoothAdapter.isDiscovering) {
-			bluetoothAdapter.cancelDiscovery()
-			progressIndicator.visibility = GONE
-			activity?.actionBar?.setSubtitle(R.string.select_device)
-			fab.setImageResource(android.R.drawable.ic_menu_search)
-		} else {
-			// Indicate scanning in the title
-			activity?.actionBar?.setSubtitle(R.string.scanning)
-			fab.setImageResource(android.R.drawable.ic_menu_close_clear_cancel)
-			serverAdapter.clear()
-			progressIndicator.visibility = VISIBLE
+		// Indicate scanning in the title
+		activity?.actionBar?.setSubtitle(R.string.scanning)
+		fab.setImageResource(R.drawable.ic_close)
+		serverAdapter.clear()
+		progressIndicator.visibility = VISIBLE
 
-			//TODO: MOSTRAR OU NÃO OS DEVICES JÁ PAREADOS?
-			// Get the local Bluetooth adapter
-			bluetoothAdapter = BluetoothAdapter.getDefaultAdapter()
+		//TODO: MOSTRAR OU NÃO OS DEVICES JÁ PAREADOS?
 
-			// Get a set of currently paired devices
-			val pairedDevices = bluetoothAdapter.bondedDevices
+		// Get a set of currently paired devices
+		val pairedDevices = bluetoothAdapter.bondedDevices
 
-			// If there are paired devices, add each one to the ArrayAdapter
-			if (pairedDevices.size > 0) {
-				for (device in pairedDevices) {
-					serverAdapter.add(device.name + "\n" + device.address)
-				}
+		// If there are paired devices, add each one to the ArrayAdapter
+		if (pairedDevices.size > 0) {
+			for (device in pairedDevices) {
+				serverAdapter.add(device.name + "\n" + device.address)
 			}
-
-			// Request discover from BluetoothAdapter
-			bluetoothAdapter.startDiscovery()
 		}
+		// Request discover from BluetoothAdapter
+		bluetoothAdapter.startDiscovery()
+	}
+
+	private fun stopDiscovery() {
+		Log.d(TAG, "stopDiscovery()")
+
+		bluetoothAdapter.cancelDiscovery()
+		progressIndicator.visibility = GONE
+		activity?.actionBar?.setSubtitle(R.string.select_device)
+		fab.setImageResource(R.drawable.ic_bluetooth_searching)
 	}
 
 	/**
@@ -184,7 +192,7 @@ class BluetoothClientFragment : Fragment() {
 				}
 				// When discovery is finished, change the Activity title
 			} else if (BluetoothAdapter.ACTION_DISCOVERY_FINISHED == action) {
-				activity?.actionBar?.setSubtitle(R.string.select_device)
+				stopDiscovery()
 				if (serverAdapter.itemCount == 0) {
 					val noDevices = resources.getText(R.string.none_found).toString()
 					serverAdapter.add(noDevices)
