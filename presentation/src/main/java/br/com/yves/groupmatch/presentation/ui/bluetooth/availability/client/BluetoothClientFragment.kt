@@ -20,7 +20,8 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import br.com.yves.groupmatch.R
-import br.com.yves.groupmatch.presentation.ui.bluetooth.availability.server.BluetoothChatService
+import br.com.yves.groupmatch.presentation.ui.bluetooth.availability.server.ClientBluetoothService
+import br.com.yves.groupmatch.presentation.ui.bluetooth.availability.server.ServerBluetoothService
 import br.com.yves.groupmatch.presentation.ui.bluetooth.availability.server.Constants
 import kotlinx.android.synthetic.main.fragment_bluetooth_client.*
 import java.lang.ref.WeakReference
@@ -29,7 +30,7 @@ class BluetoothClientFragment : Fragment() {
 
     private lateinit var bluetoothAdapter: BluetoothAdapter
     private lateinit var serverAdapter: ServerListAdapter
-    private lateinit var mChatService: BluetoothChatService
+    private lateinit var mBluetoothService: ClientBluetoothService
     private lateinit var mOutStringBuffer: StringBuffer
     private lateinit var mHandler: MessageHandler
 
@@ -73,6 +74,8 @@ class BluetoothClientFragment : Fragment() {
         filter = IntentFilter(BluetoothAdapter.ACTION_DISCOVERY_FINISHED)
         activity?.registerReceiver(mReceiver, filter)
 
+
+        //TODO: MOSTRAR OU NÃO OS DEVICES JÁ PAREADOS?
         // Get the local Bluetooth adapter
         bluetoothAdapter = BluetoothAdapter.getDefaultAdapter()
 
@@ -100,9 +103,9 @@ class BluetoothClientFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         // Only if the state is STATE_NONE, do we know that we haven't started already
-        if (mChatService.state == BluetoothChatService.STATE_NONE) {
+        if (mBluetoothService.state == ServerBluetoothService.STATE_NONE) {
             // Start the Bluetooth chat services
-            mChatService.start()
+            mBluetoothService.start()
         }
     }
 
@@ -111,7 +114,7 @@ class BluetoothClientFragment : Fragment() {
 
         bluetoothAdapter.cancelDiscovery()
         activity?.unregisterReceiver(mReceiver)
-        mChatService.stop()
+        mBluetoothService.stop()
     }
 
     private fun setupChat() {
@@ -119,8 +122,8 @@ class BluetoothClientFragment : Fragment() {
 
         // Get the local Bluetooth adapter
         bluetoothAdapter = BluetoothAdapter.getDefaultAdapter()
-        // Initialize the BluetoothChatService to perform bluetooth connections
-        mChatService = BluetoothChatService(activity, mHandler)
+        // Initialize the ServerBluetoothService to perform bluetooth connections
+        mBluetoothService = ClientBluetoothService(activity, mHandler)
         // Initialize the buffer for outgoing messages
         mOutStringBuffer = StringBuffer("")
     }
@@ -153,7 +156,7 @@ class BluetoothClientFragment : Fragment() {
         // Get the BluetoothDevice object
         val device = bluetoothAdapter.getRemoteDevice(address)
         // Attempt to connect to the device
-        mChatService.connect(device, secure)
+        mBluetoothService.connect(device, secure)
     }
 
     /**
@@ -192,7 +195,7 @@ class BluetoothClientFragment : Fragment() {
 }
 
 /**
- * The Handler that gets information back from the BluetoothChatService
+ * The Handler that gets information back from the ServerBluetoothService
  */
 private class MessageHandler(activity: Activity) : Handler() {
     private val reference = WeakReference<Activity>(activity)
@@ -202,13 +205,13 @@ private class MessageHandler(activity: Activity) : Handler() {
     override fun handleMessage(msg: Message) {
         when (msg.what) {
             Constants.MESSAGE_STATE_CHANGE -> when (msg.arg1) {
-                BluetoothChatService.STATE_CONNECTED -> {
+                ServerBluetoothService.STATE_CONNECTED -> {
 //						setStatus(getString(R.string.title_connected_to, mConnectedDeviceName))
 //						mConversationArrayAdapter.clear()
                 }
-                BluetoothChatService.STATE_CONNECTING -> {
+                ServerBluetoothService.STATE_CONNECTING -> {
                 }//setStatus(R.string.title_connecting)
-                BluetoothChatService.STATE_LISTEN, BluetoothChatService.STATE_NONE -> {
+                ServerBluetoothService.STATE_LISTEN, ServerBluetoothService.STATE_NONE -> {
                 }
             }
             Constants.MESSAGE_WRITE -> {

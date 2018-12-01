@@ -26,7 +26,7 @@ class BluetoothServerFragment : Fragment() {
 
 	private lateinit var bluetoothAdapter: BluetoothAdapter
 	private lateinit var serverAdapter: ServerListAdapter
-	private lateinit var mChatService: BluetoothChatService
+	private lateinit var mBluetoothService: ServerBluetoothService
 	private lateinit var mOutStringBuffer: StringBuffer
 
 	//region Lifecycle
@@ -61,15 +61,15 @@ class BluetoothServerFragment : Fragment() {
 	override fun onResume() {
 		super.onResume()
 		// Only if the state is STATE_NONE, do we know that we haven't started already
-		if (mChatService.state == BluetoothChatService.STATE_NONE) {
+		if (mBluetoothService.state == ServerBluetoothService.STATE_NONE) {
 			// Start the Bluetooth chat services
-			mChatService.start()
+			mBluetoothService.start()
 		}
 	}
 
 	override fun onDestroy() {
 		super.onDestroy()
-		mChatService.stop()
+		mBluetoothService.stop()
 	}
 	//endregion
 
@@ -78,8 +78,8 @@ class BluetoothServerFragment : Fragment() {
 
 		// Get the local Bluetooth adapter
 		bluetoothAdapter = BluetoothAdapter.getDefaultAdapter()
-		// Initialize the BluetoothChatService to perform bluetooth connections
-		mChatService = BluetoothChatService(activity, mHandler)
+		// Initialize the ServerBluetoothService to perform bluetooth connections
+		mBluetoothService = ServerBluetoothService(activity, mHandler)
 		// Initialize the buffer for outgoing messages
 		mOutStringBuffer = StringBuffer("")
 	}
@@ -97,20 +97,20 @@ class BluetoothServerFragment : Fragment() {
 
 
 	/**
-	 * The Handler that gets information back from the BluetoothChatService
+	 * The Handler that gets information back from the ServerBluetoothService
 	 */
 	private val mHandler = object : Handler() {
 		override fun handleMessage(msg: Message) {
 			val activity = activity
 			when (msg.what) {
 				Constants.MESSAGE_STATE_CHANGE -> when (msg.arg1) {
-					BluetoothChatService.STATE_CONNECTED -> {
+					ServerBluetoothService.STATE_CONNECTED -> {
 //						setStatus(getString(R.string.title_connected_to, mConnectedDeviceName))
 //						mConversationArrayAdapter.clear()
 					}
-					BluetoothChatService.STATE_CONNECTING -> {
+					ServerBluetoothService.STATE_CONNECTING -> {
 					}//setStatus(R.string.title_connecting)
-					BluetoothChatService.STATE_LISTEN, BluetoothChatService.STATE_NONE -> {
+					ServerBluetoothService.STATE_LISTEN, ServerBluetoothService.STATE_NONE -> {
 					}
 //						setStatus(
 //						R.string.title_not_connected
