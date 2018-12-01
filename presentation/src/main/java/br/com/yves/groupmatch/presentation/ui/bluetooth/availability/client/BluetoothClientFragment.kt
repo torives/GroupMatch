@@ -241,7 +241,13 @@ private class MessageHandler(activity: Activity) : Handler() {
 				val readBuf = msg.obj as ByteArray
 				// construct a string from the valid bytes in the buffer
 				val readMessage = String(readBuf, 0, msg.arg1)
-				//mConversationArrayAdapter.add(mConnectedDeviceName + ":  " + readMessage)
+				if (null != activity) {
+					Toast.makeText(
+							activity,
+							readMessage,
+							Toast.LENGTH_LONG
+					).show()
+				}
 			}
 			//Acabou de se conectar
 			Constants.MESSAGE_DEVICE_NAME -> {
