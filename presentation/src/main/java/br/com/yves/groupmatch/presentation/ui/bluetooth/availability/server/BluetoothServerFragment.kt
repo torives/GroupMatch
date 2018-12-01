@@ -130,13 +130,15 @@ class BluetoothServerFragment : Fragment() {
 				}
 				Constants.MESSAGE_DEVICE_NAME -> {
 					// save the connected device's name
-					//mConnectedDeviceName = msg.data.getString(Constants.DEVICE_NAME)
+					val connectedDeviceName = msg.data.getString(Constants.DEVICE_NAME)
 					if (null != activity) {
 						Toast.makeText(
 							activity,
 							"nome do device aqui",//"Connected to $mConnectedDeviceName",
 							Toast.LENGTH_SHORT
 						).show()
+
+						serverAdapter.add(connectedDeviceName)
 					}
 				}
 				Constants.MESSAGE_TOAST -> if (null != activity) {
