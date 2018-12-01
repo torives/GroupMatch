@@ -44,6 +44,9 @@
                     android:layout_width="15dp"
                     android:layout_height="15dp"
 
+                    android:visibility="gone"
+                    tools:visibility="visible"
+
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -72,6 +75,6 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_margin="16dp"
-        app:srcCompat="@android:drawable/ic_menu_close_clear_cancel" />
+        app:srcCompat="@android:drawable/ic_menu_search" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -10,7 +10,7 @@ import br.com.yves.groupmatch.R
 class ServerListAdapter(val onItemClick: ((String) -> Unit)? = null) :
 	RecyclerView.Adapter<ServerListAdapter.ViewHolder>() {
 
-	private val servers: MutableList<String> = mutableListOf()
+	private val servers = linkedSetOf<String>()
 
 	override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
 		val view = LayoutInflater.from(parent.context).inflate(
@@ -24,7 +24,7 @@ class ServerListAdapter(val onItemClick: ((String) -> Unit)? = null) :
 	override fun getItemCount() = servers.count()
 
 	override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-		servers.getOrNull(position)?.let {
+		servers.elementAtOrNull(position)?.let {
 			holder.bind(it)
 		}
 	}
@@ -44,7 +44,7 @@ class ServerListAdapter(val onItemClick: ((String) -> Unit)? = null) :
 
 	fun add(device: String){
 		servers.add(device)
-		notifyItemChanged(servers.lastIndex)
+		notifyItemChanged(servers.indices.last)
 	}
 
 	fun clear() {
