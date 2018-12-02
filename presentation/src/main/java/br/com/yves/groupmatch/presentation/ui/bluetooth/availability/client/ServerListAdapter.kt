@@ -7,10 +7,10 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import br.com.yves.groupmatch.R
 
-class ServerListAdapter(val onItemClick: ((String) -> Unit)? = null) :
+class ServerListAdapter(val onItemClick: ((BluetoothServer) -> Unit)? = null) :
 	RecyclerView.Adapter<ServerListAdapter.ViewHolder>() {
 
-	private val servers = linkedSetOf<String>()
+	private val servers = linkedSetOf<BluetoothServer>()
 
 	override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
 		val view = LayoutInflater.from(parent.context).inflate(
@@ -30,21 +30,32 @@ class ServerListAdapter(val onItemClick: ((String) -> Unit)? = null) :
 	}
 
 	inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-		val serverName: TextView by lazy {
+		private val serverName: TextView by lazy {
 			itemView.findViewById<TextView>(
 				R.id.serverName
 			)
 		}
+		private val serverAddress: TextView by lazy {
+			itemView.findViewById<TextView>(R.id.serverAddress)
+		}
 
-		fun bind(name: String) {
-			serverName.text = name
-			serverName.setOnClickListener { onItemClick?.invoke(name) }
+		fun bind(server: BluetoothServer) {
+			serverName.text = server.name
+			serverAddress.text = server.address
+			itemView.setOnClickListener { onItemClick?.invoke(server) }
 		}
 	}
 
-	fun add(device: String){
-		servers.add(device)
+	fun add(server: BluetoothServer){
+		servers.add(server)
 		notifyItemChanged(servers.indices.last)
+	}
+
+	fun addAll(servers: Collection<BluetoothServer>){
+		val lastPosition = this.servers.indices.last
+
+		this.servers.addAll(servers)
+		notifyItemRangeChanged(lastPosition, servers.size)
 	}
 
 	fun clear() {

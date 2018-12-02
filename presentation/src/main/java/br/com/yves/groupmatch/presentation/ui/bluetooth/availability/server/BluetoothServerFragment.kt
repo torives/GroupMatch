@@ -9,12 +9,14 @@ import android.os.Message
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import br.com.yves.groupmatch.R
-import br.com.yves.groupmatch.presentation.ui.bluetooth.availability.client.ServerListAdapter
+import br.com.yves.groupmatch.presentation.ui.bluetooth.availability.client.BluetoothClient
 import kotlinx.android.synthetic.main.fragment_bluetooth_client.*
 import java.util.*
 
@@ -22,10 +24,62 @@ import java.util.*
 const val SERVICE_STRING = "7D2EA28A-F7BD-485A-BD9D-92AD6ECFE93E"
 val SERVICE_UUID: UUID = UUID.fromString(SERVICE_STRING)
 
+class ClientListAdapter(val onItemClick: ((BluetoothClient) -> Unit)? = null) :
+		RecyclerView.Adapter<ClientListAdapter.ViewHolder>() {
+
+	private val clients = linkedSetOf<BluetoothClient>()
+
+	override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+		val view = LayoutInflater.from(parent.context).inflate(
+				R.layout.item_server_list, //FIXME: criar layout próprio
+				parent,
+				false
+		)
+		return ViewHolder(view)
+	}
+
+	override fun getItemCount() = clients.count()
+
+	override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+		clients.elementAtOrNull(position)?.let {
+			holder.bind(it)
+		}
+	}
+
+	inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+		private val clientName: TextView by lazy {
+			itemView.findViewById<TextView>(
+					R.id.serverName
+			)
+		}
+
+		fun bind(client: BluetoothClient) {
+			clientName.text = client.name
+			clientName.setOnClickListener { onItemClick?.invoke(client) }
+		}
+	}
+
+	fun add(server: BluetoothClient){
+		clients.add(server)
+		notifyItemChanged(clients.indices.last)
+	}
+
+	fun addAll(servers: Collection<BluetoothClient>){
+		val lastPosition = this.clients.indices.last
+
+		this.clients.addAll(servers)
+		notifyItemRangeChanged(lastPosition, servers.size)
+	}
+
+	fun clear() {
+		clients.clear()
+		notifyDataSetChanged()
+	}
+}
 class BluetoothServerFragment : Fragment() {
 
 	private lateinit var bluetoothAdapter: BluetoothAdapter
-	private lateinit var serverAdapter: ServerListAdapter
+	private lateinit var clientListAdapter: ClientListAdapter
 	private lateinit var mBluetoothService: ServerBluetoothService
 	private lateinit var mOutStringBuffer: StringBuffer
 
@@ -42,8 +96,8 @@ class BluetoothServerFragment : Fragment() {
 		super.onViewCreated(view, savedInstanceState)
 
 		foundServersList.layoutManager = LinearLayoutManager(context)
-		serverAdapter = ServerListAdapter()
-		foundServersList.adapter = serverAdapter
+		clientListAdapter = ClientListAdapter()
+		foundServersList.adapter = clientListAdapter
 		foundServersList.addItemDecoration(
 				DividerItemDecoration(context, DividerItemDecoration.VERTICAL)
 		)
@@ -137,8 +191,8 @@ class BluetoothServerFragment : Fragment() {
 								"Connected to $connectedDeviceName",
 								Toast.LENGTH_SHORT
 						).show()
-
-						serverAdapter.add(connectedDeviceName)
+						val client = BluetoothClient(connectedDeviceName)
+						clientListAdapter.add(client)
 					}
 				}
 				Constants.MESSAGE_TOAST -> if (null != activity) {
