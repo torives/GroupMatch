@@ -110,6 +110,19 @@ class BluetoothClientFragment : Fragment(), BluetoothView {
 		}
 	}
 
+	override fun showWaitingConnection() {
+		runOnUiThread {
+			waitingConnectionView.visibility = VISIBLE
+		}
+	}
+
+	override fun showWaitingMatch() {
+		runOnUiThread {
+			waitingConnectionView.visibility = GONE
+			waitingMatchView.visibility = VISIBLE
+		}
+	}
+
 	override fun registerBroadcastReceiver(receiver: BroadcastReceiver, filter: IntentFilter) {
 		runOnUiThread {
 			activity?.registerReceiver(receiver, filter)

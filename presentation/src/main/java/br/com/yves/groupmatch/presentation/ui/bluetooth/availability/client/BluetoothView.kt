@@ -11,9 +11,12 @@ interface BluetoothView {
 	fun toggleProgressBarVisibility(isVisible: Boolean)
 	fun displayNewServer(server: BluetoothServer)
 	fun displayNewServers(servers: Collection<BluetoothServer>)
+	fun showWaitingConnection()
+	fun showWaitingMatch()
 	fun clearServerList()
 	fun registerBroadcastReceiver(receiver: BroadcastReceiver, filter: IntentFilter)
 	fun unregisterBroadcastReceiver(receiver: BroadcastReceiver)
+
 
 	//DEBUG
 	fun displayToast(message: String)

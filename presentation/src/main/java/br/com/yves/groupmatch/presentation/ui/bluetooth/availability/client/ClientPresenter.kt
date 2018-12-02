@@ -15,7 +15,9 @@ import br.com.yves.groupmatch.presentation.ui.bluetooth.availability.server.Serv
 data class BluetoothServer(val name: String, val address: String)
 data class BluetoothClient(val name: String)
 
-enum class BluetoothConnectionState {}
+enum class BluetoothConnectionState {
+	Connected, Connecting, Disconnected, Idle, None
+}
 
 class ClientPresenter(
 		private val view: BluetoothView,
@@ -56,6 +58,8 @@ class ClientPresenter(
 
 	fun onServerSelected(server: BluetoothServer) {
 		bluetoothAdapter.cancelDiscovery()
+
+		view.showWaitingConnection()
 
 		val address = server.address
 		connectDevice(address)
@@ -110,6 +114,9 @@ class ClientPresenter(
 
 	override fun onConnectionStateChange(newState: BluetoothConnectionState) {
 		view.displayToast(newState.toString())
+		when(newState) {
+			BluetoothConnectionState.Connected -> view.showWaitingMatch()
+		}
 	}
 	//endregion
 

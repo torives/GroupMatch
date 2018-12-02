@@ -25,10 +25,16 @@ class BluetoothMessageHandler(listener: Listener) : Handler() {
 		when (msg.what) {
 			Constants.MESSAGE_STATE_CHANGE -> when (msg.arg1) {
 				ServerBluetoothService.STATE_CONNECTED -> {
+					listener?.onConnectionStateChange(BluetoothConnectionState.Connected)
 				}
 				ServerBluetoothService.STATE_CONNECTING -> {
+					listener?.onConnectionStateChange(BluetoothConnectionState.Connecting)
 				}
-				ServerBluetoothService.STATE_LISTEN, ServerBluetoothService.STATE_NONE -> {
+				ServerBluetoothService.STATE_LISTEN -> {
+					listener?.onConnectionStateChange(BluetoothConnectionState.Idle)
+				}
+				ServerBluetoothService.STATE_NONE -> {
+					listener?.onConnectionStateChange(BluetoothConnectionState.None)
 				}
 			}
 			Constants.MESSAGE_WRITE -> {

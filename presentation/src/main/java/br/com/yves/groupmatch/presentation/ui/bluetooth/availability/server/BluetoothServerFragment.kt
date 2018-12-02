@@ -101,10 +101,6 @@ class BluetoothServerFragment : Fragment() {
 		foundServersList.addItemDecoration(
 				DividerItemDecoration(context, DividerItemDecoration.VERTICAL)
 		)
-
-		send.setOnClickListener {
-			mBluetoothService.write("Server Mutreta Master".toByteArray())
-		}
 	}
 
 	override fun onStart() {
