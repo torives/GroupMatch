@@ -94,6 +94,15 @@ class ClientPresenter(
 		}
 	}
 
+	private fun onNewDeviceFound(device: BluetoothDevice) {
+		if (device.bondState != BluetoothDevice.BOND_BONDED) {
+			val server = BluetoothServer(
+					device.name ?: "desconhecido",
+					device.address)
+			view.displayNewServer(server)
+		}
+	}
+
 	private fun stopDiscovery() {
 		Log.i(TAG, "stopDiscovery()")
 
@@ -114,7 +123,7 @@ class ClientPresenter(
 
 	override fun onConnectionStateChange(newState: BluetoothConnectionState) {
 		view.displayToast(newState.toString())
-		when(newState) {
+		when (newState) {
 			BluetoothConnectionState.Connected -> view.showWaitingMatch()
 		}
 	}
@@ -129,13 +138,8 @@ class ClientPresenter(
 			val action = intent.action
 
 			if (BluetoothDevice.ACTION_FOUND == action) {
-				val device =
-						intent.getParcelableExtra<BluetoothDevice>(BluetoothDevice.EXTRA_DEVICE)
-				if (device.bondState != BluetoothDevice.BOND_BONDED) {
-					val server = BluetoothServer(device.name
-							?: "desconhecido", device.address)
-					view.displayNewServer(server)
-				}
+				val device = intent.getParcelableExtra<BluetoothDevice>(BluetoothDevice.EXTRA_DEVICE)
+				onNewDeviceFound(device)
 			} else if (BluetoothAdapter.ACTION_DISCOVERY_FINISHED == action) {
 				stopDiscovery()
 			}
