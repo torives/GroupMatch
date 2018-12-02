@@ -8,6 +8,7 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.util.Log
 import br.com.yves.groupmatch.R
+import br.com.yves.groupmatch.domain.showCalendar.ShowCalendar
 import br.com.yves.groupmatch.presentation.ui.bluetooth.availability.server.ClientBluetoothService
 import br.com.yves.groupmatch.presentation.ui.bluetooth.availability.server.ServerBluetoothService
 
@@ -18,7 +19,8 @@ enum class BluetoothConnectionState {}
 
 class ClientPresenter(
 		private val view: BluetoothView,
-		private var bluetoothAdapter: BluetoothAdapter
+		private var bluetoothAdapter: BluetoothAdapter,
+		private var getCalendar: ShowCalendar
 ) : BluetoothMessageHandler.Listener {
 
 	private val bluetoothService = ClientBluetoothService(BluetoothMessageHandler(this))
