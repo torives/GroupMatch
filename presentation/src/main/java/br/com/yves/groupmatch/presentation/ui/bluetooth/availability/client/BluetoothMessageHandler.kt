@@ -2,7 +2,6 @@ package br.com.yves.groupmatch.presentation.ui.bluetooth.availability.client
 
 import android.os.Handler
 import android.os.Message
-import br.com.yves.groupmatch.presentation.ui.bluetooth.availability.server.Constants
 import br.com.yves.groupmatch.presentation.ui.bluetooth.availability.server.ServerBluetoothService
 import java.lang.ref.WeakReference
 
@@ -52,8 +51,16 @@ class BluetoothMessageHandler(listener: Listener) : Handler() {
 					listener?.onDeviceConnected(name)
 				}
 			}
-			Constants.MESSAGE_TOAST -> {
-			}
 		}
+	}
+
+	companion object {
+		const val MESSAGE_STATE_CHANGE = 1
+		const val MESSAGE_READ = 2
+		const val MESSAGE_WRITE = 3
+		const val MESSAGE_CONNECTION_FAILED = 4
+		const val MESSAGE_CONNECTION_LOST = 5
+
+		const val EXTRA_DEVICE = "extra_device"
 	}
 }
