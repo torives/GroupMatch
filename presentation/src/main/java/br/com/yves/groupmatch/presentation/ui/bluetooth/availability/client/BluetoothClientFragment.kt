@@ -16,8 +16,8 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import br.com.yves.groupmatch.R
 import br.com.yves.groupmatch.presentation.runOnBackground
+import br.com.yves.groupmatch.presentation.runOnUiThread
 import kotlinx.android.synthetic.main.fragment_bluetooth_client.*
-import org.jetbrains.anko.support.v4.runOnUiThread
 
 class BluetoothClientFragment : Fragment(), BluetoothView {
 	private lateinit var serverAdapter: ServerListAdapter
@@ -122,13 +122,13 @@ class BluetoothClientFragment : Fragment(), BluetoothView {
 
 	override fun registerBroadcastReceiver(receiver: BroadcastReceiver, filter: IntentFilter) {
 		runOnUiThread {
-			activity?.registerReceiver(receiver, filter)
+			it.registerReceiver(receiver, filter)
 		}
 	}
 
 	override fun unregisterBroadcastReceiver(receiver: BroadcastReceiver) {
 		runOnUiThread {
-			activity?.unregisterReceiver(receiver)
+			it.unregisterReceiver(receiver)
 		}
 	}
 
@@ -143,19 +143,19 @@ class BluetoothClientFragment : Fragment(), BluetoothView {
 
 	override fun displayToast(message: String) {
 		runOnUiThread {
-			activity?.let {
-				Toast.makeText(
-						it,
-						message,
-						Toast.LENGTH_SHORT
-				).show()
-			}
+			Toast.makeText(
+					it,
+					message,
+					Toast.LENGTH_SHORT
+			).show()
 		}
 	}
 
 	override fun displayToast(@StringRes resId: Int) {
-		val message = resources.getString(resId)
-		displayToast(message)
+		runOnUiThread {
+			val message = resources.getString(resId)
+			displayToast(message)
+		}
 	}
 	//endregion
 
