@@ -10,6 +10,7 @@ import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.annotation.StringRes
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -74,12 +75,6 @@ class BluetoothClientFragment : Fragment(), BluetoothView {
 	//endregion
 
 	//region BluetoothView
-	override fun setTitle(resId: Int) {
-		runOnUiThread {
-			activity?.setTitle(resId)
-		}
-	}
-
 	override fun setServerSearchButtonImage(resId: Int) {
 		runOnUiThread {
 			fab.setImageResource(resId)
@@ -112,12 +107,14 @@ class BluetoothClientFragment : Fragment(), BluetoothView {
 
 	override fun showWaitingConnection() {
 		runOnUiThread {
+			fab.hide()
 			waitingConnectionView.visibility = VISIBLE
 		}
 	}
 
 	override fun showWaitingMatch() {
 		runOnUiThread {
+			fab.hide()
 			waitingConnectionView.visibility = GONE
 			waitingMatchView.visibility = VISIBLE
 		}
@@ -135,6 +132,15 @@ class BluetoothClientFragment : Fragment(), BluetoothView {
 		}
 	}
 
+	override fun resetState() {
+		runOnUiThread {
+			waitingMatchView.visibility = GONE
+			waitingConnectionView.visibility = GONE
+			fab.show()
+			serverAdapter.clear()
+		}
+	}
+
 	override fun displayToast(message: String) {
 		runOnUiThread {
 			activity?.let {
@@ -145,6 +151,11 @@ class BluetoothClientFragment : Fragment(), BluetoothView {
 				).show()
 			}
 		}
+	}
+
+	override fun displayToast(@StringRes resId: Int) {
+		val message = resources.getString(resId)
+		displayToast(message)
 	}
 	//endregion
 

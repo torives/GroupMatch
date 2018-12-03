@@ -116,6 +116,7 @@ class ClientBluetoothService
 		connectedThread = ConnectedThread(socket, socketType).apply {
 			start()
 		}
+
 		state = STATE_CONNECTED
 	}
 
@@ -164,12 +165,10 @@ class ClientBluetoothService
 	 */
 	private fun failedToConnectTo(device: BluetoothDevice) {
 		// Send a failure message back to the Activity
-		val msg = handler.obtainMessage(BluetoothMessageHandler.MESSAGE_CONNECTION_FAILED)
-		val bundle = Bundle()
-		bundle.putParcelable(BluetoothMessageHandler.EXTRA_DEVICE, device)
-		msg.data = bundle
+		val msg = handler.obtainMessage(BluetoothMessageHandler.MESSAGE_CONNECTION_FAILED).apply {
+			obj = device
+		}
 		handler.sendMessage(msg)
-
 		// Start the service over to restart listening mode
 		start()
 	}
@@ -180,9 +179,7 @@ class ClientBluetoothService
 	private fun lostConnectionTo(device: BluetoothDevice) {
 		// Send a failure message back to the Activity
 		val msg = handler.obtainMessage(BluetoothMessageHandler.MESSAGE_CONNECTION_LOST).apply {
-			val bundle = Bundle()
-			bundle.putParcelable(BluetoothMessageHandler.EXTRA_DEVICE, device)
-			data = bundle
+			obj = device
 		}
 		handler.sendMessage(msg)
 		// Start the service over to restart listening mode

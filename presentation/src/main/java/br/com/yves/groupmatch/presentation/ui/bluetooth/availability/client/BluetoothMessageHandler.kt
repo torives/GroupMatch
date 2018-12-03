@@ -1,5 +1,6 @@
 package br.com.yves.groupmatch.presentation.ui.bluetooth.availability.client
 
+import android.bluetooth.BluetoothDevice
 import android.os.Handler
 import android.os.Message
 import br.com.yves.groupmatch.presentation.ui.bluetooth.availability.server.ServerBluetoothService
@@ -14,6 +15,8 @@ class BluetoothMessageHandler(listener: Listener) : Handler() {
 		fun onMessageRead(message: String)
 		fun onDeviceConnected(deviceName: String)
 		fun onConnectionStateChange(newState: BluetoothConnectionState)
+		fun onFailToConnect(device: BluetoothDevice)
+		fun onConnectionLost(device: BluetoothDevice)
 	}
 
 	private val reference = WeakReference<Listener>(listener)
@@ -22,7 +25,7 @@ class BluetoothMessageHandler(listener: Listener) : Handler() {
 
 	override fun handleMessage(msg: Message) {
 		when (msg.what) {
-			Constants.MESSAGE_STATE_CHANGE -> when (msg.arg1) {
+			MESSAGE_STATE_CHANGE -> when (msg.arg1) {
 				ServerBluetoothService.STATE_CONNECTED -> {
 					listener?.onConnectionStateChange(BluetoothConnectionState.Connected)
 				}
@@ -30,26 +33,26 @@ class BluetoothMessageHandler(listener: Listener) : Handler() {
 					listener?.onConnectionStateChange(BluetoothConnectionState.Connecting)
 				}
 				ServerBluetoothService.STATE_LISTEN -> {
-					listener?.onConnectionStateChange(BluetoothConnectionState.Idle)
+					listener?.onConnectionStateChange(BluetoothConnectionState.Disconnected)
 				}
 				ServerBluetoothService.STATE_NONE -> {
-					listener?.onConnectionStateChange(BluetoothConnectionState.None)
+					listener?.onConnectionStateChange(BluetoothConnectionState.Idle)
 				}
 			}
-			Constants.MESSAGE_WRITE -> {
-			}
-			Constants.MESSAGE_READ -> {
+			MESSAGE_WRITE -> { TODO("Criar o fluxo de exibição do resultado do match") }
+			MESSAGE_READ -> {
 				val readBuf = msg.obj as ByteArray
 				val readMessage = String(readBuf, 0, msg.arg1)
 
 				listener?.onMessageRead(readMessage)
 			}
-			//Acabou de se conectar
-			Constants.MESSAGE_DEVICE_NAME -> {
-				// save the connected device's name
-				msg.data.getString(Constants.DEVICE_NAME)?.let { name ->
-					listener?.onDeviceConnected(name)
-				}
+			MESSAGE_CONNECTION_FAILED -> {
+				val device = msg.obj as BluetoothDevice
+				listener?.onFailToConnect(device)
+			}
+			MESSAGE_CONNECTION_LOST -> {
+				val device = msg.obj as BluetoothDevice
+				listener?.onConnectionLost(device)
 			}
 		}
 	}
@@ -60,7 +63,5 @@ class BluetoothMessageHandler(listener: Listener) : Handler() {
 		const val MESSAGE_WRITE = 3
 		const val MESSAGE_CONNECTION_FAILED = 4
 		const val MESSAGE_CONNECTION_LOST = 5
-
-		const val EXTRA_DEVICE = "extra_device"
 	}
 }

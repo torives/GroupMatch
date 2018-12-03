@@ -6,7 +6,6 @@ import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 
 interface BluetoothView {
-	fun setTitle(@StringRes resId: Int)
 	fun setServerSearchButtonImage(@DrawableRes resId: Int)
 	fun toggleProgressBarVisibility(isVisible: Boolean)
 	fun displayNewServer(server: BluetoothServer)
@@ -16,8 +15,9 @@ interface BluetoothView {
 	fun clearServerList()
 	fun registerBroadcastReceiver(receiver: BroadcastReceiver, filter: IntentFilter)
 	fun unregisterBroadcastReceiver(receiver: BroadcastReceiver)
-
+	fun resetState()
 
 	//DEBUG
 	fun displayToast(message: String)
+	fun displayToast(@StringRes resId: Int)
 }

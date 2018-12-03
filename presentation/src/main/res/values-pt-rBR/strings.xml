@@ -1,11 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!--ConnectionRoleFragment UI Elements-->
+    <!--region ConnectionRoleFragment UI Elements-->
     <string name="fragment_connection_role_server_button">Servidor</string>
     <string name="fragment_connection_role_client_button">Cliente</string>
+    <!--endregion-->
 
-    <!--BottomNavigationMenut UI Elements-->
+    <!--region BottomNavigationMenut UI Elements-->
     <string name="bottom_navigation_menu_calendar_item">Agenda</string>
     <string name="bottom_navigation_menu_search_item">Buscar</string>
     <string name="bottom_navigation_menu_settings_item">Configurações</string>
+    <string name="actions">Ações</string>
+    <string name="restart">Reiniciar</string>
+    <!--endregion-->
+
+    <!--region BluetoothClientFragment-->
+    <string name="waiting_server_connection">Aguardando conexão com o servidor…</string>
+    <string name="waiting_match_result">Aguardando o resultado do match…</string>
+    <string name="failed_to_connect">Não foi possível estabelecer uma conexão com o servidor</string>
+    <string name="connection_lost">A conexão com o servidor foi perdida</string>
+    <!--endregion-->
 </resources>

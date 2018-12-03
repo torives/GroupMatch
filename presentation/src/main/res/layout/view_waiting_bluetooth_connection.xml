@@ -28,7 +28,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
 
-        android:text="Aguardando conexão com o servidor..."
+        android:text="@string/waiting_server_connection"
         android:gravity="center"
 
         app:layout_constraintBottom_toBottomOf="parent"

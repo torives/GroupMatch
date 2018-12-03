@@ -16,7 +16,7 @@ data class BluetoothServer(val name: String, val address: String)
 data class BluetoothClient(val name: String)
 
 enum class BluetoothConnectionState {
-	Connected, Connecting, Disconnected, Idle, None
+	Connected, Connecting, Disconnected, Idle
 }
 
 class ClientPresenter(
@@ -73,7 +73,6 @@ class ClientPresenter(
 	private fun startDiscovery() {
 		Log.i(TAG, "startDiscovery()")
 
-		view.setTitle(R.string.scanning)
 		view.setServerSearchButtonImage(R.drawable.ic_close)
 		view.clearServerList()
 		view.toggleProgressBarVisibility(true)
@@ -108,7 +107,6 @@ class ClientPresenter(
 
 		bluetoothAdapter.cancelDiscovery()
 		view.toggleProgressBarVisibility(false)
-		view.setTitle(R.string.select_device)
 		view.setServerSearchButtonImage(R.drawable.ic_bluetooth_searching)
 	}
 
@@ -124,8 +122,23 @@ class ClientPresenter(
 	override fun onConnectionStateChange(newState: BluetoothConnectionState) {
 		view.displayToast(newState.toString())
 		when (newState) {
+			BluetoothConnectionState.Idle -> {}
+			BluetoothConnectionState.Connecting -> {}
 			BluetoothConnectionState.Connected -> view.showWaitingMatch()
+			BluetoothConnectionState.Disconnected -> {}
 		}
+	}
+
+	//TODO: implementar fluxo de erro
+	override fun onFailToConnect(device: BluetoothDevice) {
+		view.displayToast(R.string.failed_to_connect)
+		view.resetState()
+	}
+
+	//TODO: implementar fluxo de erro
+	override fun onConnectionLost(device: BluetoothDevice) {
+		view.displayToast(R.string.connection_lost)
+		view.resetState()
 	}
 	//endregion
 
