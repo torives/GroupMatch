@@ -79,6 +79,10 @@ class ServerPresenter(
 	}
 }
 
+object ServerPresenterFactory {
+	fun create(view: ServerView) = ServerPresenter(view, BluetoothAdapter.getDefaultAdapter())
+}
+
 class BluetoothServerFragment : Fragment(), ServerView {
 	private lateinit var clientAdapter: ClientAdapter
 	private lateinit var presenter: ServerPresenter
@@ -94,6 +98,8 @@ class BluetoothServerFragment : Fragment(), ServerView {
 
 	override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 		super.onViewCreated(view, savedInstanceState)
+
+		presenter = ServerPresenterFactory.create(this)
 
 		foundServersList.layoutManager = LinearLayoutManager(context)
 		clientAdapter = ClientAdapter()
