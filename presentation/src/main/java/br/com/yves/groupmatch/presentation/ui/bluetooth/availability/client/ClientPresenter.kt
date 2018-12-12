@@ -13,7 +13,11 @@ import br.com.yves.groupmatch.presentation.ui.bluetooth.availability.server.Clie
 import br.com.yves.groupmatch.presentation.ui.bluetooth.availability.server.ServerBluetoothService
 
 data class BluetoothServer(val name: String, val address: String)
-data class BluetoothClient(val name: String)
+data class BluetoothClient(val name: String, val status: BluetoothClientStatus) {
+	enum class BluetoothClientStatus {
+		Connected, TransferringData, DataTransferComplete, DataTransferFailed
+	}
+}
 
 enum class BluetoothConnectionState {
 	Connected, Connecting, Disconnected, Idle
@@ -25,7 +29,7 @@ class ClientPresenter(
 		private var getCalendar: ShowCalendar
 ) : BluetoothMessageHandler.Listener {
 
-	private val bluetoothService = ClientBluetoothService(BluetoothMessageHandler(this))
+	private val bluetoothService = ClientBluetoothService(ClientBluetoothMessageHandler(this))
 
 	fun onViewCreated() {
 		var filter = IntentFilter(BluetoothDevice.ACTION_FOUND)

@@ -9,7 +9,7 @@ import java.lang.ref.WeakReference
 /**
  * The Handler that gets information back from the ServerBluetoothService
  */
-class BluetoothMessageHandler(listener: Listener) : Handler() {
+abstract class BluetoothMessageHandler(listener: Listener) : Handler() {
 
 	interface Listener {
 		fun onMessageRead(message: String)
@@ -19,9 +19,20 @@ class BluetoothMessageHandler(listener: Listener) : Handler() {
 		fun onConnectionLost(device: BluetoothDevice)
 	}
 
-	private val reference = WeakReference<Listener>(listener)
-	private val listener: Listener?
+	protected val reference = WeakReference<Listener>(listener)
+	protected val listener: Listener?
 		get() = reference.get()
+
+	companion object {
+		const val MESSAGE_STATE_CHANGE = 1
+		const val MESSAGE_READ = 2
+		const val MESSAGE_WRITE = 3
+		const val MESSAGE_CONNECTION_FAILED = 4
+		const val MESSAGE_CONNECTION_LOST = 5
+	}
+}
+
+class ClientBluetoothMessageHandler(listener: BluetoothMessageHandler.Listener) : BluetoothMessageHandler(listener) {
 
 	override fun handleMessage(msg: Message) {
 		when (msg.what) {
@@ -39,7 +50,9 @@ class BluetoothMessageHandler(listener: Listener) : Handler() {
 					listener?.onConnectionStateChange(BluetoothConnectionState.Idle)
 				}
 			}
-			MESSAGE_WRITE -> { TODO("Criar o fluxo de exibição do resultado do match") }
+			MESSAGE_WRITE -> {
+				TODO("Criar o fluxo de exibição do resultado do match")
+			}
 			MESSAGE_READ -> {
 				val readBuf = msg.obj as ByteArray
 				val readMessage = String(readBuf, 0, msg.arg1)
@@ -56,12 +69,22 @@ class BluetoothMessageHandler(listener: Listener) : Handler() {
 			}
 		}
 	}
+}
 
-	companion object {
-		const val MESSAGE_STATE_CHANGE = 1
-		const val MESSAGE_READ = 2
-		const val MESSAGE_WRITE = 3
-		const val MESSAGE_CONNECTION_FAILED = 4
-		const val MESSAGE_CONNECTION_LOST = 5
+class ServerBluetoothMessageHandler(listener: BluetoothMessageHandler.Listener) : BluetoothMessageHandler(listener) {
+
+	override fun handleMessage(msg: Message) {
+		when (msg.what) {
+			MESSAGE_STATE_CHANGE -> when (msg.arg1) {
+			}
+			MESSAGE_WRITE -> {
+			}
+			MESSAGE_READ -> {
+			}
+			MESSAGE_CONNECTION_FAILED -> {
+			}
+			MESSAGE_CONNECTION_LOST -> {
+			}
+		}
 	}
 }
