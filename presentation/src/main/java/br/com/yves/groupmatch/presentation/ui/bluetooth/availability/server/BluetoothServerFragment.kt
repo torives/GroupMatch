@@ -158,7 +158,7 @@ class BluetoothServerFragment : Fragment(), ServerView {
 
 	override fun sendIntent(intent: Intent) {
 		runOnUiThread{
-			sendIntent(intent)
+			startActivity(intent)
 		}
 	}
 	//endregion
