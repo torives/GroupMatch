@@ -276,6 +276,7 @@ class ServerBluetoothService
 				} catch (e: IOException) {
 					Log.e(TAG, "disconnected", e)
 					lostConnection(socket.remoteDevice, this)
+					return
 				}
 			}
 		}
