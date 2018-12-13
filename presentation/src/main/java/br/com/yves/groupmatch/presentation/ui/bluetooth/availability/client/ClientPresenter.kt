@@ -15,7 +15,7 @@ import br.com.yves.groupmatch.presentation.ui.bluetooth.availability.server.Serv
 data class BluetoothServer(val name: String, val address: String)
 data class BluetoothClient(val name: String, val status: BluetoothClientStatus) {
 	enum class BluetoothClientStatus {
-		Connected, TransferringData, DataTransferComplete, DataTransferFailed
+		Connected, TransferringData, DataTransferComplete, DataTransferFailed, Disconnected
 	}
 }
 

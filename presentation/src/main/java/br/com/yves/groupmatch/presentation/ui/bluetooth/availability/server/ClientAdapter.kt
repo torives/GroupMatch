@@ -69,9 +69,9 @@ class ClientAdapter(val onItemClick: ((BluetoothClient) -> Unit)? = null) :
 	}
 
 	fun remove(client: BluetoothClient) {
-		val index = clients.indexOf(client)
+		val index = clients.indexOfFirst { it.name == client.name }
 		if(index < 0) {
-			throw IllegalStateException("Trying to remove client $client before adding it to the list")
+			throw IllegalStateException("Attempt to remove client $client who is not on the list")
 		} else {
 			clients.removeAt(index)
 			notifyItemChanged(index)

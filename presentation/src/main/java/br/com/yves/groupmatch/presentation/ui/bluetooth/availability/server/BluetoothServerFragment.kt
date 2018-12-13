@@ -84,6 +84,12 @@ class ServerPresenter(
 
 	override fun onConnectionLost(device: BluetoothDevice) {
 		view.displayToast(R.string.lost_connection_to_client)
+		view.removeClient(
+				BluetoothClient(
+						device.name,
+						BluetoothClient.BluetoothClientStatus.Disconnected
+				)
+		)
 	}
 	//endregion
 
