@@ -20,7 +20,12 @@
     <!--region BluetoothClientFragment -->
     <string name="waiting_server_connection">Waiting server connection…</string>
     <string name="waiting_match_result">Waiting match result…</string>
-    <string name="failed_to_connect">Unable to establish connection to server</string>
-    <string name="connection_lost">Lost connection to server</string>
+    <string name="failed_to_connect_to_server">Unable to establish connection to server</string>
+    <string name="lost_connection_to_server">Lost connection to server</string>
+    <!--endregion-->
+
+    <!--region BluetoothServerFragment -->
+    <string name="failed_to_connect_to_client">Unable to establish connection to client</string>
+    <string name="lost_connection_to_client">Lost connection to client</string>
     <!--endregion-->
 </resources>

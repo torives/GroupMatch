@@ -79,11 +79,11 @@ class ServerPresenter(
 	}
 
 	override fun onFailToConnect(device: BluetoothDevice) {
-		view.displayToast(R.string.failed_to_connect)
+		view.displayToast(R.string.failed_to_connect_to_client)
 	}
 
 	override fun onConnectionLost(device: BluetoothDevice) {
-		view.displayToast(R.string.connection_lost)
+		view.displayToast(R.string.lost_connection_to_client)
 	}
 	//endregion
 
