@@ -119,8 +119,8 @@ class ClientPresenter(
 		view.displayToast(message)
 	}
 
-	override fun onDeviceConnected(deviceName: String) {
-		view.displayToast(deviceName)
+	override fun onDeviceConnected(device: BluetoothDevice) {
+		view.displayToast(device.name)
 	}
 
 	override fun onConnectionStateChange(newState: BluetoothConnectionState) {

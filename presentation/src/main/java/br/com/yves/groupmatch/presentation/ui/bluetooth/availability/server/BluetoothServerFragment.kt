@@ -9,6 +9,8 @@ import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.annotation.StringRes
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -27,6 +29,11 @@ interface ServerView {
 	fun removeClient(client: BluetoothClient)
 	fun toggleProgressBarVisibility(isVisible: Boolean)
 	fun sendIntent(intent: Intent)
+
+
+	//DEBUG
+	fun displayToast(message: String)
+	fun displayToast(@StringRes resId: Int)
 }
 
 class ServerPresenter(
@@ -35,13 +42,15 @@ class ServerPresenter(
 ) : BluetoothMessageHandler.Listener {
 	private val bluetoothService = ServerBluetoothService(ServerBluetoothMessageHandler(this))
 
-	fun onStart(){
+	fun onStart() {
 		bluetoothService.start()
 	}
-	fun onResume(){
+
+	fun onResume() {
 		ensureDiscoverable()
 	}
-	fun onDestroy(){
+
+	fun onDestroy() {
 		bluetoothService.stop()
 	}
 
@@ -50,20 +59,31 @@ class ServerPresenter(
 		TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
 	}
 
-	override fun onDeviceConnected(deviceName: String) {
-		TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+	override fun onDeviceConnected(device: BluetoothDevice) {
+		view.displayNewClient(
+				BluetoothClient(
+						device.name,
+						BluetoothClient.BluetoothClientStatus.Connected
+				)
+		)
 	}
 
 	override fun onConnectionStateChange(newState: BluetoothConnectionState) {
-		TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+		view.displayToast(newState.toString())
+		when (newState) {
+			BluetoothConnectionState.Idle -> {}
+			BluetoothConnectionState.Connecting -> {}
+			BluetoothConnectionState.Connected -> {}
+			BluetoothConnectionState.Disconnected -> {}
+		}
 	}
 
 	override fun onFailToConnect(device: BluetoothDevice) {
-		TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+		view.displayToast(R.string.failed_to_connect)
 	}
 
 	override fun onConnectionLost(device: BluetoothDevice) {
-		TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+		view.displayToast(R.string.connection_lost)
 	}
 	//endregion
 
@@ -139,26 +159,43 @@ class BluetoothServerFragment : Fragment(), ServerView {
 	}
 
 	override fun updateClientStatusIndicator(client: BluetoothClient) {
-		runOnUiThread{
+		runOnUiThread {
 			clientAdapter.update(client)
 		}
 	}
 
 	override fun removeClient(client: BluetoothClient) {
-		runOnUiThread{
+		runOnUiThread {
 			clientAdapter.remove(client)
 		}
 	}
 
 	override fun toggleProgressBarVisibility(isVisible: Boolean) {
-		runOnUiThread{
-			progressIndicator.visibility = if(isVisible) VISIBLE else GONE
+		runOnUiThread {
+			progressIndicator.visibility = if (isVisible) VISIBLE else GONE
 		}
 	}
 
 	override fun sendIntent(intent: Intent) {
-		runOnUiThread{
+		runOnUiThread {
 			startActivity(intent)
+		}
+	}
+
+	override fun displayToast(message: String) {
+		runOnUiThread {
+			Toast.makeText(
+					it,
+					message,
+					Toast.LENGTH_SHORT
+			).show()
+		}
+	}
+
+	override fun displayToast(@StringRes resId: Int) {
+		runOnUiThread {
+			val message = resources.getString(resId)
+			displayToast(message)
 		}
 	}
 	//endregion

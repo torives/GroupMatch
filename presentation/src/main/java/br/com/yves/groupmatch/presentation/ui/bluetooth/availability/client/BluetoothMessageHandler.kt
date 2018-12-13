@@ -13,7 +13,7 @@ abstract class BluetoothMessageHandler(listener: Listener) : Handler() {
 
 	interface Listener {
 		fun onMessageRead(message: String)
-		fun onDeviceConnected(deviceName: String)
+		fun onDeviceConnected(device: BluetoothDevice)
 		fun onConnectionStateChange(newState: BluetoothConnectionState)
 		fun onFailToConnect(device: BluetoothDevice)
 		fun onConnectionLost(device: BluetoothDevice)
@@ -22,6 +22,52 @@ abstract class BluetoothMessageHandler(listener: Listener) : Handler() {
 	protected val reference = WeakReference<Listener>(listener)
 	protected val listener: Listener?
 		get() = reference.get()
+
+
+	override fun handleMessage(msg: Message) {
+		when (msg.what) {
+			MESSAGE_STATE_CHANGE -> onStateChange(msg.arg1)
+			MESSAGE_WRITE -> onMessageWrite(msg)
+			MESSAGE_READ -> onMessageRead(msg.obj as ByteArray, msg.arg1)
+			MESSAGE_CONNECTION_FAILED -> onConnectionFailed(msg.obj as BluetoothDevice)
+			MESSAGE_CONNECTION_LOST -> onConnectionLost(msg.obj as BluetoothDevice)
+		}
+	}
+
+	open fun onStateChange(newState: Int) {
+		when (newState) {
+			ServerBluetoothService.STATE_CONNECTED -> {
+				listener?.onConnectionStateChange(BluetoothConnectionState.Connected)
+			}
+			ServerBluetoothService.STATE_CONNECTING -> {
+				listener?.onConnectionStateChange(BluetoothConnectionState.Connecting)
+			}
+			ServerBluetoothService.STATE_LISTEN -> {
+				listener?.onConnectionStateChange(BluetoothConnectionState.Disconnected)
+			}
+			ServerBluetoothService.STATE_NONE -> {
+				listener?.onConnectionStateChange(BluetoothConnectionState.Idle)
+			}
+		}
+	}
+
+	open fun onMessageWrite(message: Message) {
+		throw NotImplementedError("Subclasses must override onMessageWrite method")
+	}
+
+	open fun onMessageRead(buffer: ByteArray, totalBytesRead: Int) {
+		val readMessage = String(buffer, 0, totalBytesRead)
+
+		listener?.onMessageRead(readMessage)
+	}
+
+	open fun onConnectionFailed(device: BluetoothDevice) {
+		listener?.onFailToConnect(device)
+	}
+
+	open fun onConnectionLost(device: BluetoothDevice) {
+		listener?.onConnectionLost(device)
+	}
 
 	companion object {
 		const val MESSAGE_STATE_CHANGE = 1
@@ -34,57 +80,14 @@ abstract class BluetoothMessageHandler(listener: Listener) : Handler() {
 
 class ClientBluetoothMessageHandler(listener: BluetoothMessageHandler.Listener) : BluetoothMessageHandler(listener) {
 
-	override fun handleMessage(msg: Message) {
-		when (msg.what) {
-			MESSAGE_STATE_CHANGE -> when (msg.arg1) {
-				ServerBluetoothService.STATE_CONNECTED -> {
-					listener?.onConnectionStateChange(BluetoothConnectionState.Connected)
-				}
-				ServerBluetoothService.STATE_CONNECTING -> {
-					listener?.onConnectionStateChange(BluetoothConnectionState.Connecting)
-				}
-				ServerBluetoothService.STATE_LISTEN -> {
-					listener?.onConnectionStateChange(BluetoothConnectionState.Disconnected)
-				}
-				ServerBluetoothService.STATE_NONE -> {
-					listener?.onConnectionStateChange(BluetoothConnectionState.Idle)
-				}
-			}
-			MESSAGE_WRITE -> {
-				TODO("Criar o fluxo de exibição do resultado do match")
-			}
-			MESSAGE_READ -> {
-				val readBuf = msg.obj as ByteArray
-				val readMessage = String(readBuf, 0, msg.arg1)
-
-				listener?.onMessageRead(readMessage)
-			}
-			MESSAGE_CONNECTION_FAILED -> {
-				val device = msg.obj as BluetoothDevice
-				listener?.onFailToConnect(device)
-			}
-			MESSAGE_CONNECTION_LOST -> {
-				val device = msg.obj as BluetoothDevice
-				listener?.onConnectionLost(device)
-			}
-		}
+	override fun onMessageWrite(message: Message) {
+		TODO("Criar o fluxo de exibição do resultado do match")
 	}
 }
 
 class ServerBluetoothMessageHandler(listener: BluetoothMessageHandler.Listener) : BluetoothMessageHandler(listener) {
 
-	override fun handleMessage(msg: Message) {
-		when (msg.what) {
-			MESSAGE_STATE_CHANGE -> when (msg.arg1) {
-			}
-			MESSAGE_WRITE -> {
-			}
-			MESSAGE_READ -> {
-			}
-			MESSAGE_CONNECTION_FAILED -> {
-			}
-			MESSAGE_CONNECTION_LOST -> {
-			}
-		}
+	override fun onMessageWrite(message: Message) {
+		TODO("Criar o fluxo de exibição do resultado do match")
 	}
 }
