@@ -31,6 +31,7 @@ abstract class BluetoothMessageHandler(listener: Listener) : Handler() {
 			MESSAGE_READ -> onMessageRead(msg.obj as ByteArray, msg.arg1)
 			MESSAGE_CONNECTION_FAILED -> onConnectionFailed(msg.obj as BluetoothDevice)
 			MESSAGE_CONNECTION_LOST -> onConnectionLost(msg.obj as BluetoothDevice)
+			MESSAGE_DEVICE_CONNECTED -> onDeviceConnected(msg.obj as BluetoothDevice)
 		}
 	}
 
@@ -69,12 +70,17 @@ abstract class BluetoothMessageHandler(listener: Listener) : Handler() {
 		listener?.onConnectionLost(device)
 	}
 
+	private fun onDeviceConnected(device: BluetoothDevice) {
+		listener?.onDeviceConnected(device)
+	}
+
 	companion object {
 		const val MESSAGE_STATE_CHANGE = 1
 		const val MESSAGE_READ = 2
 		const val MESSAGE_WRITE = 3
 		const val MESSAGE_CONNECTION_FAILED = 4
 		const val MESSAGE_CONNECTION_LOST = 5
+		const val MESSAGE_DEVICE_CONNECTED = 6
 	}
 }
 

@@ -102,6 +102,12 @@ class ServerBluetoothService
 		mConnectedThread.start()
 
 		state = STATE_CONNECTED
+
+
+		handler.obtainMessage(
+				BluetoothMessageHandler.MESSAGE_DEVICE_CONNECTED,
+				device
+		).sendToTarget()
 	}
 
 	/**
