@@ -20,17 +20,13 @@ import android.bluetooth.BluetoothAdapter
 import android.bluetooth.BluetoothDevice
 import android.bluetooth.BluetoothServerSocket
 import android.bluetooth.BluetoothSocket
-import android.content.Context
-import android.os.Bundle
 import android.os.Handler
-import android.os.Message
 import android.util.Log
-
+import br.com.yves.groupmatch.presentation.ui.bluetooth.availability.client.BluetoothMessageHandler
 import java.io.IOException
 import java.io.InputStream
 import java.io.OutputStream
-import java.util.HashSet
-import java.util.UUID
+import java.util.*
 
 /**
  * This class does all the work for setting up and managing Bluetooth
@@ -44,36 +40,28 @@ class ServerBluetoothService
  *
  * @param handler A Handler to send messages back to the UI Activity
  */
-(private val mHandler: Handler) {
+(private val handler: Handler) {
 
 	// Member fields
-	private val mAdapter: BluetoothAdapter
-	private var mSecureAcceptThread: AcceptThread? = null
-	private var mInsecureAcceptThread: AcceptThread? = null
+	private val bluetoothAdapter: BluetoothAdapter = BluetoothAdapter.getDefaultAdapter()
+	private var secureAcceptThread: AcceptThread? = null
+	private var insecureAcceptThread: AcceptThread? = null
 	private val connectedThreads = HashSet<ConnectedThread>()
-	private var mState: Int = 0
+	private var mState = STATE_NONE
 
-	/**
-	 * Return the current connection state.
-	 */
-	/**
-	 * Set the current state of the chat connection
-	 *
-	 * @param state An integer defining the current connection state
-	 */
 	// Give the new state to the Handler so the UI Activity can update
-	var state: Int
+	private var state: Int
 		@Synchronized get() = mState
 		@Synchronized private set(state) {
 			Log.d(TAG, "setState() $mState -> $state")
-			mState = state
-			mHandler.obtainMessage(Constants.MESSAGE_STATE_CHANGE, state, -1).sendToTarget()
-		}
 
-	init {
-		mAdapter = BluetoothAdapter.getDefaultAdapter()
-		mState = STATE_NONE
-	}
+			mState = state
+			handler.obtainMessage(
+					BluetoothMessageHandler.MESSAGE_STATE_CHANGE,
+					state,
+					-1
+			).sendToTarget()
+		}
 
 	/**
 	 * Start the chat service. Specifically start AcceptThread to begin a
@@ -83,24 +71,18 @@ class ServerBluetoothService
 	fun start() {
 		Log.d(TAG, "start")
 
-		// Cancel any thread currently running a connection
-		if (!connectedThreads.isEmpty()) {
-			for (thread in connectedThreads) {
-				thread.cancel()
-			}
-			connectedThreads.clear()
-		}
+		killAllConnectedThreads()
 
 		state = STATE_LISTEN
 
 		// Start the thread to listen on a BluetoothServerSocket
-		if (mSecureAcceptThread == null) {
-			mSecureAcceptThread = AcceptThread(true)
-			mSecureAcceptThread!!.start()
+		if (secureAcceptThread == null) {
+			secureAcceptThread = AcceptThread(true)
+			secureAcceptThread!!.start()
 		}
-		if (mInsecureAcceptThread == null) {
-			mInsecureAcceptThread = AcceptThread(false)
-			mInsecureAcceptThread!!.start()
+		if (insecureAcceptThread == null) {
+			insecureAcceptThread = AcceptThread(false)
+			insecureAcceptThread!!.start()
 		}
 	}
 
@@ -119,13 +101,6 @@ class ServerBluetoothService
 		connectedThreads.add(mConnectedThread)
 		mConnectedThread.start()
 
-		// Send the name of the connected device back to the UI Activity
-		val msg = mHandler.obtainMessage(Constants.MESSAGE_DEVICE_NAME)
-		val bundle = Bundle()
-		bundle.putString(Constants.DEVICE_NAME, device.name)
-		msg.data = bundle
-		mHandler.sendMessage(msg)
-
 		state = STATE_CONNECTED
 	}
 
@@ -136,23 +111,28 @@ class ServerBluetoothService
 	fun stop() {
 		Log.d(TAG, "stop")
 
+		killAllConnectedThreads()
+
+		if (secureAcceptThread != null) {
+			secureAcceptThread!!.cancel()
+			secureAcceptThread = null
+		}
+
+		if (insecureAcceptThread != null) {
+			insecureAcceptThread!!.cancel()
+			insecureAcceptThread = null
+		}
+		state = STATE_NONE
+	}
+
+	// Cancel any thread currently running a connection
+	private fun killAllConnectedThreads() {
 		if (!connectedThreads.isEmpty()) {
 			for (thread in connectedThreads) {
 				thread.cancel()
 			}
 			connectedThreads.clear()
 		}
-
-		if (mSecureAcceptThread != null) {
-			mSecureAcceptThread!!.cancel()
-			mSecureAcceptThread = null
-		}
-
-		if (mInsecureAcceptThread != null) {
-			mInsecureAcceptThread!!.cancel()
-			mInsecureAcceptThread = null
-		}
-		state = STATE_NONE
 	}
 
 	/**
@@ -176,16 +156,18 @@ class ServerBluetoothService
 	/**
 	 * Indicate that the connection was lost and notify the UI Activity.
 	 */
-	private fun connectionLost() {
-		// Send a failure message back to the Activity
-		val msg = mHandler.obtainMessage(Constants.MESSAGE_TOAST)
-		val bundle = Bundle()
-		bundle.putString(Constants.TOAST, "Device connection was lost")
-		msg.data = bundle
-		mHandler.sendMessage(msg)
+	private fun lostConnection(device: BluetoothDevice, thread: ConnectedThread) {
 
-		// Start the service over to restart listening mode
-		this@ServerBluetoothService.start()
+		thread.cancel()
+		synchronized(this) {
+			connectedThreads.remove(thread)
+		}
+
+		// Send a failure message back to the Activity
+		val msg = handler.obtainMessage(BluetoothMessageHandler.MESSAGE_CONNECTION_LOST).apply {
+			obj = device
+		}
+		handler.sendMessage(msg)
 	}
 
 	/**
@@ -195,44 +177,39 @@ class ServerBluetoothService
 	 */
 	internal inner class AcceptThread(secure: Boolean) : Thread() {
 		// The local server socket
-		private val mmServerSocket: BluetoothServerSocket?
-		private val mSocketType: String
+		private lateinit var serverSocket: BluetoothServerSocket
+		private val socketType: String = if (secure) "Secure" else "Insecure"
 
 		init {
-			var tmp: BluetoothServerSocket? = null
-			mSocketType = if (secure) "Secure" else "Insecure"
-
 			// Create a new listening server socket
 			try {
-				if (secure) {
-					tmp = mAdapter.listenUsingRfcommWithServiceRecord(NAME_SECURE,
+				serverSocket = if (secure) {
+					bluetoothAdapter.listenUsingRfcommWithServiceRecord(NAME_SECURE,
 							MY_UUID_SECURE)
 				} else {
-					tmp = mAdapter.listenUsingInsecureRfcommWithServiceRecord(
+					bluetoothAdapter.listenUsingInsecureRfcommWithServiceRecord(
 							NAME_INSECURE, MY_UUID_INSECURE)
 				}
 			} catch (e: IOException) {
-				Log.e(TAG, "Socket Type: " + mSocketType + "listen() failed", e)
+				Log.e(TAG, "Socket Type: " + socketType + "listen() failed", e)
 			}
-
-			mmServerSocket = tmp
 		}
 
 		override fun run() {
-			Log.d(TAG, "Socket Type: " + mSocketType +
+			Log.d(TAG, "Socket Type: " + socketType +
 					"BEGIN mAcceptThread" + this)
-			name = "AcceptThread$mSocketType"
+			name = "AcceptThread$socketType"
 
-			var socket: BluetoothSocket? = null
+			var socket: BluetoothSocket?
 
 			// Listen to the server socket if we're not connected
 			while (true) {
 				try {
 					// This is a blocking call and will only return on a
 					// successful connection or an exception
-					socket = mmServerSocket!!.accept()
+					socket = serverSocket.accept()
 				} catch (e: IOException) {
-					Log.e(TAG, "Socket Type: " + mSocketType + "accept() failed", e)
+					Log.e(TAG, "Socket Type: " + socketType + "accept() failed", e)
 					break
 				}
 
@@ -240,39 +217,20 @@ class ServerBluetoothService
 				if (socket != null) {
 					synchronized(this@ServerBluetoothService) {
 						connected(socket, socket.remoteDevice,
-								mSocketType)
-						//                    switch (mState) {
-						//                        case STATE_LISTEN:
-						//                        case STATE_CONNECTING:
-						//                            // Situation normal. Start the connected thread.
-						//                            connected(socket, socket.getRemoteDevice(),
-						//                                    mSocketType);
-						//                            break;
-						//                        case STATE_NONE:
-						//                        case STATE_CONNECTED:
-						//                            // Either not ready or already connected. Terminate new socket.
-						//                            try {
-						//                                socket.close();
-						//                            } catch (IOException e) {
-						//                                Log.e(TAG, "Could not close unwanted socket", e);
-						//                            }
-						//                            break;
-						//                    }
+								socketType)
 					}
 				}
 			}
-			Log.i(TAG, "END mAcceptThread, socket Type: $mSocketType")
-
+			Log.i(TAG, "END mAcceptThread, socket Type: $socketType")
 		}
 
 		fun cancel() {
-			Log.d(TAG, "Socket Type" + mSocketType + "cancel " + this)
+			Log.d(TAG, "Socket Type" + socketType + "cancel " + this)
 			try {
-				mmServerSocket!!.close()
+				serverSocket.close()
 			} catch (e: IOException) {
-				Log.e(TAG, "Socket Type" + mSocketType + "close() of server failed", e)
+				Log.e(TAG, "Socket Type" + socketType + "close() of server failed", e)
 			}
-
 		}
 	}
 
@@ -280,25 +238,20 @@ class ServerBluetoothService
 	 * This thread runs during a connection with a remote device.
 	 * It handles all incoming and outgoing transmissions.
 	 */
-	internal inner class ConnectedThread(private val mmSocket: BluetoothSocket, socketType: String) : Thread() {
-		private val mmInStream: InputStream?
-		private val mmOutStream: OutputStream?
+	internal inner class ConnectedThread(private val socket: BluetoothSocket, socketType: String) : Thread() {
+		private lateinit var inStream: InputStream
+		private lateinit var outStream: OutputStream
 
 		init {
 			Log.d(TAG, "create ConnectedThread: $socketType")
-			var tmpIn: InputStream? = null
-			var tmpOut: OutputStream? = null
 
 			// Get the BluetoothSocket input and output streams
 			try {
-				tmpIn = mmSocket.inputStream
-				tmpOut = mmSocket.outputStream
+				inStream = socket.inputStream
+				outStream = socket.outputStream
 			} catch (e: IOException) {
-				Log.e(TAG, "temp sockets not created", e)
+				Log.e(TAG, "Failed to retrieve streams", e)
 			}
-
-			mmInStream = tmpIn
-			mmOutStream = tmpOut
 		}
 
 		override fun run() {
@@ -310,19 +263,20 @@ class ServerBluetoothService
 			while (true) {
 				try {
 					// Read from the InputStream
-					bytes = mmInStream!!.read(buffer)
+					bytes = inStream.read(buffer)
 
 					// Send the obtained bytes to the UI Activity
-					mHandler.obtainMessage(Constants.MESSAGE_READ, bytes, -1, buffer)
-							.sendToTarget()
+					handler.obtainMessage(
+							BluetoothMessageHandler.MESSAGE_READ,
+							bytes,
+							-1,
+							buffer
+					).sendToTarget()
+
 				} catch (e: IOException) {
 					Log.e(TAG, "disconnected", e)
-					connectionLost()
-					// Start the service over to restart listening mode
-					this@ServerBluetoothService.start()
-					break
+					lostConnection(socket.remoteDevice, this)
 				}
-
 			}
 		}
 
@@ -333,43 +287,47 @@ class ServerBluetoothService
 		 */
 		fun write(buffer: ByteArray) {
 			try {
-				mmOutStream!!.write(buffer)
+				outStream.write(buffer)
 
 				// Share the sent message back to the UI Activity
-				mHandler.obtainMessage(Constants.MESSAGE_WRITE, -1, -1, buffer)
-						.sendToTarget()
+				handler.obtainMessage(
+						BluetoothMessageHandler.MESSAGE_WRITE,
+						-1,
+						-1,
+						buffer
+				).sendToTarget()
 			} catch (e: IOException) {
 				Log.e(TAG, "Exception during write", e)
 			}
-
 		}
 
 		fun cancel() {
 			try {
-				mmSocket.close()
+				socket.close()
+				inStream.close()
+				outStream.close()
 			} catch (e: IOException) {
 				Log.e(TAG, "close() of connect socket failed", e)
 			}
-
 		}
 	}
 
 	companion object {
 		// Debugging
-		private val TAG = "ServerBluetoothService"
+		private val TAG = ServerBluetoothService::class.java.simpleName
 
 		// Name for the SDP record when creating server socket
-		private val NAME_SECURE = "BluetoothChatSecure"
-		private val NAME_INSECURE = "BluetoothChatInsecure"
+		private const val NAME_SECURE = "BluetoothChatSecure"
+		private const val NAME_INSECURE = "BluetoothChatInsecure"
 
 		// Unique UUID for this application
 		private val MY_UUID_SECURE = UUID.fromString("fa87c0d0-afac-11de-8a39-0800200c9a66")
 		private val MY_UUID_INSECURE = UUID.fromString("8ce255c0-200a-11e0-ac64-0800200c9a66")
 
 		// Constants that indicate the current connection state
-		val STATE_NONE = 0       // we're doing nothing
-		val STATE_LISTEN = 1     // now listening for incoming connections
-		val STATE_CONNECTING = 2 // now initiating an outgoing connection
-		val STATE_CONNECTED = 3  // now connected to a remote device
+		const val STATE_NONE = 0       // we're doing nothing
+		const val STATE_LISTEN = 1     // now listening for incoming connections
+		const val STATE_CONNECTING = 2 // now initiating an outgoing connection
+		const val STATE_CONNECTED = 3  // now connected to a remote device
 	}
 }
