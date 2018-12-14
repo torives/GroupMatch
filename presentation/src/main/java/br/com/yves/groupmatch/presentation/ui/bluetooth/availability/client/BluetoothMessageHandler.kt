@@ -85,10 +85,8 @@ abstract class BluetoothMessageHandler(listener: Listener) : Handler() {
 }
 
 class ClientBluetoothMessageHandler(listener: BluetoothMessageHandler.Listener) : BluetoothMessageHandler(listener) {
-
-	override fun onMessageWrite(message: Message) {
-		TODO("Criar o fluxo de exibição do resultado do match")
-	}
+    //Do Nothing
+    override fun onMessageWrite(message: Message) {}
 }
 
 class ServerBluetoothMessageHandler(listener: BluetoothMessageHandler.Listener) : BluetoothMessageHandler(listener) {

@@ -9,161 +9,164 @@ import android.content.IntentFilter
 import android.util.Log
 import br.com.yves.groupmatch.R
 import br.com.yves.groupmatch.domain.showCalendar.ShowCalendar
+import br.com.yves.groupmatch.presentation.runOnBackground
 import br.com.yves.groupmatch.presentation.ui.bluetooth.availability.server.ClientBluetoothService
 import br.com.yves.groupmatch.presentation.ui.bluetooth.availability.server.ServerBluetoothService
+import com.google.gson.Gson
 
 data class BluetoothServer(val name: String, val address: String)
 data class BluetoothClient(val name: String, val status: BluetoothClientStatus) {
-	enum class BluetoothClientStatus {
-		Connected, TransferringData, DataTransferComplete, DataTransferFailed, Disconnected
-	}
+    enum class BluetoothClientStatus {
+        Connected, TransferringData, DataTransferComplete, DataTransferFailed, Disconnected
+    }
 }
 
 enum class BluetoothConnectionState {
-	Connected, Connecting, Disconnected, Idle
+    Connected, Connecting, Disconnected, Idle
 }
 
 class ClientPresenter(
-		private val view: BluetoothView,
-		private var bluetoothAdapter: BluetoothAdapter,
-		private var getCalendar: ShowCalendar
+        private val view: BluetoothView,
+        private var bluetoothAdapter: BluetoothAdapter,
+        private var getCalendar: ShowCalendar
 ) : BluetoothMessageHandler.Listener {
 
-	private val bluetoothService = ClientBluetoothService(ClientBluetoothMessageHandler(this))
+    private val bluetoothService = ClientBluetoothService(ClientBluetoothMessageHandler(this))
 
-	fun onViewCreated() {
-		var filter = IntentFilter(BluetoothDevice.ACTION_FOUND)
-		view.registerBroadcastReceiver(bluetoothBroadcastReceiver, filter)
+    fun onViewCreated() {
+        var filter = IntentFilter(BluetoothDevice.ACTION_FOUND)
+        view.registerBroadcastReceiver(bluetoothBroadcastReceiver, filter)
 
-		filter = IntentFilter(BluetoothAdapter.ACTION_DISCOVERY_FINISHED)
-		view.registerBroadcastReceiver(bluetoothBroadcastReceiver, filter)
-	}
+        filter = IntentFilter(BluetoothAdapter.ACTION_DISCOVERY_FINISHED)
+        view.registerBroadcastReceiver(bluetoothBroadcastReceiver, filter)
+    }
 
-	fun onResume() {
-		// Only if the state is STATE_NONE, do we know that we haven't started already
-		if (bluetoothService.state == ServerBluetoothService.STATE_NONE) {
-			bluetoothService.start()
-		}
-	}
+    fun onResume() {
+        // Only if the state is STATE_NONE, do we know that we haven't started already
+        if (bluetoothService.state == ServerBluetoothService.STATE_NONE) {
+            bluetoothService.start()
+        }
+    }
 
-	fun onDestroy() {
-		bluetoothAdapter.cancelDiscovery()
-		bluetoothService.stop()
-		view.unregisterBroadcastReceiver(bluetoothBroadcastReceiver)
-	}
+    fun onDestroy() {
+        bluetoothAdapter.cancelDiscovery()
+        bluetoothService.stop()
+        view.unregisterBroadcastReceiver(bluetoothBroadcastReceiver)
+    }
 
-	fun onClickServerSearchButton() {
-		if (bluetoothAdapter.isDiscovering) {
-			stopDiscovery()
-		} else {
-			startDiscovery()
-		}
-	}
+    fun onClickServerSearchButton() {
+        if (bluetoothAdapter.isDiscovering) {
+            stopDiscovery()
+        } else {
+            startDiscovery()
+        }
+    }
 
-	fun onServerSelected(server: BluetoothServer) {
-		bluetoothAdapter.cancelDiscovery()
+    fun onServerSelected(server: BluetoothServer) {
+        bluetoothAdapter.cancelDiscovery()
 
-		view.showWaitingConnection()
+        view.showWaitingConnection()
 
-		val address = server.address
-		connectDevice(address)
-	}
+        val address = server.address
+        connectDevice(address)
+    }
 
-	private fun connectDevice(address: String, secure: Boolean = true) {
-		val device = bluetoothAdapter.getRemoteDevice(address)
-		bluetoothService.connect(device, secure)
-	}
+    private fun connectDevice(address: String, secure: Boolean = true) {
+        val device = bluetoothAdapter.getRemoteDevice(address)
+        bluetoothService.connect(device, secure)
+    }
 
-	private fun startDiscovery() {
-		Log.i(TAG, "startDiscovery()")
+    private fun startDiscovery() {
+        Log.i(TAG, "startDiscovery()")
 
-		view.setServerSearchButtonImage(R.drawable.ic_close)
-		view.clearServerList()
-		view.toggleProgressBarVisibility(true)
+        view.setServerSearchButtonImage(R.drawable.ic_close)
+        view.clearServerList()
+        view.toggleProgressBarVisibility(true)
 
-		//TODO: MOSTRAR OU NÃO OS DEVICES JÁ PAREADOS?
-		displayPairedDevices()
+        //TODO: MOSTRAR OU NÃO OS DEVICES JÁ PAREADOS?
+        displayPairedDevices()
 
-		bluetoothAdapter.startDiscovery()
-	}
+        bluetoothAdapter.startDiscovery()
+    }
 
-	private fun displayPairedDevices() {
-		val pairedDevices = bluetoothAdapter.bondedDevices
+    private fun displayPairedDevices() {
+        val pairedDevices = bluetoothAdapter.bondedDevices
 
-		pairedDevices.map {
-			BluetoothServer(it.name, it.address)
-		}.also {
-			view.displayNewServers(it)
-		}
-	}
+        pairedDevices.map {
+            BluetoothServer(it.name, it.address)
+        }.also {
+            view.displayNewServers(it)
+        }
+    }
 
-	private fun onNewDeviceFound(device: BluetoothDevice) {
-		if (device.bondState != BluetoothDevice.BOND_BONDED) {
-			val server = BluetoothServer(
-					device.name ?: "desconhecido",
-					device.address)
-			view.displayNewServer(server)
-		}
-	}
+    private fun onNewDeviceFound(device: BluetoothDevice) {
+        if (device.bondState != BluetoothDevice.BOND_BONDED) {
+            val server = BluetoothServer(
+                    device.name ?: "desconhecido",
+                    device.address)
+            view.displayNewServer(server)
+        }
+    }
 
-	private fun stopDiscovery() {
-		Log.i(TAG, "stopDiscovery()")
+    private fun stopDiscovery() {
+        Log.i(TAG, "stopDiscovery()")
 
-		bluetoothAdapter.cancelDiscovery()
-		view.toggleProgressBarVisibility(false)
-		view.setServerSearchButtonImage(R.drawable.ic_bluetooth_searching)
-	}
+        bluetoothAdapter.cancelDiscovery()
+        view.toggleProgressBarVisibility(false)
+        view.setServerSearchButtonImage(R.drawable.ic_bluetooth_searching)
+    }
 
-	//region BluetoothMessageHandler.Listener
-	override fun onMessageRead(message: String) {
-		view.displayToast(message)
-	}
+    //region BluetoothMessageHandler.Listener
+    override fun onMessageRead(message: String) {
+        view.displayToast(message)
+    }
 
-	override fun onDeviceConnected(device: BluetoothDevice) {
-		view.displayToast(device.name)
-	}
+    override fun onDeviceConnected(device: BluetoothDevice) {
+        view.showWaitingMatch()
 
-	override fun onConnectionStateChange(newState: BluetoothConnectionState) {
-		view.displayToast(newState.toString())
-		when (newState) {
-			BluetoothConnectionState.Idle -> {}
-			BluetoothConnectionState.Connecting -> {}
-			BluetoothConnectionState.Connected -> view.showWaitingMatch()
-			BluetoothConnectionState.Disconnected -> {}
-		}
-	}
+        runOnBackground {
+            val calendar = getCalendar.execute()
+            val busy = calendar.filter { it.isBusy }
+            val encoded = Gson().toJson(busy)
+            bluetoothService.write(encoded.toByteArray())
+        }
+    }
 
-	//TODO: implementar fluxo de erro
-	override fun onFailToConnect(device: BluetoothDevice) {
-		view.displayToast(R.string.failed_to_connect_to_server)
-		view.resetState()
-	}
+    override fun onConnectionStateChange(newState: BluetoothConnectionState) {
+        view.displayToast(newState.toString())
+    }
 
-	//TODO: implementar fluxo de erro
-	override fun onConnectionLost(device: BluetoothDevice) {
-		view.displayToast(R.string.lost_connection_to_server)
-		view.resetState()
-	}
-	//endregion
+    //TODO: implementar fluxo de erro
+    override fun onFailToConnect(device: BluetoothDevice) {
+        view.displayToast(R.string.failed_to_connect_to_server)
+        view.resetState()
+    }
 
-	/**
-	 * The BroadcastReceiver that listens for discovered devices and changes the title when
-	 * discovery is finished
-	 */
-	private val bluetoothBroadcastReceiver = object : BroadcastReceiver() {
-		override fun onReceive(context: Context, intent: Intent) {
-			val action = intent.action
+    //TODO: implementar fluxo de erro
+    override fun onConnectionLost(device: BluetoothDevice) {
+        view.displayToast(R.string.lost_connection_to_server)
+        view.resetState()
+    }
+    //endregion
 
-			if (BluetoothDevice.ACTION_FOUND == action) {
-				val device = intent.getParcelableExtra<BluetoothDevice>(BluetoothDevice.EXTRA_DEVICE)
-				onNewDeviceFound(device)
-			} else if (BluetoothAdapter.ACTION_DISCOVERY_FINISHED == action) {
-				stopDiscovery()
-			}
-		}
-	}
+    /**
+     * The BroadcastReceiver that listens for discovered devices and changes the title when
+     * discovery is finished
+     */
+    private val bluetoothBroadcastReceiver = object : BroadcastReceiver() {
+        override fun onReceive(context: Context, intent: Intent) {
+            val action = intent.action
 
-	companion object {
-		private val TAG = ClientPresenter::class.java.simpleName
-	}
+            if (BluetoothDevice.ACTION_FOUND == action) {
+                val device = intent.getParcelableExtra<BluetoothDevice>(BluetoothDevice.EXTRA_DEVICE)
+                onNewDeviceFound(device)
+            } else if (BluetoothAdapter.ACTION_DISCOVERY_FINISHED == action) {
+                stopDiscovery()
+            }
+        }
+    }
+
+    companion object {
+        private val TAG = ClientPresenter::class.java.simpleName
+    }
 }

@@ -56,7 +56,7 @@ class ServerPresenter(
 
 	//region BluetoothMessageHandler.Listener
 	override fun onMessageRead(message: String) {
-		TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+		view.displayToast(message)
 	}
 
 	override fun onDeviceConnected(device: BluetoothDevice) {
