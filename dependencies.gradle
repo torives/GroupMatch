@@ -37,7 +37,8 @@ ext {
             kotlin                  : "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion",
             threetenabp             : 'com.jakewharton.threetenabp:threetenabp:1.1.1',
             room                    : "androidx.room:room-runtime:$roomVersion",
-            room_compiler           : "androidx.room:room-compiler:$roomVersion"
+            room_compiler           : "androidx.room:room-compiler:$roomVersion",
+            gson                    : "com.google.code.gson:gson:2.8.5"
     ]
 
     testDependencies = [
