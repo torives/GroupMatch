@@ -1,11 +1,11 @@
 package br.com.yves.groupmatch.domain
 
-import br.com.yves.groupmatch.domain.sendCalendar.TransferCalendar
+import br.com.yves.groupmatch.domain.sendCalendar.BusyCalendar
 import br.com.yves.groupmatch.domain.showCalendar.Calendar
 import br.com.yves.groupmatch.domain.showCalendar.TimeSlot
 import org.threeten.bp.LocalDateTime
 
-class CompareCalendars(private val calendars: List<TransferCalendar>) : UseCase<MatchResult>() {
+class CompareCalendars(private val calendars: List<BusyCalendar>) : UseCase<MatchResult>() {
 
 	override fun execute(): MatchResult {
 		if (calendars.isEmpty()) {
@@ -30,7 +30,7 @@ class CompareCalendars(private val calendars: List<TransferCalendar>) : UseCase<
 		}
 	}
 
-	private fun isTimePeriodTheSame(calendars: List<TransferCalendar>): Boolean {
+	private fun isTimePeriodTheSame(calendars: List<BusyCalendar>): Boolean {
 
 		if (calendars.isEmpty()) {
 			throw IllegalArgumentException("Cannot validate empty calendar list")

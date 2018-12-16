@@ -15,7 +15,7 @@ class SendCalendar(
 	}
 
 	override fun execute() {
-		val transferCalendar = TransferCalendarFactory.create(calendar)
+		val transferCalendar = BusyCalendarFactory.create(calendar)
 		val payload = encoder.encode(transferCalendar)
 		bluetoothService.send(payload)
 	}
