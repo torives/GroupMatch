@@ -1,4 +1,4 @@
-package br.com.yves.groupmatch.presentation.ui.bluetooth.availability.client
+package br.com.yves.groupmatch.presentation.ui.bluetooth.client
 
 import android.content.BroadcastReceiver
 import android.content.IntentFilter
@@ -19,5 +19,6 @@ interface BluetoothView {
 
 	//DEBUG
 	fun displayToast(message: String)
+
 	fun displayToast(@StringRes resId: Int)
 }

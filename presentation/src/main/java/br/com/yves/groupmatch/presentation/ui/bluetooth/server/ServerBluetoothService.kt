@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package br.com.yves.groupmatch.presentation.ui.bluetooth.availability.server
+package br.com.yves.groupmatch.presentation.ui.bluetooth.server
 
 import android.bluetooth.BluetoothAdapter
 import android.bluetooth.BluetoothDevice
@@ -22,7 +22,7 @@ import android.bluetooth.BluetoothServerSocket
 import android.bluetooth.BluetoothSocket
 import android.os.Handler
 import android.util.Log
-import br.com.yves.groupmatch.presentation.ui.bluetooth.availability.client.BluetoothMessageHandler
+import br.com.yves.groupmatch.presentation.ui.bluetooth.BluetoothMessageHandler
 import java.io.IOException
 import java.io.InputStream
 import java.io.OutputStream

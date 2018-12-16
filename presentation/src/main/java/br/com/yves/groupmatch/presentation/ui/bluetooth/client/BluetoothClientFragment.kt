@@ -1,4 +1,4 @@
-package br.com.yves.groupmatch.presentation.ui.bluetooth.availability.client
+package br.com.yves.groupmatch.presentation.ui.bluetooth.client
 
 
 import android.content.BroadcastReceiver

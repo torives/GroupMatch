@@ -1,9 +1,10 @@
-package br.com.yves.groupmatch.presentation.ui.bluetooth.availability.client
+package br.com.yves.groupmatch.presentation.ui.bluetooth
 
 import android.bluetooth.BluetoothDevice
 import android.os.Handler
 import android.os.Message
-import br.com.yves.groupmatch.presentation.ui.bluetooth.availability.server.ServerBluetoothService
+import br.com.yves.groupmatch.presentation.ui.bluetooth.client.BluetoothConnectionState
+import br.com.yves.groupmatch.presentation.ui.bluetooth.server.ServerBluetoothService
 import java.lang.ref.WeakReference
 
 /**
@@ -84,12 +85,12 @@ abstract class BluetoothMessageHandler(listener: Listener) : Handler() {
 	}
 }
 
-class ClientBluetoothMessageHandler(listener: BluetoothMessageHandler.Listener) : BluetoothMessageHandler(listener) {
-    //Do Nothing
-    override fun onMessageWrite(message: Message) {}
+class ClientBluetoothMessageHandler(listener: Listener) : BluetoothMessageHandler(listener) {
+	//Do Nothing
+	override fun onMessageWrite(message: Message) {}
 }
 
-class ServerBluetoothMessageHandler(listener: BluetoothMessageHandler.Listener) : BluetoothMessageHandler(listener) {
+class ServerBluetoothMessageHandler(listener: Listener) : BluetoothMessageHandler(listener) {
 
 	override fun onMessageWrite(message: Message) {
 		TODO("Criar o fluxo de exibição do resultado do match")

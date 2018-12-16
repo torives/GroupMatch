@@ -1,4 +1,4 @@
-package br.com.yves.groupmatch.presentation.ui.bluetooth.availability.server
+package br.com.yves.groupmatch.presentation.ui.bluetooth.server
 
 import android.view.LayoutInflater
 import android.view.View
@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import br.com.yves.groupmatch.R
-import br.com.yves.groupmatch.presentation.ui.bluetooth.availability.client.BluetoothClient
+import br.com.yves.groupmatch.presentation.ui.bluetooth.client.BluetoothClient
 
 class ClientAdapter(val onItemClick: ((BluetoothClient) -> Unit)? = null) :
 		RecyclerView.Adapter<ClientAdapter.ViewHolder>() {
@@ -44,14 +44,14 @@ class ClientAdapter(val onItemClick: ((BluetoothClient) -> Unit)? = null) :
 		}
 	}
 
-	fun add(server: BluetoothClient){
-		if(!clients.contains(server)){
+	fun add(server: BluetoothClient) {
+		if (!clients.contains(server)) {
 			clients.add(server)
 			notifyItemChanged(clients.lastIndex)
 		}
 	}
 
-	fun addAll(servers: Collection<BluetoothClient>){
+	fun addAll(servers: Collection<BluetoothClient>) {
 		val lastPosition = this.clients.lastIndex
 
 		this.clients.addAll(servers)
@@ -60,7 +60,7 @@ class ClientAdapter(val onItemClick: ((BluetoothClient) -> Unit)? = null) :
 
 	fun update(client: BluetoothClient) {
 		val index = clients.indexOf(client)
-		if(index < 0) {
+		if (index < 0) {
 			throw IllegalStateException("Trying to update client $client before adding it to the list")
 		} else {
 			clients[index] = client
@@ -70,7 +70,7 @@ class ClientAdapter(val onItemClick: ((BluetoothClient) -> Unit)? = null) :
 
 	fun remove(client: BluetoothClient) {
 		val index = clients.indexOfFirst { it.name == client.name }
-		if(index < 0) {
+		if (index < 0) {
 			throw IllegalStateException("Attempt to remove client $client who is not on the list")
 		} else {
 			clients.removeAt(index)

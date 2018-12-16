@@ -20,7 +20,7 @@
         app:startDestination="@id/connectionRoleFragment">
         <fragment
             android:id="@+id/searchBluetoothClientsFragment"
-            android:name="br.com.yves.groupmatch.presentation.ui.bluetooth.availability.server.BluetoothServerFragment"
+            android:name="br.com.yves.groupmatch.presentation.ui.bluetooth.server.BluetoothServerFragment"
             android:label="SearchBluetoothClientsFragment"
             tools:layout="@layout/fragment_search_bluetooth_clients" />
         <fragment
@@ -45,7 +45,7 @@
         </fragment>
         <fragment
             android:id="@+id/searchBluetoothServer"
-            android:name="br.com.yves.groupmatch.presentation.ui.bluetooth.availability.client.BluetoothClientFragment"
+            android:name="br.com.yves.groupmatch.presentation.ui.bluetooth.client.BluetoothClientFragment"
             android:label="fragment_search_bluetooth_server"
             tools:layout="@layout/fragment_bluetooth_client" />
     </navigation>
