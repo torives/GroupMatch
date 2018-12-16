@@ -8,6 +8,6 @@ object TransferCalendarFactory {
         val lastDate = calendar.last().date
         val busySlots = calendar.filter { it.isBusy }
 
-        return TransferCalendar(firstDate, lastDate, busySlots)
+        return TransferCalendar(firstDate.rangeTo(lastDate), busySlots)
     }
 }

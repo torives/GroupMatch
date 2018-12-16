@@ -4,5 +4,11 @@ import org.threeten.bp.LocalDateTime
 
 data class TimeSlot(
 	val date: LocalDateTime,
-	val isBusy: Boolean
-)
+	var isBusy: Boolean
+) {
+	fun merge(timeSlot: TimeSlot) {
+		if(timeSlot.isBusy) {
+			this.isBusy = true
+		}
+	}
+}
