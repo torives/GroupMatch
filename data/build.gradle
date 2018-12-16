@@ -42,6 +42,7 @@ dependencies {
     implementation baseDependencies.kotlin
     implementation baseDependencies.app_compat
     implementation baseDependencies.room
+    implementation baseDependencies.gson
     kapt baseDependencies.room_compiler
 
     testImplementation testDependencies.junit
@@ -49,7 +50,6 @@ dependencies {
     testImplementation testDependencies.mockitoKotlin
 
     androidTestImplementation testDependencies.mockitoKotlin
-//    androidTestImplementation "org.mockito:mockito-inline:2.23.0"
     androidTestImplementation testDependencies.mockitoAndroid
     androidTestImplementation testDependencies.supportRunner
 }

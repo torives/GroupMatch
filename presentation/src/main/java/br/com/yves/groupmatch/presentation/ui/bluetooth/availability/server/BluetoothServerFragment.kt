@@ -4,6 +4,7 @@ import android.bluetooth.BluetoothAdapter
 import android.bluetooth.BluetoothDevice
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.GONE
@@ -33,6 +34,7 @@ interface ServerView {
 
 	//DEBUG
 	fun displayToast(message: String)
+
 	fun displayToast(@StringRes resId: Int)
 }
 
@@ -57,6 +59,7 @@ class ServerPresenter(
 	//region BluetoothMessageHandler.Listener
 	override fun onMessageRead(message: String) {
 		view.displayToast(message)
+		Log.d(TAG, message)
 	}
 
 	override fun onDeviceConnected(device: BluetoothDevice) {
@@ -71,10 +74,14 @@ class ServerPresenter(
 	override fun onConnectionStateChange(newState: BluetoothConnectionState) {
 		view.displayToast(newState.toString())
 		when (newState) {
-			BluetoothConnectionState.Idle -> {}
-			BluetoothConnectionState.Connecting -> {}
-			BluetoothConnectionState.Connected -> {}
-			BluetoothConnectionState.Disconnected -> {}
+			BluetoothConnectionState.Idle -> {
+			}
+			BluetoothConnectionState.Connecting -> {
+			}
+			BluetoothConnectionState.Connected -> {
+			}
+			BluetoothConnectionState.Disconnected -> {
+			}
 		}
 	}
 
@@ -102,6 +109,10 @@ class ServerPresenter(
 			discoverableIntent.putExtra(BluetoothAdapter.EXTRA_DISCOVERABLE_DURATION, 12)
 			view.sendIntent(discoverableIntent)
 		}
+	}
+
+	companion object {
+		private val TAG = ServerPresenter::class.java.simpleName
 	}
 }
 

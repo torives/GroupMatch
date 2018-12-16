@@ -8,11 +8,13 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.util.Log
 import br.com.yves.groupmatch.R
+import br.com.yves.groupmatch.data.sendCalendar.CalendarArchiverFactory
+import br.com.yves.groupmatch.domain.sendCalendar.CalendarArchiver
+import br.com.yves.groupmatch.domain.sendCalendar.SendCalendar
 import br.com.yves.groupmatch.domain.showCalendar.ShowCalendar
 import br.com.yves.groupmatch.presentation.runOnBackground
 import br.com.yves.groupmatch.presentation.ui.bluetooth.availability.server.ClientBluetoothService
 import br.com.yves.groupmatch.presentation.ui.bluetooth.availability.server.ServerBluetoothService
-import com.google.gson.Gson
 
 data class BluetoothServer(val name: String, val address: String)
 data class BluetoothClient(val name: String, val status: BluetoothClientStatus) {
@@ -27,11 +29,12 @@ enum class BluetoothConnectionState {
 
 class ClientPresenter(
         private val view: BluetoothView,
-        private var bluetoothAdapter: BluetoothAdapter,
-        private var getCalendar: ShowCalendar
+        private val bluetoothAdapter: BluetoothAdapter,
+        private val getCalendar: ShowCalendar
 ) : BluetoothMessageHandler.Listener {
 
     private val bluetoothService = ClientBluetoothService(ClientBluetoothMessageHandler(this))
+    private val sendCalendar by lazy { SendCalendar(bluetoothService, CalendarArchiverFactory.create()) }
 
     fun onViewCreated() {
         var filter = IntentFilter(BluetoothDevice.ACTION_FOUND)
@@ -126,9 +129,7 @@ class ClientPresenter(
 
         runOnBackground {
             val calendar = getCalendar.execute()
-            val busy = calendar.filter { it.isBusy }
-            val encoded = Gson().toJson(busy)
-            bluetoothService.write(encoded.toByteArray())
+            sendCalendar.with(calendar).execute()
         }
     }
 

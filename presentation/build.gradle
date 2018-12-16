@@ -49,7 +49,6 @@ dependencies {
     implementation baseDependencies.navigation_fragment
     implementation baseDependencies.navigation_ui
     implementation baseDependencies.anko
-    implementation baseDependencies.gson
 
     // Tests
     testImplementation testDependencies.junit
