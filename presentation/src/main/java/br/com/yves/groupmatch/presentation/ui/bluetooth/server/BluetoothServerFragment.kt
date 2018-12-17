@@ -39,6 +39,9 @@ class BluetoothServerFragment : Fragment(), ServerView {
 		setupRecyclerView()
 
 		matchButton.setOnClickListener {
+			runOnBackground {
+				presenter.onMatchButtonPressed()
+			}
 		}
 	}
 
