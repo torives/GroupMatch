@@ -1,4 +1,4 @@
-package br.com.yves.groupmatch.presentation.factory.showCalendar
+package br.com.yves.groupmatch.domain.createCalendar
 
 import br.com.yves.groupmatch.domain.DateRepository
 import br.com.yves.groupmatch.domain.TimeSlotRepository

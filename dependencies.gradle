@@ -22,6 +22,7 @@ ext {
     roomVersion = '2.0.0'
     mockitoVersion = '2.23.0'
     mockitoKotlinVersion = '2.0.0-RC3'
+    threetenabpVersion = '1.1.1'
 
     dependencies = [
             support_v4              : "androidx.legacy:legacy-support-v4:$supportVersion",
@@ -35,7 +36,7 @@ ext {
             navigation_ui           : "android.arch.navigation:navigation-ui-ktx:$navigationVersion",
             anko                    : "org.jetbrains.anko:anko-appcompat-v7-commons:0.10.7",
             kotlin                  : "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion",
-            threetenabp             : 'com.jakewharton.threetenabp:threetenabp:1.1.1',
+            threetenabp             : "com.jakewharton.threetenabp:threetenabp:$threetenabpVersion",
             room                    : "androidx.room:room-runtime:$roomVersion",
             room_compiler           : "androidx.room:room-compiler:$roomVersion",
             gson                    : "com.google.code.gson:gson:2.8.5"
@@ -46,6 +47,7 @@ ext {
             kotlinJUnit             : "org.jetbrains.kotlin:kotlin-test-junit:$kotlinVersion",
             mockitoKotlin           : "com.nhaarman.mockitokotlin2:mockito-kotlin:$mockitoKotlinVersion",
             mockitoAndroid          : "org.mockito:mockito-android:$mockitoVersion",
-            supportRunner           : "com.android.support.test:runner:1.0.2"
+            supportRunner           : "com.android.support.test:runner:1.0.2",
+            threetenabp             : "com.jakewharton.threetenabp:threetenabp:$threetenabpVersion",
     ]
 }
