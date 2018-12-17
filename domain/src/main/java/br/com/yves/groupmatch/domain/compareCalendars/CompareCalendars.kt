@@ -1,16 +1,9 @@
-package br.com.yves.groupmatch.domain
+package br.com.yves.groupmatch.domain.compareCalendars
 
+import br.com.yves.groupmatch.domain.UseCase
+import br.com.yves.groupmatch.domain.Week
 import br.com.yves.groupmatch.domain.createCalendar.CreateCalendar
 import br.com.yves.groupmatch.domain.sendCalendar.BusyCalendar
-import br.com.yves.groupmatch.domain.showCalendar.Calendar
-import br.com.yves.groupmatch.domain.showCalendar.TimeSlot
-
-object CompareCalendarsFactory {
-	fun create(
-			calendars: List<BusyCalendar>,
-			createCalendar: CreateCalendar
-	) = CompareCalendars(calendars, createCalendar)
-}
 
 class CompareCalendars(
 		private val calendars: List<BusyCalendar>,
@@ -55,10 +48,3 @@ class CompareCalendars(
 		return true
 	}
 }
-
-data class User(val name: String)
-
-data class MatchResult(
-		val calendar: Calendar,
-		val result: Map<TimeSlot, List<User>?>? = null //TODO: registrar quem está ocupado em cada slot
-)
