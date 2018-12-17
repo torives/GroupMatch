@@ -1,6 +1,4 @@
-import br.com.yves.groupmatch.domain.CompareCalendars
-import br.com.yves.groupmatch.domain.DateRepository
-import br.com.yves.groupmatch.domain.createCalendar.CreateCalendar
+import br.com.yves.groupmatch.domain.compareCalendars.CompareCalendars
 import br.com.yves.groupmatch.domain.createCalendar.CreateCalendarFactory
 import br.com.yves.groupmatch.domain.sendCalendar.BusyCalendarFactory
 import br.com.yves.groupmatch.domain.showCalendar.Calendar
@@ -35,6 +33,20 @@ class CompareCalendarsTests {
 
 	@Test
 	fun compareEmptyCalendarWithBusy(){
+		var date: LocalDateTime
+		emptyCalendar.first().apply {
+			isBusy = true
+			date = this.date
+		}
+		val calendar = BusyCalendarFactory.create(emptyCalendar)
+		val result = CompareCalendars(listOf(calendar), createCalendar).execute()
+
+		val resultTimeSlot = result.calendar.first { it.date == date }
+		assert(resultTimeSlot.isBusy)
+	}
+
+	@Test
+	fun compareEmptyCalendarWithTwoBusy(){
 		var date: LocalDateTime
 		emptyCalendar.first().apply {
 			isBusy = true
