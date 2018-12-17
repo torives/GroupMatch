@@ -10,10 +10,9 @@ interface ServerView {
 	fun removeClient(client: BluetoothClient)
 	fun toggleProgressBarVisibility(isVisible: Boolean)
 	fun sendIntent(intent: Intent)
-
+	fun toggleMatchButtonVisibility(isVisible: Boolean)
 
 	//DEBUG
 	fun displayToast(message: String)
-
 	fun displayToast(@StringRes resId: Int)
 }

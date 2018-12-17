@@ -45,11 +45,11 @@
                     android:layout_height="15dp"
 
                     android:visibility="visible"
-                    tools:visibility="visible"
-
                     app:layout_constraintBottom_toBottomOf="parent"
+
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:visibility="visible" />
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.cardview.widget.CardView>
 
@@ -57,6 +57,8 @@
             android:id="@+id/foundServersList"
             android:layout_width="0dp"
             android:layout_height="0dp"
+
+            android:paddingBottom="56dp"
 
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -73,10 +75,28 @@
         android:id="@+id/enableDiscoverabilityButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+
         android:layout_gravity="bottom|end"
+
         android:layout_margin="16dp"
-        app:srcCompat="@drawable/ic_bluetooth_searching"
+
         android:tint="@android:color/white"
-        />
+
+        app:srcCompat="@drawable/ic_bluetooth_searching" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/matchButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        android:layout_gravity="bottom|center"
+        app:layout_insetEdge="bottom"
+
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+
+        android:visibility="gone"
+        tools:visibility="visible"
+        android:text="@string/bluetooth_server_fragment_match_button_title" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

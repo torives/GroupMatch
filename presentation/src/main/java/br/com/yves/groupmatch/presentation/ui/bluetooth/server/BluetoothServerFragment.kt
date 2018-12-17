@@ -36,6 +36,13 @@ class BluetoothServerFragment : Fragment(), ServerView {
 
 		presenter = ServerPresenterFactory.create(this)
 
+		setupRecyclerView()
+
+		matchButton.setOnClickListener {
+		}
+	}
+
+	private fun setupRecyclerView() {
 		foundServersList.layoutManager = LinearLayoutManager(context)
 		clientAdapter = ClientAdapter()
 		foundServersList.adapter = clientAdapter
@@ -95,6 +102,10 @@ class BluetoothServerFragment : Fragment(), ServerView {
 		runOnUiThread {
 			startActivity(intent)
 		}
+	}
+
+	override fun toggleMatchButtonVisibility(isVisible: Boolean) {
+		matchButton.visibility = if(isVisible) VISIBLE else GONE
 	}
 
 	override fun displayToast(message: String) {

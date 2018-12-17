@@ -27,5 +27,6 @@
     <!--region BluetoothServerFragment -->
     <string name="failed_to_connect_to_client">Unable to establish connection to client</string>
     <string name="lost_connection_to_client">Lost connection to client</string>
+    <string name="bluetooth_server_fragment_match_button_title">Match</string>
     <!--endregion-->
 </resources>
