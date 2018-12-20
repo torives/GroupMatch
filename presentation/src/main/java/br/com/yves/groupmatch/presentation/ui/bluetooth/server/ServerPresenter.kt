@@ -5,7 +5,11 @@ import android.bluetooth.BluetoothDevice
 import android.content.Intent
 import android.util.Log
 import br.com.yves.groupmatch.R
+import br.com.yves.groupmatch.domain.compareCalendars.CompareCalendars
+import br.com.yves.groupmatch.domain.compareCalendars.CompareCalendarsFactory
+import br.com.yves.groupmatch.domain.createCalendar.CreateCalendarFactory
 import br.com.yves.groupmatch.domain.sendCalendar.BusyCalendar
+import br.com.yves.groupmatch.presentation.factory.DateRepositoryFactory
 import br.com.yves.groupmatch.presentation.ui.bluetooth.BluetoothMessageHandler
 import br.com.yves.groupmatch.presentation.ui.bluetooth.ServerBluetoothMessageHandler
 import br.com.yves.groupmatch.presentation.ui.bluetooth.client.BluetoothClient
@@ -24,6 +28,7 @@ class ServerPresenter(
 	}
 
 	fun onResume() {
+		//TODO: stop progress view after the 12seconds of bluetooth visibility
 		ensureDiscoverable()
 	}
 
@@ -34,16 +39,22 @@ class ServerPresenter(
 	fun onMatchButtonPressed() {
 		//TODO:
 		// nao deixa mais ngm se conectar
+		bluetoothService.pause()
+
 		// calcula o resultado
+
+		val compare = CompareCalendarsFactory.create(receivedCalendars, CreateCalendarFactory.create(DateRepositoryFactory.create()))
+		val result = compare.execute()
+		Log.i(TAG, result.toString())
 		//manda o resultado pra geral
 		// cancela as conexao tudo
 		// exibe o resultado
 	}
 
 	//region BluetoothMessageHandler.Listener
+	//TODO: identificar de que client é o calendar em questão para atualizar a lista
 	override fun onMessageRead(message: String) {
 		view.displayToast(message)
-
 		try {
 			val busyCalendar = Gson().fromJson(message, BusyCalendar::class.java)
 
@@ -54,12 +65,6 @@ class ServerPresenter(
 		} catch (exception: Exception) {
 			Log.e(TAG, "Failed to parse received message to BusyCalendar")
 		}
-
-		// Parse message
-		// Store message
-		// Compare
-		// Send result
-
 		Log.d(TAG, message)
 	}
 

@@ -86,6 +86,41 @@ class ServerBluetoothService
 		}
 	}
 
+	@Synchronized
+	fun pause() {
+		Log.d(TAG, "pause")
+
+		if (secureAcceptThread != null) {
+			secureAcceptThread!!.cancel()
+			secureAcceptThread = null
+		}
+
+		if (insecureAcceptThread != null) {
+			insecureAcceptThread!!.cancel()
+			insecureAcceptThread = null
+		}
+
+		//FIXME: adicionar o estado de pausado
+		state = STATE_NONE
+
+	}
+
+	@Synchronized
+	fun resume() {
+		Log.d(TAG, "resume")
+		// Start the thread to listen on a BluetoothServerSocket
+		if (secureAcceptThread == null) {
+			secureAcceptThread = AcceptThread(true)
+			secureAcceptThread!!.start()
+		}
+		if (insecureAcceptThread == null) {
+			insecureAcceptThread = AcceptThread(false)
+			insecureAcceptThread!!.start()
+		}
+
+		state = STATE_LISTEN
+	}
+
 	/**
 	 * Start the ConnectedThread to begin managing a Bluetooth connection
 	 *
