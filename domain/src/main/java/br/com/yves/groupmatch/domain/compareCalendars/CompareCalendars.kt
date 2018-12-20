@@ -30,7 +30,8 @@ class CompareCalendars(
 	}
 
 	private fun getReferenceWeekFrom(calendars: List<BusyCalendar>): Week? {
-		return calendars.firstOrNull()?.referenceWeek
+		val firstCalendar = calendars.firstOrNull()
+		return firstCalendar?.weekStart?.rangeTo(firstCalendar.weekEnd)
 	}
 
 	private fun areAllCalendarsInSameWeek(calendars: List<BusyCalendar>, week: Week): Boolean {
@@ -42,7 +43,7 @@ class CompareCalendars(
 		}
 
 		calendars.subList(1, calendars.lastIndex).forEach {
-			if (it.referenceWeek != week)
+			if (it.weekStart != week.start || it.weekEnd != week.endInclusive)
 				return false
 		}
 		return true

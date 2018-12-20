@@ -32,7 +32,12 @@ class ServerPresenter(
 	}
 
 	fun onMatchButtonPressed() {
-
+		//TODO:
+		// nao deixa mais ngm se conectar
+		// calcula o resultado
+		//manda o resultado pra geral
+		// cancela as conexao tudo
+		// exibe o resultado
 	}
 
 	//region BluetoothMessageHandler.Listener
@@ -48,7 +53,6 @@ class ServerPresenter(
 			receivedCalendars.add(busyCalendar)
 		} catch (exception: Exception) {
 			Log.e(TAG, "Failed to parse received message to BusyCalendar")
-			Log.e(TAG, exception.stackTrace.toString())
 		}
 
 		// Parse message
