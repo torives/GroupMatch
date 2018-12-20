@@ -297,19 +297,21 @@ class ServerBluetoothService
 
 		override fun run() {
 			Log.i(TAG, "BEGIN mConnectedThread")
-			val buffer = ByteArray(1024)
-			var bytes: Int
+			var buffer = ByteArray(4)
 
 			// Keep listening to the InputStream while connected
 			while (true) {
 				try {
 					// Read from the InputStream
-					bytes = inStream.read(buffer)
+					var bytesRead = inStream.read(buffer, 0, 4)
+					val totalMessageBytes = String(buffer, 0, bytesRead).toInt()
 
-					// Send the obtained bytes to the UI Activity
+					buffer = ByteArray(totalMessageBytes)
+					bytesRead = inStream.read(buffer)
+
 					handler.obtainMessage(
 							BluetoothMessageHandler.MESSAGE_READ,
-							bytes,
+							bytesRead,
 							-1,
 							buffer
 					).sendToTarget()

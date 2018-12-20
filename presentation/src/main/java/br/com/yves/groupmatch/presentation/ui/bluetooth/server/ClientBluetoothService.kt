@@ -156,7 +156,8 @@ class ClientBluetoothService(private val handler: BluetoothMessageHandler) : Blu
 			r = connectedThread
 		}
 		// Perform the write unsynchronized
-		r!!.write(out)
+		val a = out.count().toString().toByteArray().plus(out)
+		r!!.write(a)
 	}
 
 	/**
