@@ -92,6 +92,11 @@ class BluetoothServerFragment : Fragment(), ServerView {
 	override fun removeClient(client: BluetoothClient) {
 		runOnUiThread {
 			clientAdapter.remove(client)
+
+			//FIXME: Thou shall not write logic on the view
+			if(clientAdapter.isEmpty()) {
+				presenter.onEmptyList()
+			}
 		}
 	}
 

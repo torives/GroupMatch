@@ -51,6 +51,10 @@ class ServerPresenter(
 		// exibe o resultado
 	}
 
+	fun onEmptyList() {
+		view.toggleMatchButtonVisibility(false)
+	}
+
 	//region BluetoothMessageHandler.Listener
 	//TODO: identificar de que client é o calendar em questão para atualizar a lista
 	override fun onMessageRead(message: String) {

@@ -78,6 +78,8 @@ class ClientAdapter(val onItemClick: ((BluetoothClient) -> Unit)? = null) :
 		}
 	}
 
+	fun isEmpty() = clients.isEmpty()
+
 	fun clear() {
 		clients.clear()
 		notifyDataSetChanged()
