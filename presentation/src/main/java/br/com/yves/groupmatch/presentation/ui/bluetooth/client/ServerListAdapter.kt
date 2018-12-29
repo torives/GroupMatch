@@ -48,14 +48,14 @@ class ServerListAdapter(val onItemClick: ((BluetoothServer) -> Unit)? = null) :
 
 	fun add(server: BluetoothServer) {
 		servers.add(server)
-		notifyItemChanged(servers.indices.last)
+		notifyItemInserted(servers.indices.last)
 	}
 
 	fun addAll(servers: Collection<BluetoothServer>) {
 		val lastPosition = this.servers.indices.last
 
 		this.servers.addAll(servers)
-		notifyItemRangeChanged(lastPosition, servers.size)
+		notifyItemRangeInserted(lastPosition, servers.size)
 	}
 
 	fun clear() {

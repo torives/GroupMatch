@@ -47,7 +47,7 @@ class ClientAdapter(val onItemClick: ((BluetoothClient) -> Unit)? = null) :
 	fun add(server: BluetoothClient) {
 		if (!clients.contains(server)) {
 			clients.add(server)
-			notifyItemChanged(clients.lastIndex)
+			notifyItemInserted(clients.lastIndex)
 		}
 	}
 
@@ -55,7 +55,7 @@ class ClientAdapter(val onItemClick: ((BluetoothClient) -> Unit)? = null) :
 		val lastPosition = this.clients.lastIndex
 
 		this.clients.addAll(servers)
-		notifyItemRangeChanged(lastPosition, servers.size)
+		notifyItemRangeInserted(lastPosition, servers.size)
 	}
 
 	fun update(client: BluetoothClient) {
@@ -74,7 +74,7 @@ class ClientAdapter(val onItemClick: ((BluetoothClient) -> Unit)? = null) :
 			throw IllegalStateException("Attempt to remove client $client who is not on the list")
 		} else {
 			clients.removeAt(index)
-			notifyItemChanged(index)
+			notifyItemRemoved(index)
 		}
 	}
 
