@@ -22,6 +22,7 @@ import android.bluetooth.BluetoothServerSocket
 import android.bluetooth.BluetoothSocket
 import android.os.Handler
 import android.util.Log
+import br.com.yves.groupmatch.presentation.toInt
 import br.com.yves.groupmatch.presentation.ui.bluetooth.BluetoothMessageHandler
 import java.io.IOException
 import java.io.InputStream
@@ -298,13 +299,13 @@ class ServerBluetoothService
 		override fun run() {
 			Log.i(TAG, "BEGIN mConnectedThread")
 			var buffer = ByteArray(4)
-
+			var bytesRead: Int
 			// Keep listening to the InputStream while connected
 			while (true) {
 				try {
 					// Read from the InputStream
-					var bytesRead = inStream.read(buffer, 0, 4)
-					val totalMessageBytes = String(buffer, 0, bytesRead).toInt()
+					inStream.read(buffer)
+					val totalMessageBytes = buffer.toInt()
 
 					buffer = ByteArray(totalMessageBytes)
 					bytesRead = inStream.read(buffer)

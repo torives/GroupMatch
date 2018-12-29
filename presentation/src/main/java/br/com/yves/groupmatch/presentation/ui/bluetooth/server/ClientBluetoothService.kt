@@ -21,6 +21,7 @@ import android.bluetooth.BluetoothDevice
 import android.bluetooth.BluetoothSocket
 import android.util.Log
 import br.com.yves.groupmatch.domain.sendCalendar.BluetoothSenderService
+import br.com.yves.groupmatch.presentation.toByteArray
 import br.com.yves.groupmatch.presentation.ui.bluetooth.BluetoothMessageHandler
 import br.com.yves.groupmatch.presentation.ui.bluetooth.BluetoothMessageHandler.Companion.MESSAGE_READ
 import java.io.IOException
@@ -156,8 +157,8 @@ class ClientBluetoothService(private val handler: BluetoothMessageHandler) : Blu
 			r = connectedThread
 		}
 		// Perform the write unsynchronized
-		val a = out.count().toString().toByteArray().plus(out)
-		r!!.write(a)
+		val a = out.count().toByteArray()
+		r!!.write(a.plus(out))
 	}
 
 	/**
