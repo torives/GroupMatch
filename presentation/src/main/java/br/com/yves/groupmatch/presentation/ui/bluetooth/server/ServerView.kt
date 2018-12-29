@@ -9,7 +9,8 @@ interface ServerView {
 	fun updateClientStatusIndicator(client: BluetoothClient)
 	fun removeClient(client: BluetoothClient)
 	fun toggleProgressBarVisibility(isVisible: Boolean)
-	fun sendIntent(intent: Intent)
+	fun toggleDiscoverabilityButton(isEnabled: Boolean)
+	fun sendIntent(intent: Intent, requestCode: Int? = null)
 	fun toggleMatchButtonVisibility(isVisible: Boolean)
 
 	//DEBUG

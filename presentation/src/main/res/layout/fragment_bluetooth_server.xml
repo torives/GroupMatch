@@ -44,7 +44,7 @@
                     android:layout_width="15dp"
                     android:layout_height="15dp"
 
-                    android:visibility="visible"
+                    android:visibility="gone"
                     app:layout_constraintBottom_toBottomOf="parent"
 
                     app:layout_constraintEnd_toEndOf="parent"
@@ -72,7 +72,7 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/enableDiscoverabilityButton"
+        android:id="@+id/discoverabilityButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
 

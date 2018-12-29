@@ -1,11 +1,11 @@
 package br.com.yves.groupmatch.presentation.ui.bluetooth.server
 
+import android.app.Activity
 import android.bluetooth.BluetoothAdapter
 import android.bluetooth.BluetoothDevice
 import android.content.Intent
 import android.util.Log
 import br.com.yves.groupmatch.R
-import br.com.yves.groupmatch.domain.compareCalendars.CompareCalendars
 import br.com.yves.groupmatch.domain.compareCalendars.CompareCalendarsFactory
 import br.com.yves.groupmatch.domain.createCalendar.CreateCalendarFactory
 import br.com.yves.groupmatch.domain.sendCalendar.BusyCalendar
@@ -15,11 +15,13 @@ import br.com.yves.groupmatch.presentation.ui.bluetooth.ServerBluetoothMessageHa
 import br.com.yves.groupmatch.presentation.ui.bluetooth.client.BluetoothClient
 import br.com.yves.groupmatch.presentation.ui.bluetooth.client.BluetoothConnectionState
 import com.google.gson.Gson
+import kotlinx.coroutines.*
 
 class ServerPresenter(
 		private val view: ServerView,
 		private val bluetoothAdapter: BluetoothAdapter
-) : BluetoothMessageHandler.Listener {
+) : BluetoothMessageHandler.Listener, CoroutineScope {
+	override val coroutineContext = Dispatchers.Default
 	private val bluetoothService = ServerBluetoothService(ServerBluetoothMessageHandler(this))
 	private val receivedCalendars by lazy { mutableListOf<BusyCalendar>() }
 
@@ -27,13 +29,18 @@ class ServerPresenter(
 		bluetoothService.start()
 	}
 
-	fun onResume() {
-		//TODO: stop progress view after the 12seconds of bluetooth visibility
-		ensureDiscoverable()
-	}
-
 	fun onDestroy() {
 		bluetoothService.stop()
+	}
+
+	fun onDiscoverabilityButtonPressed() {
+		if (bluetoothAdapter.scanMode != BluetoothAdapter.SCAN_MODE_CONNECTABLE_DISCOVERABLE) {
+			val discoverableIntent = Intent(BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE).apply {
+				putExtra(BluetoothAdapter.EXTRA_DISCOVERABLE_DURATION, DISCOVERABILITY_DURATION)
+			}
+			view.toggleDiscoverabilityButton(false)
+			view.sendIntent(discoverableIntent, REQUEST_ENABLE_DISCOVERABILITY)
+		}
 	}
 
 	fun onMatchButtonPressed() {
@@ -53,6 +60,30 @@ class ServerPresenter(
 
 	fun onEmptyList() {
 		view.toggleMatchButtonVisibility(false)
+	}
+
+	fun onActivityResult(requestCode: Int, resultCode: Int) {
+		if (requestCode == REQUEST_ENABLE_DISCOVERABILITY) {
+			when (resultCode) {
+				Activity.RESULT_CANCELED -> {
+					view.toggleDiscoverabilityButton(true)
+				}
+				else -> {
+					view.toggleProgressBarVisibility(true)
+					launch {
+						scheduleInterfaceUpdate()
+					}
+				}
+			}
+		}
+	}
+
+	private suspend fun scheduleInterfaceUpdate() {
+		withContext(Dispatchers.Main) {
+			delay(DISCOVERABILITY_DURATION * 1000L)
+			view.toggleDiscoverabilityButton(true)
+			view.toggleProgressBarVisibility(false)
+		}
 	}
 
 	//region BluetoothMessageHandler.Listener
@@ -110,18 +141,9 @@ class ServerPresenter(
 	}
 	//endregion
 
-	/**
-	 * Makes this device discoverable.
-	 */
-	private fun ensureDiscoverable() {
-		if (bluetoothAdapter.scanMode != BluetoothAdapter.SCAN_MODE_CONNECTABLE_DISCOVERABLE) {
-			val discoverableIntent = Intent(BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE)
-			discoverableIntent.putExtra(BluetoothAdapter.EXTRA_DISCOVERABLE_DURATION, 12)
-			view.sendIntent(discoverableIntent)
-		}
-	}
-
 	companion object {
 		private val TAG = ServerPresenter::class.java.simpleName
+		private const val DISCOVERABILITY_DURATION = 12 //seconds
+		private const val REQUEST_ENABLE_DISCOVERABILITY = 100
 	}
 }

@@ -43,6 +43,12 @@ class BluetoothServerFragment : Fragment(), ServerView {
 				presenter.onMatchButtonPressed()
 			}
 		}
+
+		discoverabilityButton.setOnClickListener {
+			runOnBackground {
+				presenter.onDiscoverabilityButtonPressed()
+			}
+		}
 	}
 
 	private fun setupRecyclerView() {
@@ -58,13 +64,6 @@ class BluetoothServerFragment : Fragment(), ServerView {
 		super.onStart()
 		runOnBackground {
 			presenter.onStart()
-		}
-	}
-
-	override fun onResume() {
-		super.onResume()
-		runOnBackground {
-			presenter.onResume()
 		}
 	}
 
@@ -94,7 +93,7 @@ class BluetoothServerFragment : Fragment(), ServerView {
 			clientAdapter.remove(client)
 
 			//FIXME: Thou shall not write logic on the view
-			if(clientAdapter.isEmpty()) {
+			if (clientAdapter.isEmpty()) {
 				presenter.onEmptyList()
 			}
 		}
@@ -106,14 +105,24 @@ class BluetoothServerFragment : Fragment(), ServerView {
 		}
 	}
 
-	override fun sendIntent(intent: Intent) {
+	override fun toggleDiscoverabilityButton(isEnabled: Boolean) {
 		runOnUiThread {
-			startActivity(intent)
+			if (isEnabled) discoverabilityButton.show() else discoverabilityButton.hide()
+		}
+	}
+
+	override fun sendIntent(intent: Intent, requestCode: Int?) {
+		runOnUiThread {
+			if (requestCode != null) {
+				startActivityForResult(intent, requestCode)
+			} else {
+				startActivity(intent)
+			}
 		}
 	}
 
 	override fun toggleMatchButtonVisibility(isVisible: Boolean) {
-		matchButton.visibility = if(isVisible) VISIBLE else GONE
+		matchButton.visibility = if (isVisible) VISIBLE else GONE
 	}
 
 	override fun displayToast(message: String) {
@@ -133,6 +142,12 @@ class BluetoothServerFragment : Fragment(), ServerView {
 		}
 	}
 	//endregion
+
+	override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+		runOnBackground {
+			presenter.onActivityResult(requestCode, resultCode)
+		}
+	}
 
 	companion object {
 		private val TAG = ::BluetoothServerFragment.name
