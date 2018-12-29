@@ -270,6 +270,7 @@ class ServerBluetoothService
 			Log.d(TAG, "Socket Type" + socketType + "cancel " + this)
 			try {
 				serverSocket.close()
+				interrupt()
 			} catch (e: IOException) {
 				Log.e(TAG, "Socket Type" + socketType + "close() of server failed", e)
 			}
@@ -318,7 +319,7 @@ class ServerBluetoothService
 					).sendToTarget()
 
 				} catch (e: IOException) {
-					Log.e(TAG, "disconnected", e)
+					Log.d(TAG, "disconnected")
 					lostConnection(socket.remoteDevice, this)
 					return
 				}
@@ -351,6 +352,7 @@ class ServerBluetoothService
 				socket.close()
 				inStream.close()
 				outStream.close()
+				interrupt()
 			} catch (e: IOException) {
 				Log.e(TAG, "close() of connect socket failed", e)
 			}
