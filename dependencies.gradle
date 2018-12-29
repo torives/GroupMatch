@@ -23,6 +23,7 @@ ext {
     mockitoVersion = '2.23.0'
     mockitoKotlinVersion = '2.0.0-RC3'
     threetenabpVersion = '1.1.1'
+    coroutinesVersion = '1.0.1'
 
     dependencies = [
             support_v4              : "androidx.legacy:legacy-support-v4:$supportVersion",
@@ -39,7 +40,9 @@ ext {
             threetenabp             : "com.jakewharton.threetenabp:threetenabp:$threetenabpVersion",
             room                    : "androidx.room:room-runtime:$roomVersion",
             room_compiler           : "androidx.room:room-compiler:$roomVersion",
-            gson                    : "com.google.code.gson:gson:2.8.5"
+            gson                    : "com.google.code.gson:gson:2.8.5",
+            coroutines              : "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutinesVersion",
+            coroutines_core         : "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion"
     ]
 
     testDependencies = [

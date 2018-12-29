@@ -50,6 +50,8 @@ dependencies {
     implementation baseDependencies.navigation_ui
     implementation baseDependencies.anko
     implementation baseDependencies.gson
+    implementation baseDependencies.coroutines
+    implementation baseDependencies.coroutines_core
 
     // Tests
     //FIXME: Mutreta para usar JSR-310 nos testes unitários. Deveria mockar.
