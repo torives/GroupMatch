@@ -10,7 +10,7 @@ import br.com.yves.groupmatch.R
 class ServerListAdapter(val onItemClick: ((BluetoothServer) -> Unit)? = null) :
 		RecyclerView.Adapter<ServerListAdapter.ViewHolder>() {
 
-	private val servers = linkedSetOf<BluetoothServer>()
+	private val servers = mutableListOf<BluetoothServer>()
 
 	override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
 		val view = LayoutInflater.from(parent.context).inflate(
@@ -47,15 +47,17 @@ class ServerListAdapter(val onItemClick: ((BluetoothServer) -> Unit)? = null) :
 	}
 
 	fun add(server: BluetoothServer) {
-		servers.add(server)
-		notifyItemInserted(servers.indices.last)
+		if (servers.contains(server).not()) {
+			servers.add(server)
+			notifyItemInserted(servers.lastIndex)
+		}
 	}
 
 	fun addAll(servers: Collection<BluetoothServer>) {
-		val lastPosition = this.servers.indices.last
+		val lastPosition = this.servers.lastIndex
 
 		this.servers.addAll(servers)
-		notifyItemRangeInserted(lastPosition, servers.size)
+		notifyItemRangeInserted(lastPosition, servers.size - 1)
 	}
 
 	fun clear() {
