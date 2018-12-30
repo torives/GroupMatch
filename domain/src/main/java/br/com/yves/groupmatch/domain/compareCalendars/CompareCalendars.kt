@@ -36,9 +36,11 @@ class CompareCalendars(
 
 	private fun areAllCalendarsInSameWeek(calendars: List<BusyCalendar>, week: Week): Boolean {
 
-		if (calendars.isEmpty()) {
-			throw IllegalArgumentException("Cannot validate empty calendar list")
-		} else if (calendars.count() == 1) {
+		require(calendars.isEmpty().not()) {
+			"Cannot validate empty calendar list"
+		}
+
+		if (calendars.count() == 1) {
 			return true
 		}
 

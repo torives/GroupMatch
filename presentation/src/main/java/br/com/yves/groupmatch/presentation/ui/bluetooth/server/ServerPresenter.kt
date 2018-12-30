@@ -5,6 +5,7 @@ import android.bluetooth.BluetoothAdapter
 import android.bluetooth.BluetoothDevice
 import android.content.Intent
 import android.util.Log
+import br.com.yves.groupmatch.BuildConfig
 import br.com.yves.groupmatch.R
 import br.com.yves.groupmatch.domain.compareCalendars.CompareCalendarsFactory
 import br.com.yves.groupmatch.domain.createCalendar.CreateCalendarFactory
@@ -16,6 +17,7 @@ import br.com.yves.groupmatch.presentation.ui.bluetooth.client.BluetoothClient
 import br.com.yves.groupmatch.presentation.ui.bluetooth.client.BluetoothConnectionState
 import com.google.gson.Gson
 import kotlinx.coroutines.*
+import java.lang.IllegalStateException
 
 class ServerPresenter(
 		private val view: ServerView,
@@ -44,13 +46,16 @@ class ServerPresenter(
 	}
 
 	fun onMatchButtonPressed() {
-		//TODO:
-		// nao deixa mais ngm se conectar
+		check(receivedCalendars.isEmpty().not()) {
+			"Attempt to start a match with empty client calendar list"
+		}
 		bluetoothService.pause()
 
 		// calcula o resultado
-
-		val compare = CompareCalendarsFactory.create(receivedCalendars, CreateCalendarFactory.create(DateRepositoryFactory.create()))
+		val compare = CompareCalendarsFactory.create(
+				receivedCalendars,
+				CreateCalendarFactory.create(DateRepositoryFactory.create())
+		)
 		val result = compare.execute()
 		Log.i(TAG, result.toString())
 		//manda o resultado pra geral
@@ -89,7 +94,10 @@ class ServerPresenter(
 	//region BluetoothMessageHandler.Listener
 	//TODO: identificar de que client é o calendar em questão para atualizar a lista
 	override fun onMessageRead(message: String) {
-		view.displayToast(message)
+		if(BuildConfig.DEBUG) {
+			view.displayToast(message)
+			Log.d(TAG, message)
+		}
 		try {
 			val busyCalendar = Gson().fromJson(message, BusyCalendar::class.java)
 
@@ -97,10 +105,9 @@ class ServerPresenter(
 				view.toggleMatchButtonVisibility(true)
 			}
 			receivedCalendars.add(busyCalendar)
-		} catch (exception: Exception) {
-			Log.e(TAG, "Failed to parse received message to BusyCalendar")
+		} catch (ex: Exception) {
+			Log.e(TAG, "Failed to parse received message to BusyCalendar", ex)
 		}
-		Log.d(TAG, message)
 	}
 
 	override fun onDeviceConnected(device: BluetoothDevice) {

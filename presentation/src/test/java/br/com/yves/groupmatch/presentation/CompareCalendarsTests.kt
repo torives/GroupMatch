@@ -5,7 +5,6 @@ import br.com.yves.groupmatch.domain.showCalendar.Calendar
 import br.com.yves.groupmatch.presentation.factory.DateRepositoryFactory
 import org.junit.Before
 import org.junit.Test
-import org.threeten.bp.LocalDateTime
 
 class CompareCalendarsTests {
 
@@ -20,42 +19,46 @@ class CompareCalendarsTests {
 	}
 
 	@Test
-	fun compareWithEmptyCalendars() {
+	fun compareTwoEmptyCalendars() {
 		val calendar = BusyCalendarFactory.create(emptyCalendar)
-		val compareCalendars = CompareCalendars(listOf(calendar), createCalendar)
+		val compareCalendars = CompareCalendars(listOf(calendar, calendar), createCalendar)
 
 		val result = compareCalendars.execute()
 
-		result.calendar.forEach {
-			assert(!it.isBusy)
-		}
+		val busyIndex = result.calendar.firstOrNull { it.isBusy }
+		assert(busyIndex == null)
 	}
 
 	@Test
-	fun compareEmptyCalendarWithBusy(){
-		var date: LocalDateTime
-		emptyCalendar.first().apply {
+	fun compareFreeTimeSlotWithBusyTimeSlot() {
+		val busySlotCalendar = emptyCalendar.subList(0, emptyCalendar.lastIndex)
+		busySlotCalendar.first().apply {
 			isBusy = true
-			date = this.date
 		}
-		val calendar = BusyCalendarFactory.create(emptyCalendar)
-		val result = CompareCalendars(listOf(calendar), createCalendar).execute()
 
-		val resultTimeSlot = result.calendar.first { it.date == date }
+		val freeBusyCalendar = BusyCalendarFactory.create(emptyCalendar)
+		val busyBusyCalendar = BusyCalendarFactory.create(busySlotCalendar)
+		val result = CompareCalendars(listOf(freeBusyCalendar, busyBusyCalendar), createCalendar).execute()
+
+		val resultTimeSlot = result.calendar.first()
 		assert(resultTimeSlot.isBusy)
 	}
 
 	@Test
-	fun compareEmptyCalendarWithTwoBusy(){
-		var date: LocalDateTime
-		emptyCalendar.first().apply {
+	fun compareFreeTimeSlotWithTwoBusyTimeSlot() {
+		val busySlotCalendar = emptyCalendar.subList(0, emptyCalendar.size)
+		busySlotCalendar.first().apply {
 			isBusy = true
-			date = this.date
 		}
-		val calendar = BusyCalendarFactory.create(emptyCalendar)
-		val result = CompareCalendars(listOf(calendar), createCalendar).execute()
 
-		val resultTimeSlot = result.calendar.first { it.date == date }
+		val freeBusyCalendar = BusyCalendarFactory.create(emptyCalendar)
+		val busyBusyCalendar = BusyCalendarFactory.create(busySlotCalendar)
+		val result = CompareCalendars(
+				listOf(freeBusyCalendar, busyBusyCalendar, busyBusyCalendar),
+				createCalendar
+		).execute()
+
+		val resultTimeSlot = result.calendar.first()
 		assert(resultTimeSlot.isBusy)
 	}
 }
