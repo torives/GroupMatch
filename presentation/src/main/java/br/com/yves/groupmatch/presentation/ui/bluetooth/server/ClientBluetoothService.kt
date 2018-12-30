@@ -22,8 +22,8 @@ import android.bluetooth.BluetoothSocket
 import android.util.Log
 import br.com.yves.groupmatch.domain.sendCalendar.BluetoothSenderService
 import br.com.yves.groupmatch.presentation.toByteArray
+import br.com.yves.groupmatch.presentation.toInt
 import br.com.yves.groupmatch.presentation.ui.bluetooth.BluetoothMessageHandler
-import br.com.yves.groupmatch.presentation.ui.bluetooth.BluetoothMessageHandler.Companion.MESSAGE_READ
 import java.io.IOException
 import java.io.InputStream
 import java.io.OutputStream
@@ -148,7 +148,7 @@ class ClientBluetoothService(private val handler: BluetoothMessageHandler) : Blu
 	 * @param out The bytes to write
 	 * @see ConnectedThread.write
 	 */
-	fun write(out: ByteArray) {
+	fun  write(out: ByteArray) {
 		// Create temporary object
 		val r: ConnectedThread?
 		// Synchronize a copy of the ConnectedThread
@@ -263,43 +263,51 @@ class ClientBluetoothService(private val handler: BluetoothMessageHandler) : Blu
 	 * This thread runs during a connection with a remote device.
 	 * It handles all incoming and outgoing transmissions.
 	 */
-	private inner class ConnectedThread(private val mmSocket: BluetoothSocket, socketType: String) : Thread() {
-		private lateinit var mmInStream: InputStream
-		private lateinit var mmOutStream: OutputStream
+	internal inner class ConnectedThread(private val socket: BluetoothSocket, socketType: String) : Thread() {
+		private lateinit var inStream: InputStream
+		private lateinit var outStream: OutputStream
 
 		init {
 			Log.d(TAG, "create ConnectedThread: $socketType")
+
 			// Get the BluetoothSocket input and output streams
 			try {
-				mmInStream = mmSocket.inputStream
-				mmOutStream = mmSocket.outputStream
+				inStream = socket.inputStream
+				outStream = socket.outputStream
 			} catch (e: IOException) {
-				Log.e(TAG, "temp sockets not created", e)
+				Log.e(TAG, "Failed to retrieve streams", e)
 			}
 		}
 
 		override fun run() {
-			Log.i(TAG, "BEGIN connectedThread")
-			val buffer = ByteArray(1024)
-			var bytes: Int
-
+			Log.i(TAG, "BEGIN mConnectedThread")
+			val messageSizeBuffer = ByteArray(4)
+			val messageBuffer = ByteArray(1024)
+			var message = ByteArray(0)
+			var bytesRead = 0
 			// Keep listening to the InputStream while connected
 			while (true) {
 				try {
 					// Read from the InputStream
-					bytes = mmInStream.read(buffer)
-					// Send the obtained bytes to the UI Activity
-					handler.obtainMessage(MESSAGE_READ,
-							bytes,
+					inStream.read(messageSizeBuffer)
+					val totalMessageBytes = messageSizeBuffer.toInt()
+
+					while (bytesRead < totalMessageBytes) {
+						bytesRead += socket.inputStream.read(messageBuffer)
+						message = message.plus(messageBuffer)
+					}
+
+					handler.obtainMessage(
+							BluetoothMessageHandler.MESSAGE_READ,
+							bytesRead,
 							-1,
-							buffer
+							message
 					).sendToTarget()
+
 				} catch (e: IOException) {
-					Log.e(TAG, "disconnected", e)
-					lostConnectionTo(mmSocket.remoteDevice)
-					// Start the service over to restart listening mode
-					this@ClientBluetoothService.start()
-					break
+					Log.d(TAG, "disconnected")
+//					lostConnection(socket.remoteDevice, this)
+					return
 				}
 			}
 		}
@@ -311,7 +319,7 @@ class ClientBluetoothService(private val handler: BluetoothMessageHandler) : Blu
 		 */
 		fun write(buffer: ByteArray) {
 			try {
-				mmOutStream.write(buffer)
+				outStream.write(buffer)
 
 				// Share the sent message back to the UI Activity
 				handler.obtainMessage(
@@ -327,7 +335,7 @@ class ClientBluetoothService(private val handler: BluetoothMessageHandler) : Blu
 
 		fun cancel() {
 			try {
-				mmSocket.close()
+				socket.close()
 			} catch (e: IOException) {
 				Log.e(TAG, "close() of connect socket failed", e)
 			}

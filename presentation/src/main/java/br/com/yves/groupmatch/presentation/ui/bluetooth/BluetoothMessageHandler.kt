@@ -93,6 +93,6 @@ class ClientBluetoothMessageHandler(listener: Listener) : BluetoothMessageHandle
 class ServerBluetoothMessageHandler(listener: Listener) : BluetoothMessageHandler(listener) {
 
 	override fun onMessageWrite(message: Message) {
-		TODO("Criar o fluxo de exibição do resultado do match")
+//		TODO("Criar o fluxo de exibição do resultado do match")
 	}
 }

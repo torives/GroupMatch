@@ -22,6 +22,7 @@ import android.bluetooth.BluetoothServerSocket
 import android.bluetooth.BluetoothSocket
 import android.os.Handler
 import android.util.Log
+import br.com.yves.groupmatch.presentation.toByteArray
 import br.com.yves.groupmatch.presentation.toInt
 import br.com.yves.groupmatch.presentation.ui.bluetooth.BluetoothMessageHandler
 import java.io.IOException
@@ -102,8 +103,9 @@ class ServerBluetoothService
 		}
 
 		//FIXME: adicionar o estado de pausado
-		state = STATE_NONE
-
+		if(connectedThreads.isEmpty()){
+			state = STATE_NONE
+		}
 	}
 
 	@Synchronized
@@ -189,8 +191,12 @@ class ServerBluetoothService
 		// Synchronize a copy of the ConnectedThread
 		synchronized(this) {
 			if (mState != STATE_CONNECTED) return
+
+			val totalMessageBytes = out.count().toByteArray()
+			val payload = totalMessageBytes.plus(out)
+
 			for (thread in connectedThreads) {
-				thread.write(out)
+				thread.write(payload)
 			}
 		}
 	}
@@ -307,7 +313,7 @@ class ServerBluetoothService
 			while (true) {
 				try {
 					// Read from the InputStream
-					socket.inputStream.read(messageSizeBuffer)
+					inStream.read(messageSizeBuffer)
 					val totalMessageBytes = messageSizeBuffer.toInt()
 
 					while (bytesRead < totalMessageBytes) {

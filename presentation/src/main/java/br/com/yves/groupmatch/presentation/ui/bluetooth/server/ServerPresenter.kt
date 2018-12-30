@@ -58,6 +58,11 @@ class ServerPresenter(
 		)
 		val result = compare.execute()
 		Log.i(TAG, result.toString())
+
+
+		val payload = Gson().toJson(result)
+		bluetoothService.write(payload.toByteArray())
+
 		//manda o resultado pra geral
 		// cancela as conexao tudo
 		// exibe o resultado
