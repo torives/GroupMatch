@@ -29,6 +29,14 @@ class ServerPresenter(
 		bluetoothService.start()
 	}
 
+	fun onResume() {
+		bluetoothService.setupName()
+	}
+
+	fun onPause() {
+		bluetoothService.resetName()
+	}
+
 	fun onDestroy() {
 		bluetoothService.stop()
 	}

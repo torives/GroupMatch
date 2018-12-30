@@ -45,6 +45,7 @@ class ServerBluetoothService
 
 	// Member fields
 	private val bluetoothAdapter: BluetoothAdapter = BluetoothAdapter.getDefaultAdapter()
+	private val originalDeviceName = bluetoothAdapter.name
 	private var secureAcceptThread: AcceptThread? = null
 	private var insecureAcceptThread: AcceptThread? = null
 	private val connectedThreads = HashSet<ConnectedThread>()
@@ -73,6 +74,7 @@ class ServerBluetoothService
 		Log.d(TAG, "start")
 
 		killAllConnectedThreads()
+		setupName()
 
 		state = STATE_LISTEN
 
@@ -85,6 +87,14 @@ class ServerBluetoothService
 			insecureAcceptThread = AcceptThread(false)
 			insecureAcceptThread!!.start()
 		}
+	}
+
+	fun setupName() {
+		bluetoothAdapter.name = "GroupMatch-$originalDeviceName"
+	}
+
+	fun resetName() {
+		bluetoothAdapter.name = originalDeviceName
 	}
 
 	@Synchronized
@@ -154,6 +164,7 @@ class ServerBluetoothService
 		Log.d(TAG, "stop")
 
 		killAllConnectedThreads()
+		resetName()
 
 		if (secureAcceptThread != null) {
 			secureAcceptThread!!.cancel()

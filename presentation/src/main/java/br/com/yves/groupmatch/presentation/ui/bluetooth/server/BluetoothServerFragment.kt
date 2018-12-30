@@ -76,6 +76,20 @@ class BluetoothServerFragment : Fragment(), ServerView {
 		}
 	}
 
+	override fun onResume() {
+		super.onResume()
+		runOnBackground {
+			presenter.onResume()
+		}
+	}
+
+	override fun onPause() {
+		super.onPause()
+		runOnBackground {
+			presenter.onPause()
+		}
+	}
+
 	override fun onDestroy() {
 		super.onDestroy()
 		runOnBackground {
