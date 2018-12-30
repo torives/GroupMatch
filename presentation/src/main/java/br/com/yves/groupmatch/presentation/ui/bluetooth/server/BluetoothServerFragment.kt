@@ -2,11 +2,9 @@ package br.com.yves.groupmatch.presentation.ui.bluetooth.server
 
 import android.content.Intent
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
+import android.view.*
 import android.view.View.GONE
 import android.view.View.VISIBLE
-import android.view.ViewGroup
 import android.widget.Toast
 import androidx.annotation.StringRes
 import androidx.fragment.app.Fragment
@@ -18,9 +16,11 @@ import br.com.yves.groupmatch.presentation.runOnUiThread
 import br.com.yves.groupmatch.presentation.ui.bluetooth.client.BluetoothClient
 import kotlinx.android.synthetic.main.fragment_bluetooth_server.*
 
+
 class BluetoothServerFragment : Fragment(), ServerView {
 	private lateinit var clientAdapter: ClientAdapter
 	private lateinit var presenter: ServerPresenter
+	private var isDiscoverabilituButtonEnabled = true
 
 	//region Lifecycle
 	override fun onCreateView(
@@ -36,6 +36,7 @@ class BluetoothServerFragment : Fragment(), ServerView {
 
 		presenter = ServerPresenterFactory.create(this)
 
+		setHasOptionsMenu(true)
 		setupRecyclerView()
 
 		matchButton.setOnClickListener {
@@ -43,12 +44,20 @@ class BluetoothServerFragment : Fragment(), ServerView {
 				presenter.onMatchButtonPressed()
 			}
 		}
+	}
 
-		discoverabilityButton.setOnClickListener {
-			runOnBackground {
+	override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
+		super.onCreateOptionsMenu(menu, inflater)
+		requireActivity().menuInflater.inflate(R.menu.bluetooth_fragment_toolbar_menu, menu)
+	}
+
+	override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+		when (item!!.itemId) {
+			R.id.discoverabilityButton -> runOnBackground {
 				presenter.onDiscoverabilityButtonPressed()
 			}
 		}
+		return true
 	}
 
 	private fun setupRecyclerView() {
@@ -105,10 +114,16 @@ class BluetoothServerFragment : Fragment(), ServerView {
 		}
 	}
 
+	//TODO: adicionar um alpha pra ficar claro que o botão está desativado
 	override fun toggleDiscoverabilityButton(isEnabled: Boolean) {
 		runOnUiThread {
-			if (isEnabled) discoverabilityButton.show() else discoverabilityButton.hide()
+			isDiscoverabilituButtonEnabled = isEnabled
+			requireActivity().invalidateOptionsMenu()
 		}
+	}
+
+	override fun onPrepareOptionsMenu(menu: Menu) {
+		menu.findItem(R.id.discoverabilityButton)?.isEnabled = isDiscoverabilituButtonEnabled
 	}
 
 	override fun sendIntent(intent: Intent, requestCode: Int?) {

@@ -6,6 +6,10 @@
     android:layout_height="match_parent"
     tools:context="br.com.yves.groupmatch.presentation.ui.main.MainActivity">
 
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/toolbar" />
+
     <fragment
         android:id="@+id/navHost"
         android:name="androidx.navigation.fragment.NavHostFragment"
@@ -15,7 +19,7 @@
         app:layout_constraintBottom_toTopOf="@+id/bottomNavigationViewContainer"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/toolbar"
         app:navGraph="@navigation/nav_main" />
 
     <androidx.cardview.widget.CardView

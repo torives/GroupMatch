@@ -72,7 +72,7 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/discoverabilityButton"
+        android:id="@+id/matchButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
 
@@ -81,22 +81,9 @@
         android:layout_margin="16dp"
 
         android:tint="@android:color/white"
-
-        app:srcCompat="@drawable/ic_bluetooth_searching" />
-
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/matchButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-
-        android:layout_gravity="bottom|center"
-        app:layout_insetEdge="bottom"
-
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-
         android:visibility="gone"
         tools:visibility="visible"
-        android:text="@string/bluetooth_server_fragment_match_button_title" />
+
+        app:srcCompat="@drawable/ic_today" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
