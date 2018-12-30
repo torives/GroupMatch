@@ -8,13 +8,16 @@ import android.view.View.VISIBLE
 import android.widget.Toast
 import androidx.annotation.StringRes
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import br.com.yves.groupmatch.R
+import br.com.yves.groupmatch.domain.compareCalendars.MatchResult
 import br.com.yves.groupmatch.presentation.runOnBackground
 import br.com.yves.groupmatch.presentation.runOnUiThread
 import br.com.yves.groupmatch.presentation.ui.bluetooth.client.BluetoothClient
 import kotlinx.android.synthetic.main.fragment_bluetooth_server.*
+import kotlinx.android.synthetic.main.main_activity.*
 
 
 class BluetoothServerFragment : Fragment(), ServerView {
@@ -134,6 +137,10 @@ class BluetoothServerFragment : Fragment(), ServerView {
 				startActivity(intent)
 			}
 		}
+	}
+
+	override fun navigateToResultList(result: MatchResult) {
+		findNavController().navigate(R.id.matchResultFragment)
 	}
 
 	override fun toggleMatchButtonVisibility(isVisible: Boolean) {

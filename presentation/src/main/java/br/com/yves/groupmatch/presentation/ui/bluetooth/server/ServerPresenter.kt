@@ -63,6 +63,8 @@ class ServerPresenter(
 		val payload = Gson().toJson(result)
 		bluetoothService.write(payload.toByteArray())
 
+		view.navigateToResultList(result)
+
 		//manda o resultado pra geral
 		// cancela as conexao tudo
 		// exibe o resultado

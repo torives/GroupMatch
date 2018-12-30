@@ -122,6 +122,7 @@ class ClientPresenter(
 
 	//region BluetoothMessageHandler.Listener
 	override fun onMessageRead(message: String) {
+		Log.d(TAG, "Received message: $message")
 		view.displayToast(message)
 	}
 
