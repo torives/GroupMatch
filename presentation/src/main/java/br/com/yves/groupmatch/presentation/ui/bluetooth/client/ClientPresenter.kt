@@ -106,7 +106,7 @@ class ClientPresenter(
 	private fun onNewDeviceFound(device: BluetoothDevice) {
 		if (device.bondState != BluetoothDevice.BOND_BONDED) {
 			val server = BluetoothServer(
-					device.name ?: "desconhecido",
+					device.name.split("-").component2(),
 					device.address)
 			view.displayNewServer(server)
 		}
