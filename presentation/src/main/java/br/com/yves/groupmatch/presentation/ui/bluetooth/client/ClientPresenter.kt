@@ -161,7 +161,10 @@ class ClientPresenter(
 
 			if (BluetoothDevice.ACTION_FOUND == action) {
 				val device = intent.getParcelableExtra<BluetoothDevice>(BluetoothDevice.EXTRA_DEVICE)
-				onNewDeviceFound(device)
+					if (device.name != null && device.name.startsWith("GroupMatch")) {
+						onNewDeviceFound(device)
+					}
+
 			} else if (BluetoothAdapter.ACTION_DISCOVERY_FINISHED == action) {
 				stopDiscovery()
 			}
