@@ -21,9 +21,9 @@ class CalendarFragment : NavHostFragment(), CalendarView, TimeSliceAdapter.ItemC
 	private var presenter: CalendarPresenter = CalendarPresenterFactory.create(this)
 
 	override fun onCreateView(
-		inflater: LayoutInflater,
-		container: ViewGroup?,
-		savedInstanceState: Bundle?
+			inflater: LayoutInflater,
+			container: ViewGroup?,
+			savedInstanceState: Bundle?
 	): View? {
 		return inflater.inflate(R.layout.fragment_calendar, container, false)
 	}
@@ -49,12 +49,12 @@ class CalendarFragment : NavHostFragment(), CalendarView, TimeSliceAdapter.ItemC
 				daysRecyclerView?.adapter = adapter
 
 				daysRecyclerView?.addItemDecoration(
-					ItemOffsetDecoration(
-						context!!,
-						R.dimen.time_slot_item_spacing
-					)
+						ItemOffsetDecoration(
+								context!!,
+								R.dimen.time_slot_item_spacing
+						)
 				)
-				(daysRecyclerView?.layoutManager as GridLayoutManager).spanCount =
+				(daysRecyclerView?.layoutManager as? GridLayoutManager)?.spanCount =
 						calendar.days.count()
 
 			}
@@ -84,16 +84,16 @@ class CalendarFragment : NavHostFragment(), CalendarView, TimeSliceAdapter.ItemC
 class ItemOffsetDecoration(private val mItemOffset: Int) : RecyclerView.ItemDecoration() {
 
 	constructor(context: Context, @DimenRes itemOffsetId: Int) : this(
-		context.resources.getDimensionPixelSize(
-			itemOffsetId
-		)
+			context.resources.getDimensionPixelSize(
+					itemOffsetId
+			)
 	)
 
 	override fun getItemOffsets(
-		outRect: Rect,
-		view: View,
-		parent: RecyclerView,
-		state: RecyclerView.State
+			outRect: Rect,
+			view: View,
+			parent: RecyclerView,
+			state: RecyclerView.State
 	) {
 		super.getItemOffsets(outRect, view, parent, state)
 		outRect.set(mItemOffset, mItemOffset, mItemOffset, mItemOffset)
