@@ -137,7 +137,7 @@ class BluetoothServerFragment : Fragment(), ServerView {
 	}
 
 	override fun toggleMatchButtonVisibility(isVisible: Boolean) {
-		matchButton.visibility = if (isVisible) VISIBLE else GONE
+		if (isVisible) matchButton.show() else matchButton.hide()
 	}
 
 	override fun displayToast(message: String) {
