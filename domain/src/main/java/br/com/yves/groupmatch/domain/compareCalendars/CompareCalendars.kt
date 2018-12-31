@@ -94,29 +94,73 @@ class CompareCalendars(
 
 		//CREATE SPAN
 		val matchSlots = mutableListOf<MatchFreeSlot>()
-		val matchSlotBuilder = MatchSlotBuilder()
-		var isBuildingSpan = false
-		val memberStatus = mutableMapOf<MatchSessionMember, Boolean>()
-		mergedTimeSlots.forEachIndexed { index, mergedSlot ->
-			if (mergedSlot.isCompletelyBusy) {
-				if (isBuildingSpan) {
-					val endDate = mergedTimeSlots[index-1].date
-					matchSlotBuilder.end(endDate)
-					matchSlotBuilder.memberStatus(memberStatus)
-					matchSlots.add(matchSlotBuilder.build())
+		val memberStatus = mutableSetOf<MatchSessionMember>()
 
-					isBuildingSpan = false
-					memberStatus.clear()
-				}
-			} else {
-				if (isBuildingSpan) {
 
-				} else {
-					isBuildingSpan = true
-					matchSlotBuilder.start(mergedSlot.date)
-					memberStatus.putAll(mergedSlot.sessionMemberStatus)
+		fun generateSpan(timeSlot: MergedTimeSlot): MatchFreeSlot? {
+			var span: MatchFreeSlot? = null
+			for ((member, isBusy) in timeSlot.sessionMemberStatus) {
+				if (isBusy.not()) {
+					if (span == null) {
+						span = MatchFreeSlot()
+					}
+					span.start = timeSlot.date
+					span.end = timeSlot.date
+					span.sessionMembers.add(member)
 				}
 			}
+			return span
+		}
+
+		var spans = mergedTimeSlots.mapNotNull { generateSpan(it) }
+		spans = spans.fold(mutableListOf()) { acc, matchFreeSlot: MatchFreeSlot ->
+			val last = acc.lastOrNull()
+			if (last != null) {
+				try {
+					val new = MatchFreeSlot.merge(last, matchFreeSlot)
+					acc.add(new)
+				} catch (ex: Exception) {}
+			}
+			acc.add(matchFreeSlot)
+			acc
+		}
+
+
+
+//			for ((member, isBusy) in mergedSlot.sessionMemberStatus) {
+//				if (isBusy.not()) {
+//					isBuildingSpan = true
+//					matchSlotBuilder.start(mergedSlot.date)
+//					memberStatus.add(member)
+//				} else {
+//					val endDate = mergedTimeSlots[index-1].date
+//					matchSlotBuilder.end(endDate)
+//					matchSlotBuilder.memberStatus(memberStatus)
+//					matchSlots.add(matchSlotBuilder.build())
+//
+//					isBuildingSpan = false
+//
+//				}
+//			}
+
+//				if (isBuildingSpan) {
+//					val endDate = mergedTimeSlots[index-1].date
+//					matchSlotBuilder.end(endDate)
+//					matchSlotBuilder.memberStatus(memberStatus)
+//					matchSlots.add(matchSlotBuilder.build())
+//
+//					isBuildingSpan = false
+//					memberStatus.clear()
+//				}
+//			} else {
+//				if (isBuildingSpan) {
+//
+//				} else {
+//					isBuildingSpan = true
+//					matchSlotBuilder.start(mergedSlot.date)
+//					memberStatus.putAll(mergedSlot.sessionMemberStatus)
+//				}
+//			}
 		}
 
 
