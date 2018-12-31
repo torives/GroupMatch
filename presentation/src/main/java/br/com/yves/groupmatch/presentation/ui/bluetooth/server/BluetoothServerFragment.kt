@@ -113,7 +113,7 @@ class BluetoothServerFragment : Fragment(), ServerView {
 
 	override fun toggleProgressBarVisibility(isVisible: Boolean) {
 		runOnUiThread {
-			progressIndicator.visibility = if (isVisible) VISIBLE else GONE
+			progressIndicator?.visibility = if (isVisible) VISIBLE else GONE
 		}
 	}
 
@@ -140,11 +140,15 @@ class BluetoothServerFragment : Fragment(), ServerView {
 	}
 
 	override fun navigateToResultList(result: MatchResult) {
-		findNavController().navigate(R.id.matchResultFragment)
+		runOnUiThread {
+			findNavController().navigate(R.id.matchResultFragment)
+		}
 	}
 
 	override fun toggleMatchButtonVisibility(isVisible: Boolean) {
-		if (isVisible) matchButton.show() else matchButton.hide()
+		runOnUiThread {
+			if (isVisible) matchButton?.show() else matchButton?.hide()
+		}
 	}
 
 	override fun displayToast(message: String) {
