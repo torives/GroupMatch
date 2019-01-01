@@ -4,7 +4,7 @@ import br.com.yves.groupmatch.domain.UseCase
 import br.com.yves.groupmatch.domain.showCalendar.Calendar
 
 class SendCalendar(
-		private val bluetoothService: BluetoothSenderService,
+		private val bluetoothService: BluetoothService,
 		private val encoder: CalendarArchiver
 ) : UseCase<Unit>() {
 	private lateinit var calendar: Calendar

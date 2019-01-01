@@ -20,9 +20,9 @@ import android.bluetooth.BluetoothAdapter
 import android.bluetooth.BluetoothDevice
 import android.bluetooth.BluetoothSocket
 import android.util.Log
-import br.com.yves.groupmatch.domain.sendCalendar.BluetoothSenderService
-import br.com.yves.groupmatch.presentation.toByteArray
-import br.com.yves.groupmatch.presentation.toInt
+import br.com.yves.groupmatch.data.toByteArray
+import br.com.yves.groupmatch.data.toInt
+import br.com.yves.groupmatch.domain.sendCalendar.BluetoothService
 import br.com.yves.groupmatch.presentation.ui.bluetooth.BluetoothMessageHandler
 import java.io.IOException
 import java.io.InputStream
@@ -35,13 +35,15 @@ import java.util.*
  * incoming connections, a thread for connecting with a device, and a
  * thread for performing data transmissions when connected.
  */
-class ClientBluetoothService(private val handler: BluetoothMessageHandler) : BluetoothSenderService {
+class ClientBluetoothService(private val handler: BluetoothMessageHandler) : BluetoothService {
 
 	// Member fields
 	private val adapter: BluetoothAdapter = BluetoothAdapter.getDefaultAdapter()
 	private var connectThread: ConnectThread? = null
 	private var connectedThread: ConnectedThread? = null
 	private var mState = STATE_NONE
+	override val deviceName: String
+		get() = adapter.name
 
 	// Give the new state to the Handler so the UI Activity can update
 	var state: Int
@@ -148,7 +150,7 @@ class ClientBluetoothService(private val handler: BluetoothMessageHandler) : Blu
 	 * @param out The bytes to write
 	 * @see ConnectedThread.write
 	 */
-	fun  write(out: ByteArray) {
+	private fun  write(out: ByteArray) {
 		// Create temporary object
 		val r: ConnectedThread?
 		// Synchronize a copy of the ConnectedThread
@@ -157,8 +159,7 @@ class ClientBluetoothService(private val handler: BluetoothMessageHandler) : Blu
 			r = connectedThread
 		}
 		// Perform the write unsynchronized
-		val a = out.count().toByteArray()
-		r!!.write(a.plus(out))
+		r!!.write(out)
 	}
 
 	/**
@@ -187,9 +188,13 @@ class ClientBluetoothService(private val handler: BluetoothMessageHandler) : Blu
 		start()
 	}
 
-	//region BluetoothSenderService
-	override fun send(message: String) {
-		write(message.toByteArray())
+	//region BluetoothService
+	override fun send(message: ByteArray) {
+		with(message) {
+			val byteCountArray = size.toByteArray()
+			val payload = byteCountArray.plus(this)
+			write(payload)
+		}
 	}
 	//endregion
 

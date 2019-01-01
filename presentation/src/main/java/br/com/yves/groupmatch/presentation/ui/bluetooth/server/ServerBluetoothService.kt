@@ -22,8 +22,8 @@ import android.bluetooth.BluetoothServerSocket
 import android.bluetooth.BluetoothSocket
 import android.os.Handler
 import android.util.Log
-import br.com.yves.groupmatch.presentation.toByteArray
-import br.com.yves.groupmatch.presentation.toInt
+import br.com.yves.groupmatch.data.toByteArray
+import br.com.yves.groupmatch.data.toInt
 import br.com.yves.groupmatch.presentation.ui.bluetooth.BluetoothMessageHandler
 import java.io.IOException
 import java.io.InputStream

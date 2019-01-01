@@ -1,5 +1,5 @@
 package br.com.yves.groupmatch.data.sendCalendar
 
 object CalendarArchiverFactory {
-    fun create() = CalendarArchiverImpl()
+    fun create() = ClientCalendarArchiverImpl()
 }
