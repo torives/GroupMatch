@@ -2,10 +2,11 @@ package br.com.yves.groupmatch.domain.sendCalendar
 
 import br.com.yves.groupmatch.domain.showCalendar.Calendar
 
-object BusyCalendarFactory {
-	fun create(calendar: Calendar) = BusyCalendar(
+object ClientCalendarFactory {
+	fun create(calendar: Calendar, owner: String) = ClientCalendar(
+			owner,
 			calendar.first().date,
 			calendar.last().date,
-			calendar.filter { it.isBusy }
+			calendar.mapNotNull { if(it.isBusy) it.date else null }
 	)
 }

@@ -3,17 +3,8 @@ package br.com.yves.groupmatch.domain.compareCalendars
 import br.com.yves.groupmatch.domain.UseCase
 import br.com.yves.groupmatch.domain.Week
 import br.com.yves.groupmatch.domain.createCalendar.CreateCalendar
-import br.com.yves.groupmatch.domain.sendCalendar.BusyCalendar
+import br.com.yves.groupmatch.domain.sendCalendar.ClientCalendar
 import org.threeten.bp.LocalDateTime
-
-
-data class ClientCalendar(
-		val owner: String,
-		val dates: List<LocalDateTime>, //BusyDates
-		val weekStart: LocalDateTime,
-		val weekEnd: LocalDateTime
-)
-
 
 class MergedTimeSlotBuilder {
 	private lateinit var date: LocalDateTime
@@ -25,20 +16,10 @@ class MergedTimeSlotBuilder {
 	fun build(): MergedTimeSlot = MergedTimeSlot(date, status)
 }
 
-data class MergedTimeSlot(val date: LocalDateTime, val sessionMemberStatus: Map<MatchSessionMember, Boolean>) {
-	val isCompletelyBusy: Boolean
-		get() {
-			for (isBusy in sessionMemberStatus.values) {
-				if (isBusy.not()) {
-					return false
-				}
-			}
-			return true
-		}
-}
+data class MergedTimeSlot(val date: LocalDateTime, val sessionMemberStatus: Map<MatchSessionMember, Boolean>)
 
 class CompareCalendars(
-		private val calendars: List<BusyCalendar>,
+		private val calendars: List<ClientCalendar>,
 		private val createCalendar: CreateCalendar
 ) : UseCase<MatchResult>() {
 
@@ -58,7 +39,7 @@ class CompareCalendars(
 		val clientCalendars = listOf<ClientCalendar>()
 		val busyDates = mutableMapOf<LocalDateTime, MutableSet<MatchSessionMember>>()
 		clientCalendars.forEach { calendar ->
-			calendar.dates.forEach { date ->
+			calendar.busyDates.forEach { date ->
 				val ownerList = busyDates[date]
 				if (ownerList == null) {
 					setOf(calendar.owner)
@@ -173,12 +154,12 @@ class CompareCalendars(
 		return MatchResult(matchCalendar)
 	}
 
-	private fun getReferenceWeekFrom(calendars: List<BusyCalendar>): Week? {
+	private fun getReferenceWeekFrom(calendars: List<ClientCalendar>): Week? {
 		val firstCalendar = calendars.firstOrNull()
 		return firstCalendar?.weekStart?.rangeTo(firstCalendar.weekEnd)
 	}
 
-	private fun areAllCalendarsInSameWeek(calendars: List<BusyCalendar>, week: Week): Boolean {
+	private fun areAllCalendarsInSameWeek(calendars: List<ClientCalendar>, week: Week): Boolean {
 
 		require(calendars.isEmpty().not()) {
 			"Cannot validate empty calendar list"

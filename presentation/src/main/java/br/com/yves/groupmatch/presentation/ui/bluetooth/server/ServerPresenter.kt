@@ -9,7 +9,7 @@ import br.com.yves.groupmatch.BuildConfig
 import br.com.yves.groupmatch.R
 import br.com.yves.groupmatch.domain.compareCalendars.CompareCalendarsFactory
 import br.com.yves.groupmatch.domain.createCalendar.CreateCalendarFactory
-import br.com.yves.groupmatch.domain.sendCalendar.BusyCalendar
+import br.com.yves.groupmatch.domain.sendCalendar.ClientCalendar
 import br.com.yves.groupmatch.presentation.factory.DateRepositoryFactory
 import br.com.yves.groupmatch.presentation.ui.bluetooth.BluetoothMessageHandler
 import br.com.yves.groupmatch.presentation.ui.bluetooth.ServerBluetoothMessageHandler
@@ -17,7 +17,6 @@ import br.com.yves.groupmatch.presentation.ui.bluetooth.client.BluetoothClient
 import br.com.yves.groupmatch.presentation.ui.bluetooth.client.BluetoothConnectionState
 import com.google.gson.Gson
 import kotlinx.coroutines.*
-import java.lang.IllegalStateException
 
 class ServerPresenter(
 		private val view: ServerView,
@@ -25,7 +24,7 @@ class ServerPresenter(
 ) : BluetoothMessageHandler.Listener, CoroutineScope {
 	override val coroutineContext = Dispatchers.Default
 	private val bluetoothService = ServerBluetoothService(ServerBluetoothMessageHandler(this))
-	private val receivedCalendars by lazy { mutableListOf<BusyCalendar>() }
+	private val receivedCalendars by lazy { mutableListOf<ClientCalendar>() }
 
 	fun onStart() {
 		bluetoothService.start()
@@ -106,14 +105,14 @@ class ServerPresenter(
 			Log.d(TAG, message)
 		}
 		try {
-			val busyCalendar = Gson().fromJson(message, BusyCalendar::class.java)
+			val busyCalendar = Gson().fromJson(message, ClientCalendar::class.java)
 
 			if (receivedCalendars.isEmpty()) {
 				view.toggleMatchButtonVisibility(true)
 			}
 			receivedCalendars.add(busyCalendar)
 		} catch (ex: Exception) {
-			Log.e(TAG, "Failed to parse received message to BusyCalendar", ex)
+			Log.e(TAG, "Failed to parse received message to ClientCalendar", ex)
 		}
 	}
 
