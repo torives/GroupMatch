@@ -12,7 +12,7 @@ import br.com.yves.groupmatch.R
 import br.com.yves.groupmatch.data.sendCalendar.CalendarArchiverFactory
 import br.com.yves.groupmatch.domain.compareCalendars.MatchResult
 import br.com.yves.groupmatch.domain.sendCalendar.SendCalendar
-import br.com.yves.groupmatch.domain.showCalendar.ShowCalendar
+import br.com.yves.groupmatch.domain.loadCalendar.LoadCalendar
 import br.com.yves.groupmatch.presentation.runOnBackground
 import br.com.yves.groupmatch.presentation.ui.bluetooth.BluetoothMessageHandler
 import br.com.yves.groupmatch.presentation.ui.bluetooth.ClientBluetoothMessageHandler
@@ -34,7 +34,7 @@ enum class BluetoothConnectionState {
 class ClientPresenter(
 		private val view: BluetoothView,
 		private val bluetoothAdapter: BluetoothAdapter,
-		private val getCalendar: ShowCalendar
+		private val getCalendar: LoadCalendar
 ) : BluetoothMessageHandler.Listener {
 
 	private val bluetoothService = ClientBluetoothService(ClientBluetoothMessageHandler(this))
@@ -126,9 +126,9 @@ class ClientPresenter(
 	//region BluetoothMessageHandler.Listener
 	override fun onMessageRead(message: String) {
 		if (BuildConfig.DEBUG) {
-			Log.d(TAG, "Received message: $message")
 			view.displayToast(message)
 		}
+		Log.d(TAG, "Received message: $message")
 
 		try {
 			val result = Gson().fromJson(message, MatchResult::class.java)

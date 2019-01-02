@@ -1,7 +1,7 @@
 package br.com.yves.groupmatch.domain.sendCalendar
 
 import br.com.yves.groupmatch.domain.UseCase
-import br.com.yves.groupmatch.domain.showCalendar.Calendar
+import br.com.yves.groupmatch.domain.loadCalendar.Calendar
 
 class SendCalendar(
 		private val bluetoothService: BluetoothService,

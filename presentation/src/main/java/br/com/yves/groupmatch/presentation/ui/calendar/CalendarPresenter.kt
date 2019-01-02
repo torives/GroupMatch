@@ -1,17 +1,17 @@
 package br.com.yves.groupmatch.presentation.ui.calendar
 
 import br.com.yves.groupmatch.data.db.timeSlot.TimeSlotMapper
-import br.com.yves.groupmatch.domain.showCalendar.Calendar
-import br.com.yves.groupmatch.domain.showCalendar.ShowCalendar
+import br.com.yves.groupmatch.domain.loadCalendar.Calendar
+import br.com.yves.groupmatch.domain.loadCalendar.LoadCalendar
 import br.com.yves.groupmatch.domain.updateCalendar.UpdateCalendar
 import org.threeten.bp.format.DateTimeFormatter
 import org.threeten.bp.format.TextStyle
 import java.util.*
 
 class CalendarPresenter(
-	private val view: CalendarView,
-	private val showCalendar: ShowCalendar,
-	private val updateCalendar: UpdateCalendar
+		private val view: CalendarView,
+		private val loadCalendar: LoadCalendar,
+		private val updateCalendar: UpdateCalendar
 ) {
 	//private lateinit var calendar: Calendar
 
@@ -20,7 +20,7 @@ class CalendarPresenter(
 	}
 
 	private fun showCalendar() {
-		val calendar = showCalendar.execute()
+		val calendar = loadCalendar.execute()
 		val calendarViewModel = createCalendarViewModel(calendar)
 
 		view.showCalendar(calendarViewModel)

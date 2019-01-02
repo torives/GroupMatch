@@ -1,4 +1,4 @@
-package br.com.yves.groupmatch.data.showCalendar
+package br.com.yves.groupmatch.data.loadCalendar
 
 import android.content.Context
 import androidx.room.Room
@@ -6,7 +6,7 @@ import br.com.yves.groupmatch.data.R
 import br.com.yves.groupmatch.data.db.RoomDB
 import br.com.yves.groupmatch.data.db.timeSlot.TimeSlotMapper
 import br.com.yves.groupmatch.domain.TimeSlotRepository
-import br.com.yves.groupmatch.domain.showCalendar.TimeSlot
+import br.com.yves.groupmatch.domain.loadCalendar.TimeSlot
 import org.threeten.bp.LocalDateTime
 
 class TimeSlotRepositoryImpl(context: Context) : TimeSlotRepository {

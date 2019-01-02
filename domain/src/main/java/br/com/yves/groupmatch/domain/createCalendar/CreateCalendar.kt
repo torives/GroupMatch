@@ -3,8 +3,8 @@ package br.com.yves.groupmatch.domain.createCalendar
 import br.com.yves.groupmatch.domain.DateRepository
 import br.com.yves.groupmatch.domain.UseCase
 import br.com.yves.groupmatch.domain.Week
-import br.com.yves.groupmatch.domain.showCalendar.Calendar
-import br.com.yves.groupmatch.domain.showCalendar.TimeSlot
+import br.com.yves.groupmatch.domain.loadCalendar.Calendar
+import br.com.yves.groupmatch.domain.loadCalendar.TimeSlot
 
 class CreateCalendar(private val dateRepository: DateRepository) : UseCase<Calendar>() {
 

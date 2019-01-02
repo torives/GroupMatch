@@ -1,4 +1,4 @@
-package br.com.yves.groupmatch.data.showCalendar
+package br.com.yves.groupmatch.data.loadCalendar
 
 import br.com.yves.groupmatch.domain.DateRepository
 import br.com.yves.groupmatch.domain.Week

@@ -1,6 +1,6 @@
 package br.com.yves.groupmatch.domain.sendCalendar
 
-import br.com.yves.groupmatch.domain.showCalendar.Calendar
+import br.com.yves.groupmatch.domain.loadCalendar.Calendar
 
 object ClientCalendarFactory {
 	fun create(calendar: Calendar, owner: String) = ClientCalendar(

@@ -2,7 +2,7 @@ package br.com.yves.groupmatch.domain.saveCalendar
 
 import br.com.yves.groupmatch.domain.TimeSlotRepository
 import br.com.yves.groupmatch.domain.UseCase
-import br.com.yves.groupmatch.domain.showCalendar.Calendar
+import br.com.yves.groupmatch.domain.loadCalendar.Calendar
 
 
 class SaveCalendar(private val timeSlotRepository: TimeSlotRepository) : UseCase<Unit>() {

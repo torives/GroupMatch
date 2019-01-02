@@ -11,7 +11,7 @@ object CalendarPresenterFactory {
 
 		return CalendarPresenter(
 			view,
-			ShowCalendarFactory.create(timeSlotRepository),
+			LoadCalendarFactory.create(timeSlotRepository),
 			UpdateCalendarFactory.create(timeSlotRepository)
 		)
 	}

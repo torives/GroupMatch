@@ -1,4 +1,4 @@
-package br.com.yves.groupmatch.domain.showCalendar
+package br.com.yves.groupmatch.domain.loadCalendar
 
 import br.com.yves.groupmatch.domain.DateRepository
 import br.com.yves.groupmatch.domain.saveCalendar.SaveCalendar
@@ -8,7 +8,7 @@ import br.com.yves.groupmatch.domain.createCalendar.CreateCalendar
 
 typealias Calendar = List<TimeSlot>
 
-class ShowCalendar(
+class LoadCalendar(
 	private val dateRepository: DateRepository,
 	private val timeSlotRepository: TimeSlotRepository,
 	private val createCalendar: CreateCalendar,
