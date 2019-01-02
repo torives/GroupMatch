@@ -8,7 +8,7 @@ import android.util.Log
 import br.com.yves.groupmatch.BuildConfig
 import br.com.yves.groupmatch.R
 import br.com.yves.groupmatch.domain.compareCalendars.CompareCalendarsFactory
-import br.com.yves.groupmatch.domain.createCalendar.CreateCalendarFactory
+import br.com.yves.groupmatch.domain.loadCalendar.LoadCalendar
 import br.com.yves.groupmatch.domain.sendCalendar.ClientCalendar
 import br.com.yves.groupmatch.presentation.factory.DateRepositoryFactory
 import br.com.yves.groupmatch.presentation.ui.bluetooth.BluetoothMessageHandler
@@ -20,7 +20,8 @@ import kotlinx.coroutines.*
 
 class ServerPresenter(
 		private val view: ServerView,
-		private val bluetoothAdapter: BluetoothAdapter
+		private val bluetoothAdapter: BluetoothAdapter,
+		private val loadCalendar: LoadCalendar
 ) : BluetoothMessageHandler.Listener, CoroutineScope {
 	override val coroutineContext = Dispatchers.Default
 	private val bluetoothService = ServerBluetoothService(ServerBluetoothMessageHandler(this))
@@ -51,6 +52,7 @@ class ServerPresenter(
 		bluetoothService.pause()
 
 		// calcula o resultado
+		val localCalendar = loadCalendar.execute()
 		val compare = CompareCalendarsFactory.create(
 				receivedCalendars,
 				DateRepositoryFactory.create()
@@ -96,7 +98,7 @@ class ServerPresenter(
 	//region BluetoothMessageHandler.Listener
 	//TODO: identificar de que client é o calendar em questão para atualizar a lista
 	override fun onMessageRead(message: String) {
-		if(BuildConfig.DEBUG) {
+		if (BuildConfig.DEBUG) {
 			view.displayToast(message)
 			Log.d(TAG, message)
 		}
