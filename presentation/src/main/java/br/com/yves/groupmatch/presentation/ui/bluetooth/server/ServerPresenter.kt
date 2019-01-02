@@ -53,7 +53,7 @@ class ServerPresenter(
 		// calcula o resultado
 		val compare = CompareCalendarsFactory.create(
 				receivedCalendars,
-				CreateCalendarFactory.create(DateRepositoryFactory.create())
+				DateRepositoryFactory.create()
 		)
 		val result = compare.execute()
 		Log.i(TAG, result.toString())

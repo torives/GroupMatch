@@ -1,37 +1,29 @@
 package br.com.yves.groupmatch.domain.compareCalendars
 
-import br.com.yves.groupmatch.domain.showCalendar.Calendar
-import br.com.yves.groupmatch.domain.showCalendar.TimeSlot
 import org.threeten.bp.LocalDateTime
 
 data class MatchResult(
-		val calendar: Calendar,
-		val result: Map<TimeSlot, List<User>?>? = null //TODO: registrar quem está ocupado em cada slot,
+		val slots: List<MatchFreeSlot>
 )
 
-
-typealias Match = List<MatchFreeSlot>
-
 data class MatchFreeSlot(
-		var start: LocalDateTime? = null,
-		var end: LocalDateTime? = null,
-		val sessionMembers: MutableSet<MatchSessionMember> = mutableSetOf()
+		var start: LocalDateTime,
+		var end: LocalDateTime,
+		val sessionMembers: Set<MatchSessionMember> = mutableSetOf()
 ) {
-	companion object {
-		fun merge(first: MatchFreeSlot, second: MatchFreeSlot): MatchFreeSlot {
-			require(first.start!! >= second.end &&first.end!! <= second.start) {
-				"Cannot merge slots that aren't contiguous"
-			}
 
-			val newSlot = MatchFreeSlot()
-			val newerStart = if (first.start!! >= second.start) first.start else second.start
-			val furthestEnd = if (first.end!! >= second.end) first.end else second.end
-			newSlot.start = newerStart
-			newSlot.end = furthestEnd
-			newSlot.sessionMembers.intersect(second.sessionMembers)
+	fun canMerge(other: MatchFreeSlot): Boolean {
+		return other.end == this.start || other.start == this.end
+	}
 
-			return newSlot
+	fun merge(other: MatchFreeSlot): MatchFreeSlot {
+		require(other.end == this.start || other.start == this.end) {
+			"Cannot merge slots that aren't contiguous"
 		}
+		val ordered = listOf(this, other).sortedBy { it.start }
+		val newMembers = this.sessionMembers.intersect(other.sessionMembers)
+
+		return MatchFreeSlot(ordered.first().start, ordered.last().end, newMembers)
 	}
 }
 
