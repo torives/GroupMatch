@@ -1,41 +1,60 @@
 package br.com.yves.groupmatch.domain.compareCalendars
 
 import br.com.yves.groupmatch.domain.DateRepository
+import br.com.yves.groupmatch.domain.TimeSlot
 import br.com.yves.groupmatch.domain.UseCase
 import br.com.yves.groupmatch.domain.Week
-import br.com.yves.groupmatch.domain.sendCalendar.ClientCalendar
+import br.com.yves.groupmatch.domain.Calendar
 import org.threeten.bp.LocalDateTime
 
-
-class MergedTimeSlotBuilder {
-	private lateinit var date: LocalDateTime
-	private lateinit var status: Map<MatchSessionMember, Boolean>
-
-	fun date(date: LocalDateTime) = apply { this.date = date }
-	fun status(status: Map<MatchSessionMember, Boolean>) = apply { this.status = status }
-
-	fun build(): MergedTimeSlot = MergedTimeSlot(date, status)
-}
-
-data class MergedTimeSlot(val date: LocalDateTime, val sessionMemberStatus: Map<MatchSessionMember, Boolean>)
-
-
 class CompareCalendars(
-		private val clientCalendars: List<ClientCalendar>,
+		private val calendars: List<Calendar>,
 		private val dateRepository: DateRepository
-) : UseCase<MatchResult>() {
+) : UseCase<CalendarMatch>() {
 
-	private val allSessionUsers: Set<MatchSessionMember> by lazy {
-		clientCalendars.map { MatchSessionMember(it.owner) }.toSet()
+	private class MergedTimeSlotBuilder {
+		private lateinit var date: LocalDateTime
+		private lateinit var status: Map<SessionMember, Boolean>
+
+		fun date(date: LocalDateTime) = apply { this.date = date }
+		fun status(status: Map<SessionMember, Boolean>) = apply { this.status = status }
+
+		fun build(): MergedTimeSlot = MergedTimeSlot(date, status)
 	}
 
-	override fun execute(): MatchResult {
-		check(clientCalendars.isNotEmpty()) {
+	private data class MergedTimeSlot(val date: LocalDateTime, val sessionMemberStatus: Map<SessionMember, Boolean>)
+
+	data class MatchFreeSlot(
+			override val start: LocalDateTime,
+			override val end: LocalDateTime,
+			val sessionMembers: Set<SessionMember> = mutableSetOf()
+	) : TimeSlot(start, end, false) {
+		fun canMerge(other: MatchFreeSlot): Boolean {
+			return other.end == this.start || other.start == this.end
+		}
+
+		fun merge(other: MatchFreeSlot): MatchFreeSlot {
+			require(other.end == this.start || other.start == this.end) {
+				"Cannot merge slots that aren't contiguous"
+			}
+			val ordered = listOf(this, other).sortedBy { it.start }
+			val newMembers = this.sessionMembers.intersect(other.sessionMembers)
+
+			return MatchFreeSlot(ordered.first().start, ordered.last().end, newMembers)
+		}
+	}
+
+	private val allSessionUsers: Set<SessionMember> by lazy {
+		calendars.map { SessionMember(it.owner) }.toSet()
+	}
+
+	override fun execute(): CalendarMatch {
+		check(calendars.isNotEmpty()) {
 			"Cannot compare calendars with empty calendar list"
 		}
 
-		val weekDates = getAllDatesFromReferenceWeek(clientCalendars)
-		val busyDates = mapBusyDatesToMatchSessionMember(clientCalendars)
+		val weekDates = getAllDatesFromReferenceWeek(calendars)
+		val busyDates = mapBusyDatesToMatchSessionMember(calendars)
 		val mergedTimeSlots = createMergedTimeSlots(weekDates, busyDates)
 
 		//FreeSlots
@@ -78,12 +97,12 @@ class CompareCalendars(
 
 		result.sortedBy { it.sessionMembers.size }
 
-		return MatchResult(result)
+		return CalendarMatch(result)
 	}
 
 	private fun createMergedTimeSlots(
 			weekDates: List<LocalDateTime>,
-			busyDates: Map<LocalDateTime, Set<MatchSessionMember>>
+			busyDates: Map<LocalDateTime, Set<SessionMember>>
 	): List<MergedTimeSlot> {
 
 		val mergedTimeSlots = mutableListOf<MergedTimeSlot>()
@@ -91,7 +110,7 @@ class CompareCalendars(
 
 		weekDates.forEach { date ->
 			builder.date(date)
-			val userSet = mutableMapOf<MatchSessionMember, Boolean>()
+			val userSet = mutableMapOf<SessionMember, Boolean>()
 
 			if (busyDates.containsKey(date)) {
 				busyDates[date]!!.forEach { user ->
@@ -108,36 +127,37 @@ class CompareCalendars(
 		return mergedTimeSlots
 	}
 
-	private fun getAllDatesFromReferenceWeek(calendars: List<ClientCalendar>): List<LocalDateTime> {
+	private fun getAllDatesFromReferenceWeek(calendars: List<Calendar>): List<LocalDateTime> {
 		val referenceWeek = getReferenceWeek(calendars)
 		return dateRepository.getAllDatesFrom(referenceWeek)
 	}
 
-	private fun mapBusyDatesToMatchSessionMember(calendars: List<ClientCalendar>): Map<LocalDateTime, Set<MatchSessionMember>> {
-		val busyDates = mutableMapOf<LocalDateTime, MutableSet<MatchSessionMember>>()
+	private fun mapBusyDatesToMatchSessionMember(calendars: List<Calendar>): Map<LocalDateTime, Set<SessionMember>> {
+		val busyDates = mutableMapOf<LocalDateTime, MutableSet<SessionMember>>()
 
 		calendars.forEach { calendar ->
-			calendar.busyDates.forEach { date ->
-				busyDates[date]?.apply {
-					add(MatchSessionMember(calendar.owner))
-				} ?: run {
-					busyDates[date] = mutableSetOf(MatchSessionMember(calendar.owner))
+			calendar.timeSlots.forEach { slot ->
+				if (slot.isBusy){
+					busyDates[slot.start]?.apply {
+						add(SessionMember(calendar.owner))
+					} ?: run {
+						busyDates[slot.start] = mutableSetOf(SessionMember(calendar.owner))
+					}
 				}
 			}
 		}
 		return busyDates
 	}
 
-	private fun getReferenceWeek(calendars: List<ClientCalendar>): Week {
+	private fun getReferenceWeek(calendars: List<Calendar>): Week {
 		val weeks = calendars.map { it.week }
-
 		val current = weeks.first()
+
 		for (i in 1 until weeks.lastIndex) {
 			if (current != weeks[i]) {
 				throw IllegalArgumentException("Cannot compare calendars with different reference weeks")
 			}
 		}
-
 		return current
 	}
 }

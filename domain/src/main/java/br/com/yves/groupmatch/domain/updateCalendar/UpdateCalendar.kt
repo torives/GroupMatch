@@ -2,7 +2,7 @@ package br.com.yves.groupmatch.domain.updateCalendar
 
 import br.com.yves.groupmatch.domain.TimeSlotRepository
 import br.com.yves.groupmatch.domain.UseCase
-import br.com.yves.groupmatch.domain.loadCalendar.TimeSlot
+import br.com.yves.groupmatch.domain.TimeSlot
 
 class UpdateCalendar(
 	private val repository: TimeSlotRepository

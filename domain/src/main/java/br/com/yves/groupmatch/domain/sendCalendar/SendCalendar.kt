@@ -15,7 +15,7 @@ class SendCalendar(
 	}
 
 	override fun execute() {
-		val calendar = ClientCalendarFactory.create(calendar, bluetoothService.deviceName)
+		val calendar = CalendarFactory.create(calendar, bluetoothService.deviceName)
 		val payload = encoder.encode(calendar)
 		bluetoothService.send(payload)
 	}

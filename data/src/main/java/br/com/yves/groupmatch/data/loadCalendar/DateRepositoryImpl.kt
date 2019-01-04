@@ -10,7 +10,7 @@ import org.threeten.bp.temporal.TemporalAdjusters
 
 class DateRepositoryImpl : DateRepository {
 
-	override fun getCurrentWeek(): ClosedRange<LocalDateTime> {
+	override fun getCurrentWeek(): Week {
 		val today = getCurrentDay()
 		var firstWeekDay = when (today.dayOfWeek) {
 			DayOfWeek.MONDAY -> today
@@ -24,7 +24,7 @@ class DateRepositoryImpl : DateRepository {
 		firstWeekDay = firstWeekDay.with(LocalTime.MIN)
 		lastWeekDay = lastWeekDay.with(LocalTime.MAX)
 
-		return firstWeekDay.rangeTo(lastWeekDay)
+		return Week(firstWeekDay, lastWeekDay)
 	}
 
 	override fun getAllDatesFrom(week: Week): List<LocalDateTime> {

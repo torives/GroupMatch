@@ -1,24 +1,23 @@
 package br.com.yves.groupmatch.domain.createCalendar
 
-import br.com.yves.groupmatch.domain.DateRepository
-import br.com.yves.groupmatch.domain.UseCase
-import br.com.yves.groupmatch.domain.Week
-import br.com.yves.groupmatch.domain.loadCalendar.Calendar
-import br.com.yves.groupmatch.domain.loadCalendar.TimeSlot
+import br.com.yves.groupmatch.domain.*
+import br.com.yves.groupmatch.domain.sendCalendar.CalendarFactory
 
 class CreateCalendar(private val dateRepository: DateRepository) : UseCase<Calendar>() {
 
 	private lateinit var week: Week
+	private lateinit var owner: String
 
-	fun with(week: Week): CreateCalendar {
+	fun with(week: Week, owner: String) = apply {
 		this.week = week
-		return this
+		this.owner = owner
 	}
 
 	override fun execute(): Calendar {
-		val dates = dateRepository.getAllDatesFrom(this.week)
-		return dates.map {
-			TimeSlot(it, false)
+		val timeSlots = dateRepository.getAllDatesFrom(this.week).map {
+			TimeSlot(it, it.plusHours(1), false)
 		}
+
+		return CalendarFactory.create(owner, week, timeSlots)
 	}
 }

@@ -27,7 +27,7 @@ class CalendarPresenter(
 	}
 
 	private fun createCalendarViewModel(calendar: Calendar): CalendarViewModel {
-		val days = calendar.groupBy { it.date.toLocalDate() }
+		val days = calendar.groupBy { it.start.toLocalDate() }
 
 		val dayViewModels = days.map { day ->
 			val dayAndMonth = day.key.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"))
@@ -35,7 +35,7 @@ class CalendarPresenter(
 				.toUpperCase()
 			val hours = day.value.map {
 				HourViewModel(
-					it.date.toLocalTime().toString(),
+					it.start.toLocalTime().toString(),
 					if (it.isBusy) ScheduleStatus.Busy else ScheduleStatus.Available
 				)
 			}

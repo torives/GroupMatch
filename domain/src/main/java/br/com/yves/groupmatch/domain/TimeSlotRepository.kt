@@ -1,6 +1,5 @@
 package br.com.yves.groupmatch.domain
 
-import br.com.yves.groupmatch.domain.loadCalendar.TimeSlot
 import org.threeten.bp.LocalDateTime
 
 interface TimeSlotRepository {

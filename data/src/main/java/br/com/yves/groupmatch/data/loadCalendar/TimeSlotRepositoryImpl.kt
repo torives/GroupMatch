@@ -6,7 +6,7 @@ import br.com.yves.groupmatch.data.R
 import br.com.yves.groupmatch.data.db.RoomDB
 import br.com.yves.groupmatch.data.db.timeSlot.TimeSlotMapper
 import br.com.yves.groupmatch.domain.TimeSlotRepository
-import br.com.yves.groupmatch.domain.loadCalendar.TimeSlot
+import br.com.yves.groupmatch.domain.TimeSlot
 import org.threeten.bp.LocalDateTime
 
 class TimeSlotRepositoryImpl(context: Context) : TimeSlotRepository {
