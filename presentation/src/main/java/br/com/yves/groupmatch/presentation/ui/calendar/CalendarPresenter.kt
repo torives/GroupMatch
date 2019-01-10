@@ -1,7 +1,7 @@
 package br.com.yves.groupmatch.presentation.ui.calendar
 
 import br.com.yves.groupmatch.data.db.timeSlot.TimeSlotMapper
-import br.com.yves.groupmatch.domain.loadCalendar.Calendar
+import br.com.yves.groupmatch.domain.Calendar
 import br.com.yves.groupmatch.domain.loadCalendar.LoadCalendar
 import br.com.yves.groupmatch.domain.updateCalendar.UpdateCalendar
 import org.threeten.bp.format.DateTimeFormatter
@@ -13,7 +13,7 @@ class CalendarPresenter(
 		private val loadCalendar: LoadCalendar,
 		private val updateCalendar: UpdateCalendar
 ) {
-	//private lateinit var calendar: Calendar
+	//private lateinit var calendar: CalendarRoom
 
 	fun onViewCreated() {
 		showCalendar()
@@ -27,16 +27,16 @@ class CalendarPresenter(
 	}
 
 	private fun createCalendarViewModel(calendar: Calendar): CalendarViewModel {
-		val days = calendar.groupBy { it.start.toLocalDate() }
+		val days = calendar.timeSlots.groupBy { it.start.toLocalDate() }
 
 		val dayViewModels = days.map { day ->
 			val dayAndMonth = day.key.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"))
 			val weekDay = day.key.dayOfWeek.getDisplayName(TextStyle.NARROW, Locale.getDefault())
-				.toUpperCase()
+					.toUpperCase()
 			val hours = day.value.map {
 				HourViewModel(
-					it.start.toLocalTime().toString(),
-					if (it.isBusy) ScheduleStatus.Busy else ScheduleStatus.Available
+						it.start.toLocalTime().toString(),
+						if (it.isBusy) ScheduleStatus.Busy else ScheduleStatus.Available
 				)
 			}
 			DayViewModel(dayAndMonth, weekDay, hours)
@@ -47,13 +47,12 @@ class CalendarPresenter(
 	fun onTimeSlotClicked(day: DayViewModel, hour: HourViewModel) {
 		val isBusy = hour.status == ScheduleStatus.Busy
 		updateCalendar.with(
-			TimeSlotMapper.from(
-				day.dayAndMonth,
-				hour.label,
-				isBusy
-			)
+				listOf(TimeSlotMapper.from(
+						day.dayAndMonth,
+						hour.label,
+						isBusy
+				))
 		).execute()
-
 		showCalendar()
 	}
 }
@@ -61,14 +60,14 @@ class CalendarPresenter(
 data class CalendarViewModel(val days: List<DayViewModel>)
 
 class DayViewModel(
-	val dayAndMonth: String,
-	val weekDay: String,
-	val hours: List<HourViewModel>
+		val dayAndMonth: String,
+		val weekDay: String,
+		val hours: List<HourViewModel>
 )
 
 class HourViewModel(
-	val label: String,
-	var status: ScheduleStatus
+		val label: String,
+		var status: ScheduleStatus
 )
 
 enum class ScheduleStatus(val hexColor: String) {

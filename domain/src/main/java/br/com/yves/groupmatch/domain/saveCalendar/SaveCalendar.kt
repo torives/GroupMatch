@@ -1,11 +1,11 @@
 package br.com.yves.groupmatch.domain.saveCalendar
 
-import br.com.yves.groupmatch.domain.TimeSlotRepository
+import br.com.yves.groupmatch.domain.Calendar
+import br.com.yves.groupmatch.domain.CalendarRepository
 import br.com.yves.groupmatch.domain.UseCase
-import br.com.yves.groupmatch.domain.loadCalendar.Calendar
 
 
-class SaveCalendar(private val timeSlotRepository: TimeSlotRepository) : UseCase<Unit>() {
+class SaveCalendar(private val calendarRepository: CalendarRepository) : UseCase<Unit>() {
 	private lateinit var calendar: Calendar
 
 	fun with(calendar: Calendar): SaveCalendar {
@@ -14,6 +14,6 @@ class SaveCalendar(private val timeSlotRepository: TimeSlotRepository) : UseCase
 	}
 
 	override fun execute() {
-		timeSlotRepository.insert(calendar)
+		calendarRepository.add(calendar)
 	}
 }

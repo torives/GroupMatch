@@ -18,6 +18,6 @@ class CreateCalendar(private val dateRepository: DateRepository) : UseCase<Calen
 			TimeSlot(it, it.plusHours(1), false)
 		}
 
-		return CalendarFactory.create(owner, week, timeSlots)
+		return CalendarFactory.create(owner, week, timeSlots, Calendar.Source.LOCAL)
 	}
 }

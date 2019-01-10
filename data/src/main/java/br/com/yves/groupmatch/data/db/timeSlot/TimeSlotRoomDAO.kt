@@ -27,8 +27,8 @@ interface TimeSlotRoomDAO {
 	@Query(
 		"""
         SELECT * FROM ${TimeSlotRoom.TABLE_NAME}
-        WHERE ${TimeSlotRoom.COLUMN_DATE} >= :firstDate
-        AND ${TimeSlotRoom.COLUMN_DATE} <= :lastDate
+        WHERE ${TimeSlotRoom.COLUMN_START} >= :firstDate
+        AND ${TimeSlotRoom.COLUMN_END} <= :lastDate
     """
 	)
 	fun getAllTimeSlotsBetween(firstDate: String, lastDate: String): List<TimeSlotRoom>

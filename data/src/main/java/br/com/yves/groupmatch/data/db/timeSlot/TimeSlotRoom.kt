@@ -27,18 +27,3 @@ open class TimeSlotRoom(
 		const val COLUMN_IS_BUSY = "is_busy"
 	}
 }
-
-//@Entity(
-//	tableName = TABLE_NAME,
-//	indices = [Index(COLUMN_DATE, unique = true)]
-//)
-//open class TimeSlotRoom(
-//	@ColumnInfo(name = COLUMN_DATE) @PrimaryKey val date: LocalDateTime,
-//	@ColumnInfo(name = COLUMN_IS_BUSY) val isBusy: Boolean
-//) {
-//	companion object {
-//		const val TABLE_NAME = "time_slot"
-//		const val COLUMN_DATE = "date"
-//		const val COLUMN_IS_BUSY = "is_busy"
-//	}
-//}
