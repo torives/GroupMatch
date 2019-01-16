@@ -2,15 +2,21 @@
   "formatVersion": 1,
   "database": {
     "version": 3,
-    "identityHash": "e52009a7b9b30961bea7721d9f1dfeac",
+    "identityHash": "800e3ff559ab2ad430e4e0d8c8c7bc1b",
     "entities": [
       {
         "tableName": "time_slot",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`date` TEXT NOT NULL, `is_busy` INTEGER NOT NULL, PRIMARY KEY(`date`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`start` TEXT NOT NULL, `end` TEXT NOT NULL, `is_busy` INTEGER NOT NULL, `start` TEXT NOT NULL, `end` TEXT NOT NULL, `isBusy` INTEGER NOT NULL, PRIMARY KEY(`start`, `end`))",
         "fields": [
           {
-            "fieldPath": "date",
-            "columnName": "date",
+            "fieldPath": "start",
+            "columnName": "start",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "end",
+            "columnName": "end",
             "affinity": "TEXT",
             "notNull": true
           },
@@ -19,22 +25,42 @@
             "columnName": "is_busy",
             "affinity": "INTEGER",
             "notNull": true
+          },
+          {
+            "fieldPath": "start",
+            "columnName": "start",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "end",
+            "columnName": "end",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "isBusy",
+            "columnName": "isBusy",
+            "affinity": "INTEGER",
+            "notNull": true
           }
         ],
         "primaryKey": {
           "columnNames": [
-            "date"
+            "start",
+            "end"
           ],
           "autoGenerate": false
         },
         "indices": [
           {
-            "name": "index_time_slot_date",
+            "name": "index_time_slot_start_end",
             "unique": true,
             "columnNames": [
-              "date"
+              "start",
+              "end"
             ],
-            "createSql": "CREATE UNIQUE INDEX `index_time_slot_date` ON `${TABLE_NAME}` (`date`)"
+            "createSql": "CREATE UNIQUE INDEX `index_time_slot_start_end` ON `${TABLE_NAME}` (`start`, `end`)"
           }
         ],
         "foreignKeys": []
@@ -42,7 +68,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"e52009a7b9b30961bea7721d9f1dfeac\")"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"800e3ff559ab2ad430e4e0d8c8c7bc1b\")"
     ]
   }
 }

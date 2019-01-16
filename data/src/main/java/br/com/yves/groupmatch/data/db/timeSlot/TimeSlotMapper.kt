@@ -1,6 +1,6 @@
 package br.com.yves.groupmatch.data.db.timeSlot
 
-import br.com.yves.groupmatch.domain.TimeSlot
+import br.com.yves.groupmatch.domain.models.timeslot.TimeSlot
 import org.threeten.bp.LocalDate
 import org.threeten.bp.LocalDateTime
 import org.threeten.bp.LocalTime

@@ -4,7 +4,7 @@ import br.com.yves.groupmatch.domain.createCalendar.CreateCalendarFactory
 import br.com.yves.groupmatch.domain.CalendarRepository
 import br.com.yves.groupmatch.domain.saveCalendar.SaveCalendarFactory
 import br.com.yves.groupmatch.domain.loadCalendar.LoadCalendar
-import br.com.yves.groupmatch.presentation.factory.DateRepositoryFactory
+import br.com.yves.groupmatch.data.loadCalendar.DateRepositoryFactory
 
 object LoadCalendarFactory {
 

@@ -7,7 +7,6 @@ import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import br.com.yves.groupmatch.data.R
 import br.com.yves.groupmatch.data.db.timeSlot.TimeSlotRoom
-import br.com.yves.groupmatch.data.db.timeSlot.TimeSlotRoomDAO
 
 @Database(
 	entities = [TimeSlotRoom::class],

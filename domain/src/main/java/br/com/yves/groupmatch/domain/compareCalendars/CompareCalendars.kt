@@ -1,10 +1,10 @@
 package br.com.yves.groupmatch.domain.compareCalendars
 
 import br.com.yves.groupmatch.domain.DateRepository
-import br.com.yves.groupmatch.domain.TimeSlot
+import br.com.yves.groupmatch.domain.models.timeslot.TimeSlot
 import br.com.yves.groupmatch.domain.UseCase
-import br.com.yves.groupmatch.domain.Week
-import br.com.yves.groupmatch.domain.Calendar
+import br.com.yves.groupmatch.domain.models.Week
+import br.com.yves.groupmatch.domain.models.calendar.Calendar
 import org.threeten.bp.LocalDateTime
 
 class CompareCalendars(
@@ -28,7 +28,15 @@ class CompareCalendars(
 			override val start: LocalDateTime,
 			override val end: LocalDateTime,
 			val sessionMembers: Set<SessionMember> = mutableSetOf()
-	) : TimeSlot(start, end, false) {
+	) : TimeSlot {
+		override val isBusy: Boolean = false
+
+		init {
+			require(start < end) {
+				"Failed to instantiate ${this::class.java.name}. Start date ($start) must be smaller than end date ($end)"
+			}
+		}
+
 		fun canMerge(other: MatchFreeSlot): Boolean {
 			return other.end == this.start || other.start == this.end
 		}
@@ -97,7 +105,7 @@ class CompareCalendars(
 
 		result.sortedBy { it.sessionMembers.size }
 
-		return CalendarMatch(result)
+		return CalendarMatch(mapOf())
 	}
 
 	private fun createMergedTimeSlots(

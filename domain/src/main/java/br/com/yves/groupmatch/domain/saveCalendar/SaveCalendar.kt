@@ -1,6 +1,6 @@
 package br.com.yves.groupmatch.domain.saveCalendar
 
-import br.com.yves.groupmatch.domain.Calendar
+import br.com.yves.groupmatch.domain.models.calendar.Calendar
 import br.com.yves.groupmatch.domain.CalendarRepository
 import br.com.yves.groupmatch.domain.UseCase
 
@@ -14,6 +14,6 @@ class SaveCalendar(private val calendarRepository: CalendarRepository) : UseCase
 	}
 
 	override fun execute() {
-		calendarRepository.add(calendar)
+		calendarRepository.insert(calendar)
 	}
 }

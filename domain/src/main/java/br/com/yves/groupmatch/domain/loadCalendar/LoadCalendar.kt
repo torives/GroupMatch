@@ -1,16 +1,15 @@
 package br.com.yves.groupmatch.domain.loadCalendar
 
-import br.com.yves.groupmatch.domain.Calendar
+import br.com.yves.groupmatch.domain.models.calendar.Calendar
 import br.com.yves.groupmatch.domain.CalendarRepository
 import br.com.yves.groupmatch.domain.DateRepository
 import br.com.yves.groupmatch.domain.UseCase
-import br.com.yves.groupmatch.domain.createCalendar.CreateCalendar
 import br.com.yves.groupmatch.domain.saveCalendar.SaveCalendar
+import br.com.yves.groupmatch.domain.sendCalendar.CalendarFactory
 
 class LoadCalendar(
 		private val dateRepository: DateRepository,
 		private val calendarRepository: CalendarRepository,
-		private val createCalendar: CreateCalendar,
 		private val saveCalendar: SaveCalendar
 ) : UseCase<Calendar>() {
 
@@ -20,7 +19,7 @@ class LoadCalendar(
 
 		if (calendar == null) {
 			//TODO: Define how to identify the user as calendar owner
-			calendar = createCalendar.with(currentWeek, "").execute()
+			calendar = CalendarFactory.create("", currentWeek, Calendar.Source.LOCAL)
 			saveCalendar.with(calendar).execute()
 		}
 		return calendar

@@ -1,7 +1,7 @@
 package br.com.yves.groupmatch.data.loadCalendar
 
 import br.com.yves.groupmatch.domain.DateRepository
-import br.com.yves.groupmatch.domain.Week
+import br.com.yves.groupmatch.domain.models.Week
 import org.threeten.bp.DayOfWeek
 import org.threeten.bp.LocalDateTime
 import org.threeten.bp.LocalTime

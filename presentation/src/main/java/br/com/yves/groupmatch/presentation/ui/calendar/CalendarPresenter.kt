@@ -1,7 +1,7 @@
 package br.com.yves.groupmatch.presentation.ui.calendar
 
 import br.com.yves.groupmatch.data.db.timeSlot.TimeSlotMapper
-import br.com.yves.groupmatch.domain.Calendar
+import br.com.yves.groupmatch.domain.models.calendar.Calendar
 import br.com.yves.groupmatch.domain.loadCalendar.LoadCalendar
 import br.com.yves.groupmatch.domain.updateCalendar.UpdateCalendar
 import org.threeten.bp.format.DateTimeFormatter

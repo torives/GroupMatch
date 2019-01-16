@@ -10,7 +10,7 @@ import br.com.yves.groupmatch.R
 import br.com.yves.groupmatch.domain.compareCalendars.CompareCalendarsFactory
 import br.com.yves.groupmatch.domain.loadCalendar.LoadCalendar
 import br.com.yves.groupmatch.domain.sendCalendar.ClientCalendar
-import br.com.yves.groupmatch.presentation.factory.DateRepositoryFactory
+import br.com.yves.groupmatch.data.loadCalendar.DateRepositoryFactory
 import br.com.yves.groupmatch.presentation.ui.bluetooth.BluetoothMessageHandler
 import br.com.yves.groupmatch.presentation.ui.bluetooth.ServerBluetoothMessageHandler
 import br.com.yves.groupmatch.presentation.ui.bluetooth.client.BluetoothClient

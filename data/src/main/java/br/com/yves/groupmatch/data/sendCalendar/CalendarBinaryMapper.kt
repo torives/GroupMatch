@@ -1,6 +1,6 @@
 package br.com.yves.groupmatch.data.sendCalendar
 
-import br.com.yves.groupmatch.domain.Calendar
+import br.com.yves.groupmatch.domain.models.calendar.Calendar
 import br.com.yves.groupmatch.domain.sendCalendar.CalendarDecoder
 import br.com.yves.groupmatch.domain.sendCalendar.CalendarEncoder
 import com.google.gson.Gson

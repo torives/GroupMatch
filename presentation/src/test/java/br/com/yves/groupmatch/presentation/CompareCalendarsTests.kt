@@ -2,7 +2,7 @@ import br.com.yves.groupmatch.domain.compareCalendars.CompareCalendars
 import br.com.yves.groupmatch.domain.createCalendar.CreateCalendarFactory
 import br.com.yves.groupmatch.domain.sendCalendar.CalendarFactory
 import br.com.yves.groupmatch.domain.loadCalendar.Calendar
-import br.com.yves.groupmatch.presentation.factory.DateRepositoryFactory
+import br.com.yves.groupmatch.data.loadCalendar.DateRepositoryFactory
 import org.junit.Before
 import org.junit.Test
 

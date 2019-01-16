@@ -1,6 +1,6 @@
 package br.com.yves.groupmatch.domain.compareCalendars
 
-import br.com.yves.groupmatch.domain.TimeSlot
+import br.com.yves.groupmatch.domain.models.timeslot.TimeSlot
 
 data class CalendarMatch(val result: Map<TimeSlot, Set<SessionMember>>) {
 	private val _slots by lazy { result.keys.toList().sortedBy { it.start } }
