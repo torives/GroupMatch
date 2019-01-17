@@ -22,7 +22,6 @@ class CalendarRepositoryImpl(context: Context) : CalendarRepository {
 		when(calendar) {
 			is CalendarImpl -> {
 				val roomCalendar = CalendarMapper.map(calendar)
-				database.
 			}
 			else -> {}
 		}

@@ -6,5 +6,5 @@ open class Week(
 		override val start: LocalDateTime,
 		open val end: LocalDateTime
 ) : ClosedRange<LocalDateTime> {
-	override val endInclusive = end
+	override var endInclusive = end
 }

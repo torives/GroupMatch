@@ -12,7 +12,10 @@ import org.threeten.bp.LocalDateTime
 
 @Entity(
 		tableName = TABLE_NAME,
-		indices = [Index(COLUMN_START, COLUMN_END, unique = true)],
+		indices = [
+			Index(COLUMN_START, COLUMN_END, unique = true),
+			Index(COLUMN_CALENDAR_ID, unique = true)
+		],
 		foreignKeys = [
 			ForeignKey(
 					entity = CalendarRoom::class,
@@ -23,12 +26,12 @@ import org.threeten.bp.LocalDateTime
 		]
 )
 class TimeSlotRoom(
-		@PrimaryKey(autoGenerate = true) val id: Int,
 		@ColumnInfo(name = COLUMN_CALENDAR_ID) val calendarId: Int,
-		@ColumnInfo(name = COLUMN_START) override val start: LocalDateTime,
-		@ColumnInfo(name = COLUMN_END) override val end: LocalDateTime,
+		override val start: LocalDateTime,
+		override val end: LocalDateTime,
 		@ColumnInfo(name = COLUMN_IS_BUSY) override val isBusy: Boolean
 ) : TimeSlot {
+	@PrimaryKey(autoGenerate = true) var id = 0
 
 	init {
 		require(start < end) {

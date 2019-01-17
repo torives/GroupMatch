@@ -4,7 +4,7 @@ import androidx.room.TypeConverter
 import org.threeten.bp.LocalDateTime
 import org.threeten.bp.format.DateTimeFormatter
 
-class RoomTypeConverter {
+class LocalDateTimeConverter {
 	private val formatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME
 
 	@TypeConverter

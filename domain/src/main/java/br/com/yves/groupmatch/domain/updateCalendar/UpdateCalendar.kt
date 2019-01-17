@@ -19,8 +19,8 @@ class UpdateCalendar(
 
 	override fun execute() {
 		val currentWeek = dateRepository.getCurrentWeek()
-		repository.getCalendar(currentWeek)?.apply {
-			repository.update(week, timeSlots)
+		repository.getCalendar(currentWeek)?.let {
+			repository.update(it)
 		} ?: run {
 			throw IllegalStateException("Attempt to update calendar before creating one")
 		}

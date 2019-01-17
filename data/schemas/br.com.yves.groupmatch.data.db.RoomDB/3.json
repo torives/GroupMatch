@@ -2,12 +2,24 @@
   "formatVersion": 1,
   "database": {
     "version": 3,
-    "identityHash": "800e3ff559ab2ad430e4e0d8c8c7bc1b",
+    "identityHash": "cf21f2392361a8df7f011c0539f8dc78",
     "entities": [
       {
         "tableName": "time_slot",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`start` TEXT NOT NULL, `end` TEXT NOT NULL, `is_busy` INTEGER NOT NULL, `start` TEXT NOT NULL, `end` TEXT NOT NULL, `isBusy` INTEGER NOT NULL, PRIMARY KEY(`start`, `end`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `calendar_id` INTEGER NOT NULL, `start` TEXT NOT NULL, `end` TEXT NOT NULL, `is_busy` INTEGER NOT NULL, FOREIGN KEY(`calendar_id`) REFERENCES `calendar`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
         "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "calendarId",
+            "columnName": "calendar_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
           {
             "fieldPath": "start",
             "columnName": "start",
@@ -25,32 +37,13 @@
             "columnName": "is_busy",
             "affinity": "INTEGER",
             "notNull": true
-          },
-          {
-            "fieldPath": "start",
-            "columnName": "start",
-            "affinity": "TEXT",
-            "notNull": true
-          },
-          {
-            "fieldPath": "end",
-            "columnName": "end",
-            "affinity": "TEXT",
-            "notNull": true
-          },
-          {
-            "fieldPath": "isBusy",
-            "columnName": "isBusy",
-            "affinity": "INTEGER",
-            "notNull": true
           }
         ],
         "primaryKey": {
           "columnNames": [
-            "start",
-            "end"
+            "id"
           ],
-          "autoGenerate": false
+          "autoGenerate": true
         },
         "indices": [
           {
@@ -61,6 +54,92 @@
               "end"
             ],
             "createSql": "CREATE UNIQUE INDEX `index_time_slot_start_end` ON `${TABLE_NAME}` (`start`, `end`)"
+          },
+          {
+            "name": "index_time_slot_calendar_id",
+            "unique": true,
+            "columnNames": [
+              "calendar_id"
+            ],
+            "createSql": "CREATE UNIQUE INDEX `index_time_slot_calendar_id` ON `${TABLE_NAME}` (`calendar_id`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "calendar",
+            "onDelete": "CASCADE",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "calendar_id"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          }
+        ]
+      },
+      {
+        "tableName": "calendar",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `owner` TEXT NOT NULL, `timeSlots` TEXT NOT NULL, `source` INTEGER NOT NULL, `endInclusive` TEXT NOT NULL, `start` TEXT NOT NULL, `end` TEXT NOT NULL)",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "owner",
+            "columnName": "owner",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "timeSlots",
+            "columnName": "timeSlots",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "source",
+            "columnName": "source",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "week.endInclusive",
+            "columnName": "endInclusive",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "week.start",
+            "columnName": "start",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "week.end",
+            "columnName": "end",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "id"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [
+          {
+            "name": "index_calendar_start_end",
+            "unique": true,
+            "columnNames": [
+              "start",
+              "end"
+            ],
+            "createSql": "CREATE UNIQUE INDEX `index_calendar_start_end` ON `${TABLE_NAME}` (`start`, `end`)"
           }
         ],
         "foreignKeys": []
@@ -68,7 +147,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"800e3ff559ab2ad430e4e0d8c8c7bc1b\")"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"cf21f2392361a8df7f011c0539f8dc78\")"
     ]
   }
 }

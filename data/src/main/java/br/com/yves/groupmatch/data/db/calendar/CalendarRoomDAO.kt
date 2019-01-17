@@ -3,6 +3,7 @@ package br.com.yves.groupmatch.data.db.calendar
 import androidx.room.*
 import br.com.yves.groupmatch.data.db.week.WeekRoom
 import br.com.yves.groupmatch.domain.models.Week
+import org.threeten.bp.LocalDateTime
 
 @Dao
 interface CalendarRoomDAO {
@@ -19,10 +20,10 @@ interface CalendarRoomDAO {
 	@Query("""
 		SELECT *
 		FROM ${CalendarRoom.TABLE_NAME}
-		WHERE ${WeekRoom.COLUMN_START} == :week.start
-		AND ${WeekRoom.COLUMN_END} == :week.end
+		WHERE ${WeekRoom.COLUMN_START} == :start
+		AND ${WeekRoom.COLUMN_END} == :end
 	""")
-	fun getCalendar(week: Week): CalendarRoom?
+	fun getCalendar(start: LocalDateTime, end: LocalDateTime): CalendarRoom?
 
 	@Query("SELECT * FROM ${CalendarRoom.TABLE_NAME} WHERE ${CalendarRoom.COLUMN_ID} == :id")
 	fun getCalendar(id: Int): CalendarRoom?

@@ -4,8 +4,8 @@ import br.com.yves.groupmatch.domain.models.calendar.Calendar
 import br.com.yves.groupmatch.domain.CalendarRepository
 import br.com.yves.groupmatch.domain.DateRepository
 import br.com.yves.groupmatch.domain.UseCase
+import br.com.yves.groupmatch.domain.models.calendar.CalendarFactory
 import br.com.yves.groupmatch.domain.saveCalendar.SaveCalendar
-import br.com.yves.groupmatch.domain.sendCalendar.CalendarFactory
 
 class LoadCalendar(
 		private val dateRepository: DateRepository,
@@ -19,7 +19,11 @@ class LoadCalendar(
 
 		if (calendar == null) {
 			//TODO: Define how to identify the user as calendar owner
-			calendar = CalendarFactory.create("", currentWeek, Calendar.Source.LOCAL)
+			calendar = CalendarFactory(dateRepository).create(
+					"",
+					currentWeek,
+					Calendar.Source.LOCAL
+			)
 			saveCalendar.with(calendar).execute()
 		}
 		return calendar

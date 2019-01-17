@@ -2,28 +2,47 @@ package br.com.yves.groupmatch.data.db.calendar
 
 import androidx.room.*
 import br.com.yves.groupmatch.data.db.calendar.CalendarRoom.Companion.TABLE_NAME
-import br.com.yves.groupmatch.data.db.week.WeekRoom
 import br.com.yves.groupmatch.data.db.week.WeekRoom.Companion.COLUMN_END
 import br.com.yves.groupmatch.data.db.week.WeekRoom.Companion.COLUMN_START
+import br.com.yves.groupmatch.domain.models.Week
 import br.com.yves.groupmatch.domain.models.calendar.Calendar
 import br.com.yves.groupmatch.domain.models.timeslot.TimeSlot
 
+
 @Entity(tableName = TABLE_NAME,
-		indices = [Index(COLUMN_START, COLUMN_END, unique = true)]
+		indices = [Index(value = [COLUMN_START, COLUMN_END], unique = true)]
 )
 data class CalendarRoom(
-		@Embedded override val week: WeekRoom,
-		@ColumnInfo(name = COLUMN_OWNER) override val owner: String,
-		@ColumnInfo(name = COLUMN_SOURCE) override val timeSlots: List<TimeSlot>,
-		@ColumnInfo(name = COLUMN_TIMESLOTS) override val source: Calendar.Source
+		@Embedded override val week: Week,
+		override val owner: String,
+		@TypeConverters(SourceConverter::class) override val source: Calendar.Source
 ) : Calendar {
-	@PrimaryKey(autoGenerate = true) val id: Int = 0
+	@PrimaryKey(autoGenerate = true)
+	var id: Int = 0
+
+	@Ignore
+	override var timeSlots: List<TimeSlot> = listOf()
 
 	companion object {
 		const val TABLE_NAME = "calendar"
 		const val COLUMN_ID = "id"
 		const val COLUMN_OWNER = "owner"
 		const val COLUMN_SOURCE = "source"
-		const val COLUMN_TIMESLOTS = "timeslots"
+	}
+}
+
+class SourceConverter {
+	@TypeConverter
+	fun toSource(source: Int): Calendar.Source {
+		return when (source) {
+			Calendar.Source.LOCAL.ordinal -> Calendar.Source.LOCAL
+			Calendar.Source.REMOTE.ordinal -> Calendar.Source.REMOTE
+			else -> throw IllegalArgumentException("Could not recognize source")
+		}
+	}
+
+	@TypeConverter
+	fun toInteger(status: Calendar.Source): Int {
+		return status.ordinal
 	}
 }
