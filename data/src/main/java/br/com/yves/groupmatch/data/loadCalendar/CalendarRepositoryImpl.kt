@@ -14,7 +14,7 @@ import br.com.yves.groupmatch.domain.models.calendar.CalendarImpl
 class CalendarRepositoryImpl(context: Context) : CalendarRepository {
 	private val database: RoomDB =
 			Room.databaseBuilder(context, RoomDB::class.java, context.getString(R.string.database_name))
-					.fallbackToDestructiveMigration() //FIXME: Add Migrations when necessary
+					.fallbackToDestructiveMigration() //FIXME: Add Migrations before production launch
 					.build()
 
 	//region CalendarRepository
@@ -22,14 +22,18 @@ class CalendarRepositoryImpl(context: Context) : CalendarRepository {
 		when(calendar) {
 			is CalendarImpl -> {
 				val roomCalendar = CalendarMapper.map(calendar)
+				database.calendarDAO().insert(roomCalendar)
 			}
-			else -> {}
+			is CalendarRoom -> database.calendarDAO().insert(calendar)
+			else -> throw IllegalArgumentException(
+					"Attempt to store Unknown subclass of ${Calendar::class.java.simpleName} into database"
+			)
 		}
 	}
 
-	override fun getCalendar(week: Week): Calendar? {
-		TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-	}
+	override fun getCalendar(week: Week): Calendar? =
+		database.calendarDAO().getCalendar(week.start, week.end)
+
 
 	override fun update(calendar: Calendar) {
 		TODO("not implemented") //To change body of created functions use File | Settings | File Templates.

@@ -2,14 +2,13 @@ package br.com.yves.groupmatch.data.db.calendar
 
 import androidx.room.*
 import br.com.yves.groupmatch.data.db.week.WeekRoom
-import br.com.yves.groupmatch.domain.models.Week
 import org.threeten.bp.LocalDateTime
 
 @Dao
 interface CalendarRoomDAO {
 
 	@Insert(onConflict = OnConflictStrategy.REPLACE)
-	fun add(calendar: CalendarRoom)
+	fun insert(calendar: CalendarRoom)
 
 	@Update
 	fun update(calendar: CalendarRoom)
