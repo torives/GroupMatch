@@ -2,9 +2,9 @@ package br.com.yves.groupmatch.data.db.calendar
 
 import androidx.room.*
 import br.com.yves.groupmatch.data.db.calendar.CalendarRoom.Companion.TABLE_NAME
+import br.com.yves.groupmatch.data.db.week.WeekRoom
 import br.com.yves.groupmatch.data.db.week.WeekRoom.Companion.COLUMN_END
 import br.com.yves.groupmatch.data.db.week.WeekRoom.Companion.COLUMN_START
-import br.com.yves.groupmatch.domain.models.Week
 import br.com.yves.groupmatch.domain.models.calendar.Calendar
 import br.com.yves.groupmatch.domain.models.timeslot.TimeSlot
 
@@ -13,14 +13,15 @@ import br.com.yves.groupmatch.domain.models.timeslot.TimeSlot
 		indices = [Index(value = [COLUMN_START, COLUMN_END], unique = true)]
 )
 data class CalendarRoom(
-		@Embedded override val week: Week,
+		@Embedded override val week: WeekRoom,
 		override val owner: String,
 		@TypeConverters(SourceConverter::class) override val source: Calendar.Source
 ) : Calendar {
 	@PrimaryKey(autoGenerate = true)
-	var id: Int = 0
+	var id = 0L
 
 	@Ignore
+	@Embedded
 	override var timeSlots: List<TimeSlot> = listOf()
 
 	companion object {

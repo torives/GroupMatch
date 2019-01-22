@@ -11,6 +11,10 @@ object TimeSlotMapper {
 	private const val datePattern = "dd/MM/yyyy"
 	private const val hourPattern = "HH:mm"
 
+	fun from(timeSlot: TimeSlotImpl, calendarID: Long): TimeSlotRoom =
+		TimeSlotRoom(calendarID, timeSlot.start, timeSlot.end, timeSlot.isBusy)
+
+
 	fun from(day: String, hour: String, isBusy: Boolean): TimeSlot {
 		val start = LocalDateTime.of(
 				LocalDate.parse(day, DateTimeFormatter.ofPattern(datePattern)),

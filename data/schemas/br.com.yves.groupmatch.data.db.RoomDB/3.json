@@ -2,15 +2,15 @@
   "formatVersion": 1,
   "database": {
     "version": 3,
-    "identityHash": "1037d9b77c2e27be49757225d029acf7",
+    "identityHash": "e122a9bbc5db93a5f2f8373a348e5eef",
     "entities": [
       {
         "tableName": "time_slot",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `calendar_id` INTEGER NOT NULL, `start` TEXT NOT NULL, `end` TEXT NOT NULL, `is_busy` INTEGER NOT NULL, FOREIGN KEY(`calendar_id`) REFERENCES `calendar`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`time_slot_id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `calendar_id` INTEGER NOT NULL, `start` TEXT NOT NULL, `end` TEXT NOT NULL, `is_busy` INTEGER NOT NULL, FOREIGN KEY(`calendar_id`) REFERENCES `calendar`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
         "fields": [
           {
             "fieldPath": "id",
-            "columnName": "id",
+            "columnName": "time_slot_id",
             "affinity": "INTEGER",
             "notNull": true
           },
@@ -41,11 +41,19 @@
         ],
         "primaryKey": {
           "columnNames": [
-            "id"
+            "time_slot_id"
           ],
           "autoGenerate": true
         },
         "indices": [
+          {
+            "name": "index_time_slot_time_slot_id",
+            "unique": true,
+            "columnNames": [
+              "time_slot_id"
+            ],
+            "createSql": "CREATE UNIQUE INDEX `index_time_slot_time_slot_id` ON `${TABLE_NAME}` (`time_slot_id`)"
+          },
           {
             "name": "index_time_slot_start_end",
             "unique": true,
@@ -57,11 +65,11 @@
           },
           {
             "name": "index_time_slot_calendar_id",
-            "unique": true,
+            "unique": false,
             "columnNames": [
               "calendar_id"
             ],
-            "createSql": "CREATE UNIQUE INDEX `index_time_slot_calendar_id` ON `${TABLE_NAME}` (`calendar_id`)"
+            "createSql": "CREATE  INDEX `index_time_slot_calendar_id` ON `${TABLE_NAME}` (`calendar_id`)"
           }
         ],
         "foreignKeys": [
@@ -80,7 +88,7 @@
       },
       {
         "tableName": "calendar",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `owner` TEXT NOT NULL, `source` INTEGER NOT NULL, `endInclusive` TEXT NOT NULL, `start` TEXT NOT NULL, `end` TEXT NOT NULL)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `owner` TEXT NOT NULL, `source` INTEGER NOT NULL, `week_start` TEXT NOT NULL, `week_end` TEXT NOT NULL, `endInclusive` TEXT NOT NULL, `start` TEXT NOT NULL, `end` TEXT NOT NULL)",
         "fields": [
           {
             "fieldPath": "id",
@@ -98,6 +106,18 @@
             "fieldPath": "source",
             "columnName": "source",
             "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "week.start",
+            "columnName": "week_start",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "week.end",
+            "columnName": "week_end",
+            "affinity": "TEXT",
             "notNull": true
           },
           {
@@ -127,13 +147,13 @@
         },
         "indices": [
           {
-            "name": "index_calendar_start_end",
+            "name": "index_calendar_week_start_week_end",
             "unique": true,
             "columnNames": [
-              "start",
-              "end"
+              "week_start",
+              "week_end"
             ],
-            "createSql": "CREATE UNIQUE INDEX `index_calendar_start_end` ON `${TABLE_NAME}` (`start`, `end`)"
+            "createSql": "CREATE UNIQUE INDEX `index_calendar_week_start_week_end` ON `${TABLE_NAME}` (`week_start`, `week_end`)"
           }
         ],
         "foreignKeys": []
@@ -141,7 +161,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"1037d9b77c2e27be49757225d029acf7\")"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"e122a9bbc5db93a5f2f8373a348e5eef\")"
     ]
   }
 }

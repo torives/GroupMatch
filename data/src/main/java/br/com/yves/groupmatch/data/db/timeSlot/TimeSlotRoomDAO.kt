@@ -9,7 +9,7 @@ interface TimeSlotRoomDAO {
 	fun getAllTimeSlots(): List<TimeSlotRoom>
 
 	//region Insert
-	@Insert(onConflict = OnConflictStrategy.REPLACE)
+	@Insert(onConflict = OnConflictStrategy.FAIL)
 	fun insertOrReplace(timeSlot: TimeSlotRoom)
 	//endregion
 

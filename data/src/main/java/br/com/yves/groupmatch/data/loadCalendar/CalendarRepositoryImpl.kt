@@ -5,11 +5,14 @@ import androidx.room.Room
 import br.com.yves.groupmatch.data.R
 import br.com.yves.groupmatch.data.db.RoomDB
 import br.com.yves.groupmatch.data.db.calendar.CalendarRoom
+import br.com.yves.groupmatch.data.db.timeSlot.TimeSlotMapper
 import br.com.yves.groupmatch.data.db.week.WeekRoom
 import br.com.yves.groupmatch.domain.CalendarRepository
 import br.com.yves.groupmatch.domain.models.Week
 import br.com.yves.groupmatch.domain.models.calendar.Calendar
 import br.com.yves.groupmatch.domain.models.calendar.CalendarImpl
+import br.com.yves.groupmatch.domain.models.timeslot.TimeSlot
+import br.com.yves.groupmatch.domain.models.timeslot.TimeSlotImpl
 
 class CalendarRepositoryImpl(context: Context) : CalendarRepository {
 	private val database: RoomDB =
@@ -19,30 +22,38 @@ class CalendarRepositoryImpl(context: Context) : CalendarRepository {
 
 	//region CalendarRepository
 	override fun insert(calendar: Calendar) {
-		when(calendar) {
-			is CalendarImpl -> {
-				val roomCalendar = CalendarMapper.map(calendar)
-				database.calendarDAO().insert(roomCalendar)
+		require(calendar.timeSlots.isNotEmpty()) {
+			"Attempt to insert calendar with no ${TimeSlot::class.java.simpleName}s into database"
+		}
+
+		val roomCalendar = CalendarMapper.map(calendar)
+		val calendarId = database.calendarDAO().insert(roomCalendar)
+
+		for (timeSlot in calendar.timeSlots) {
+			(timeSlot as TimeSlotImpl).let {
+				val roomTimeSlot = TimeSlotMapper.from(timeSlot, calendarId)
+				database.timeSlotDAO().insertOrReplace(roomTimeSlot)
 			}
-			is CalendarRoom -> database.calendarDAO().insert(calendar)
-			else -> throw IllegalArgumentException(
-					"Attempt to store Unknown subclass of ${Calendar::class.java.simpleName} into database"
-			)
 		}
 	}
 
+
 	override fun getCalendar(week: Week): Calendar? =
-		database.calendarDAO().getCalendar(week.start, week.end)
+			database.calendarDAO().getCalendar(week.start, week.end)
 
 
 	override fun update(calendar: Calendar) {
-		TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+		database.calendarDAO().getCalendar(calendar.week.start, calendar.week.end)?.apply {
+			timeSlots = calendar.timeSlots
+		}?.let {
+			database.calendarDAO().update(it)
+		}
 	}
 
 	override fun delete(calendar: Calendar) {
 		TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
 	}
-	//endregion
+//endregion
 }
 
 
