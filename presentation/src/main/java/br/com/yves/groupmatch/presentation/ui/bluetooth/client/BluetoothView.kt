@@ -4,7 +4,6 @@ import android.content.BroadcastReceiver
 import android.content.IntentFilter
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
-import br.com.yves.groupmatch.domain.compareCalendars.MatchResult
 
 interface BluetoothView {
 	fun setServerSearchButtonImage(@DrawableRes resId: Int)
@@ -21,5 +20,6 @@ interface BluetoothView {
 
 	//DEBUG
 	fun displayToast(message: String)
+
 	fun displayToast(@StringRes resId: Int)
 }

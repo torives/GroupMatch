@@ -10,9 +10,8 @@ import android.util.Log
 import br.com.yves.groupmatch.BuildConfig
 import br.com.yves.groupmatch.R
 import br.com.yves.groupmatch.data.sendCalendar.CalendarArchiverFactory
-import br.com.yves.groupmatch.domain.compareCalendars.MatchResult
-import br.com.yves.groupmatch.domain.sendCalendar.SendCalendar
 import br.com.yves.groupmatch.domain.loadCalendar.LoadCalendar
+import br.com.yves.groupmatch.domain.sendCalendar.SendCalendar
 import br.com.yves.groupmatch.presentation.runOnBackground
 import br.com.yves.groupmatch.presentation.ui.bluetooth.BluetoothMessageHandler
 import br.com.yves.groupmatch.presentation.ui.bluetooth.ClientBluetoothMessageHandler

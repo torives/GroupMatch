@@ -1,10 +1,9 @@
 package br.com.yves.groupmatch.presentation.factory.showCalendar
 
-import br.com.yves.groupmatch.domain.createCalendar.CreateCalendarFactory
-import br.com.yves.groupmatch.domain.CalendarRepository
-import br.com.yves.groupmatch.domain.saveCalendar.SaveCalendarFactory
-import br.com.yves.groupmatch.domain.loadCalendar.LoadCalendar
 import br.com.yves.groupmatch.data.loadCalendar.DateRepositoryFactory
+import br.com.yves.groupmatch.domain.CalendarRepository
+import br.com.yves.groupmatch.domain.loadCalendar.LoadCalendar
+import br.com.yves.groupmatch.domain.saveCalendar.SaveCalendarFactory
 
 object LoadCalendarFactory {
 
@@ -12,10 +11,9 @@ object LoadCalendarFactory {
 		val dateRepository = DateRepositoryFactory.create()
 
 		return LoadCalendar(
-			dateRepository,
-			calendarRepository,
-			CreateCalendarFactory.create(dateRepository),
-			SaveCalendarFactory.create(calendarRepository)
+				dateRepository,
+				calendarRepository,
+				SaveCalendarFactory.create(calendarRepository)
 		)
 	}
 }

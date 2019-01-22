@@ -7,10 +7,11 @@ import android.content.Intent
 import android.util.Log
 import br.com.yves.groupmatch.BuildConfig
 import br.com.yves.groupmatch.R
+import br.com.yves.groupmatch.data.loadCalendar.DateRepositoryFactory
 import br.com.yves.groupmatch.domain.compareCalendars.CompareCalendarsFactory
 import br.com.yves.groupmatch.domain.loadCalendar.LoadCalendar
-import br.com.yves.groupmatch.domain.sendCalendar.ClientCalendar
-import br.com.yves.groupmatch.data.loadCalendar.DateRepositoryFactory
+import br.com.yves.groupmatch.domain.models.calendar.Calendar
+import br.com.yves.groupmatch.domain.models.calendar.CalendarImpl
 import br.com.yves.groupmatch.presentation.ui.bluetooth.BluetoothMessageHandler
 import br.com.yves.groupmatch.presentation.ui.bluetooth.ServerBluetoothMessageHandler
 import br.com.yves.groupmatch.presentation.ui.bluetooth.client.BluetoothClient
@@ -25,7 +26,7 @@ class ServerPresenter(
 ) : BluetoothMessageHandler.Listener, CoroutineScope {
 	override val coroutineContext = Dispatchers.Default
 	private val bluetoothService = ServerBluetoothService(ServerBluetoothMessageHandler(this))
-	private val receivedCalendars by lazy { mutableListOf<ClientCalendar>() }
+	private val receivedCalendars by lazy { mutableListOf<Calendar>() }
 
 	fun onStart() {
 		bluetoothService.start()
@@ -103,7 +104,7 @@ class ServerPresenter(
 			Log.d(TAG, message)
 		}
 		try {
-			val busyCalendar = Gson().fromJson(message, ClientCalendar::class.java)
+			val busyCalendar = Gson().fromJson(message, CalendarImpl::class.java)
 
 			if (receivedCalendars.isEmpty()) {
 				view.toggleMatchButtonVisibility(true)

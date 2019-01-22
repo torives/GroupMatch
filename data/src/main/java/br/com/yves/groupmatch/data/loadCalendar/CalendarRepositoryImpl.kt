@@ -43,12 +43,12 @@ class CalendarRepositoryImpl(context: Context) : CalendarRepository {
 
 
 object CalendarMapper {
-	fun map(calendar: Calendar): CalendarRoom = CalendarRoom(
-			WeekRoom(calendar.week.start, calendar.week.end),
-			calendar.owner,
-			calendar.timeSlots,
-			calendar.source
-	)
+	fun map(calendar: Calendar): CalendarRoom =
+			CalendarRoom(
+					WeekRoom(calendar.week.start, calendar.week.end),
+					calendar.owner,
+					calendar.source
+			).apply { timeSlots = calendar.timeSlots }
 
 	fun map(calendar: CalendarRoom): Calendar = CalendarImpl(
 			calendar.owner,

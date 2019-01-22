@@ -1,7 +1,7 @@
 package br.com.yves.groupmatch.presentation.ui.bluetooth.client
 
 import android.bluetooth.BluetoothAdapter
-import br.com.yves.groupmatch.presentation.factory.TimeSlotRepositoryFactory
+import br.com.yves.groupmatch.presentation.factory.CalendarRepositoryFactory
 import br.com.yves.groupmatch.presentation.factory.showCalendar.LoadCalendarFactory
 
 object ClientPresenterFactory {
@@ -10,7 +10,7 @@ object ClientPresenterFactory {
 					view,
 					BluetoothAdapter.getDefaultAdapter(),
 					LoadCalendarFactory.create(
-							TimeSlotRepositoryFactory.create()
+							CalendarRepositoryFactory.create()
 					)
 			)
 }
