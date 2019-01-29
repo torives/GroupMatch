@@ -37,7 +37,7 @@ open class TimeSlotRoomDAOTest {
 		//endregion
 
 		//region When
-		eventRoomDao.insertOrReplace(event)
+		eventRoomDao.insert(event)
 		//endregion
 
 		//region Then
@@ -54,7 +54,7 @@ open class TimeSlotRoomDAOTest {
 		val finalDay = LocalDateTime.now().with(TemporalAdjusters.lastDayOfMonth())
 		val event = TimeSlotRoom(0, LocalDateTime.now())
 
-		eventRoomDao.insertOrReplace(event)
+		eventRoomDao.insert(event)
 		//endregion
 
 
@@ -76,7 +76,7 @@ open class TimeSlotRoomDAOTest {
 		val finalDay = LocalDateTime.now().with(TemporalAdjusters.lastDayOfMonth())
 		val event = TimeSlotRoom(0, initialDay)
 
-		eventRoomDao.insertOrReplace(event)
+		eventRoomDao.insert(event)
 		//endregion
 
 
@@ -98,7 +98,7 @@ open class TimeSlotRoomDAOTest {
 		val finalDay = LocalDateTime.now().with(TemporalAdjusters.lastDayOfMonth())
 		val event = TimeSlotRoom(0, initialDay.with(TemporalAdjusters.firstDayOfNextMonth()))
 
-		eventRoomDao.insertOrReplace(event)
+		eventRoomDao.insert(event)
 		//endregion
 
 

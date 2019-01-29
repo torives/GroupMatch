@@ -1,14 +1,10 @@
 package br.com.yves.groupmatch.domain.updateCalendar
 
-import br.com.yves.groupmatch.domain.CalendarRepository
-import br.com.yves.groupmatch.domain.DateRepository
-import br.com.yves.groupmatch.domain.models.timeslot.TimeSlot
+import br.com.yves.groupmatch.domain.TimeSlotRepository
 import br.com.yves.groupmatch.domain.UseCase
+import br.com.yves.groupmatch.domain.models.timeslot.TimeSlot
 
-class UpdateCalendar(
-		private val repository: CalendarRepository,
-		private val dateRepository: DateRepository
-) : UseCase<Unit>() {
+class UpdateCalendar(private val repository: TimeSlotRepository) : UseCase<Unit>() {
 
 	private lateinit var timeSlots: List<TimeSlot>
 
@@ -18,11 +14,8 @@ class UpdateCalendar(
 	}
 
 	override fun execute() {
-		val currentWeek = dateRepository.getCurrentWeek()
-		repository.getCalendar(currentWeek)?.let {
-			repository.update(it)
-		} ?: run {
-			throw IllegalStateException("Attempt to update calendar before creating one")
+		for (timeSlot in timeSlots) {
+			repository.update(timeSlot)
 		}
 	}
 }

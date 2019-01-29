@@ -2,15 +2,15 @@
   "formatVersion": 1,
   "database": {
     "version": 3,
-    "identityHash": "e122a9bbc5db93a5f2f8373a348e5eef",
+    "identityHash": "e0632843cd8a6f8ee718179eced9cd5f",
     "entities": [
       {
         "tableName": "time_slot",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`time_slot_id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `calendar_id` INTEGER NOT NULL, `start` TEXT NOT NULL, `end` TEXT NOT NULL, `is_busy` INTEGER NOT NULL, FOREIGN KEY(`calendar_id`) REFERENCES `calendar`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `calendar_id` INTEGER NOT NULL, `start` TEXT NOT NULL, `end` TEXT NOT NULL, `is_busy` INTEGER NOT NULL, FOREIGN KEY(`calendar_id`) REFERENCES `calendar`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
         "fields": [
           {
             "fieldPath": "id",
-            "columnName": "time_slot_id",
+            "columnName": "id",
             "affinity": "INTEGER",
             "notNull": true
           },
@@ -41,18 +41,18 @@
         ],
         "primaryKey": {
           "columnNames": [
-            "time_slot_id"
+            "id"
           ],
           "autoGenerate": true
         },
         "indices": [
           {
-            "name": "index_time_slot_time_slot_id",
+            "name": "index_time_slot_id",
             "unique": true,
             "columnNames": [
-              "time_slot_id"
+              "id"
             ],
-            "createSql": "CREATE UNIQUE INDEX `index_time_slot_time_slot_id` ON `${TABLE_NAME}` (`time_slot_id`)"
+            "createSql": "CREATE UNIQUE INDEX `index_time_slot_id` ON `${TABLE_NAME}` (`id`)"
           },
           {
             "name": "index_time_slot_start_end",
@@ -161,7 +161,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"e122a9bbc5db93a5f2f8373a348e5eef\")"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"e0632843cd8a6f8ee718179eced9cd5f\")"
     ]
   }
 }

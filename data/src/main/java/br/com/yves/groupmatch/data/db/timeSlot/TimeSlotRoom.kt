@@ -43,7 +43,7 @@ class TimeSlotRoom(
 
 	companion object {
 		const val TABLE_NAME = "time_slot"
-		const val COLUMN_ID = "time_slot_id"
+		const val COLUMN_ID = "id"
 		const val COLUMN_CALENDAR_ID = "calendar_id"
 		const val COLUMN_START = "start"
 		const val COLUMN_END = "end"

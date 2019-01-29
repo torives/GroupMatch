@@ -27,14 +27,18 @@ class CalendarRepositoryImpl : CalendarRepository {
 		for (timeSlot in calendar.timeSlots) {
 			(timeSlot as TimeSlotImpl).let {
 				val roomTimeSlot = TimeSlotMapper.from(timeSlot, calendarId)
-				database.timeSlotDAO().insertOrReplace(roomTimeSlot)
+				database.timeSlotDAO().insert(roomTimeSlot)
 			}
 		}
 	}
 
 
-	override fun getCalendar(week: Week): Calendar? =
-			database.calendarDAO().getCalendar(week.start, week.end)
+	override fun getCalendar(week: Week): Calendar? {
+		return database.calendarDAO().getCalendar(week.start, week.end)?.apply {
+			val timeSlots = database.timeSlotDAO().getAllTimeSlotsFromCalendar(id)
+			this.timeSlots = timeSlots ?: listOf()
+		}
+	}
 
 
 	override fun update(calendar: Calendar) {
