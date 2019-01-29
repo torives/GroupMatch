@@ -13,8 +13,8 @@ import br.com.yves.groupmatch.data.db.timeSlot.TimeSlotRoom
 import br.com.yves.groupmatch.data.db.timeSlot.TimeSlotRoomDAO
 
 @Database(
-	entities = [TimeSlotRoom::class, CalendarRoom::class],
-	version = 3
+		entities = [TimeSlotRoom::class, CalendarRoom::class],
+		version = 3
 )
 @TypeConverters(LocalDateTimeConverter::class, SourceConverter::class)
 abstract class RoomDB : RoomDatabase() {
@@ -26,15 +26,14 @@ abstract class RoomDB : RoomDatabase() {
 		private var INSTANCE: RoomDB? = null
 
 		fun getInstance(): RoomDB {
-			return INSTANCE ?: throw IllegalStateException("Must initialize RoomDB on Application")
+			return INSTANCE ?: throw IllegalStateException("Must initialize RoomDB on application start")
 		}
 
 		fun init(applicationContext: Context) {
-			INSTANCE = Room.databaseBuilder(
-				applicationContext,
-				RoomDB::class.java,
-				applicationContext.getString(R.string.database_name)
-			).build()
+			INSTANCE = Room
+					.databaseBuilder(applicationContext, RoomDB::class.java, applicationContext.getString(R.string.database_name))
+					.fallbackToDestructiveMigration()
+					.build()
 		}
 	}
 }

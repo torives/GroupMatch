@@ -1,8 +1,5 @@
 package br.com.yves.groupmatch.data.loadCalendar
 
-import android.content.Context
-import androidx.room.Room
-import br.com.yves.groupmatch.data.R
 import br.com.yves.groupmatch.data.db.RoomDB
 import br.com.yves.groupmatch.data.db.calendar.CalendarRoom
 import br.com.yves.groupmatch.data.db.timeSlot.TimeSlotMapper
@@ -14,11 +11,9 @@ import br.com.yves.groupmatch.domain.models.calendar.CalendarImpl
 import br.com.yves.groupmatch.domain.models.timeslot.TimeSlot
 import br.com.yves.groupmatch.domain.models.timeslot.TimeSlotImpl
 
-class CalendarRepositoryImpl(context: Context) : CalendarRepository {
-	private val database: RoomDB =
-			Room.databaseBuilder(context, RoomDB::class.java, context.getString(R.string.database_name))
-					.fallbackToDestructiveMigration() //FIXME: Add Migrations before production launch
-					.build()
+class CalendarRepositoryImpl : CalendarRepository {
+	private val database
+		get() = RoomDB.getInstance()
 
 	//region CalendarRepository
 	override fun insert(calendar: Calendar) {
