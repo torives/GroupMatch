@@ -1,49 +1,34 @@
 package br.com.yves.groupmatch.data.db.calendar
 
 import androidx.room.*
+import br.com.yves.groupmatch.data.db.calendar.CalendarRoom.Companion.COLUMN_FINAL_DATE
+import br.com.yves.groupmatch.data.db.calendar.CalendarRoom.Companion.COLUMN_ID
+import br.com.yves.groupmatch.data.db.calendar.CalendarRoom.Companion.COLUMN_INITIAL_DATE
 import br.com.yves.groupmatch.data.db.calendar.CalendarRoom.Companion.TABLE_NAME
-import br.com.yves.groupmatch.data.db.week.WeekRoom
-import br.com.yves.groupmatch.data.db.week.WeekRoom.Companion.COLUMN_END
-import br.com.yves.groupmatch.data.db.week.WeekRoom.Companion.COLUMN_START
 import br.com.yves.groupmatch.domain.models.calendar.Calendar
-import br.com.yves.groupmatch.domain.models.timeslot.TimeSlot
+import org.threeten.bp.LocalDateTime
 
 
 @Entity(tableName = TABLE_NAME,
-		indices = [Index(value = [COLUMN_START, COLUMN_END], unique = true)]
+		indices = [Index(value = [COLUMN_ID, COLUMN_INITIAL_DATE, COLUMN_FINAL_DATE], unique = true)]
 )
 data class CalendarRoom(
-		@Embedded override val week: WeekRoom,
-		override val owner: String,
-		@TypeConverters(SourceConverter::class) override val source: Calendar.Source
-) : Calendar {
-	@PrimaryKey(autoGenerate = true)
-	var id = 0L
+		@PrimaryKey(autoGenerate = true)
+		@ColumnInfo(name = COLUMN_ID) var id: Long = 0,
+		@ColumnInfo(name = COLUMN_INITIAL_DATE) val initialDate: LocalDateTime,
+		@ColumnInfo(name = COLUMN_FINAL_DATE) val finalDate: LocalDateTime,
+		@ColumnInfo(name = COLUMN_OWNER) val owner: String,
 
-	@Ignore
-	@Embedded
-	override var timeSlots: List<TimeSlot> = listOf()
+		@TypeConverters(CalendarSourceConverter::class)
+		@ColumnInfo(name = COLUMN_SOURCE) val source: Calendar.Source
 
+) {
 	companion object {
 		const val TABLE_NAME = "calendar"
 		const val COLUMN_ID = "id"
 		const val COLUMN_OWNER = "owner"
 		const val COLUMN_SOURCE = "source"
-	}
-}
-
-class SourceConverter {
-	@TypeConverter
-	fun toSource(source: Int): Calendar.Source {
-		return when (source) {
-			Calendar.Source.LOCAL.ordinal -> Calendar.Source.LOCAL
-			Calendar.Source.REMOTE.ordinal -> Calendar.Source.REMOTE
-			else -> throw IllegalArgumentException("Could not recognize source")
-		}
-	}
-
-	@TypeConverter
-	fun toInteger(status: Calendar.Source): Int {
-		return status.ordinal
+		const val COLUMN_INITIAL_DATE = "initial_date"
+		const val COLUMN_FINAL_DATE = "final_date"
 	}
 }

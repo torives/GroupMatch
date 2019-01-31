@@ -3,13 +3,17 @@ package br.com.yves.groupmatch.domain.models.calendar
 import br.com.yves.groupmatch.domain.DateRepository
 import br.com.yves.groupmatch.domain.models.Week
 import br.com.yves.groupmatch.domain.models.timeslot.TimeSlot
-import br.com.yves.groupmatch.domain.models.timeslot.TimeSlotImpl
 
 
 class CalendarFactory(private val dateRepository: DateRepository) {
 	fun create(owner: String, week: Week, source: Calendar.Source): Calendar {
 		val timeSlots = timeSlotsFor(week)
-		return CalendarImpl(owner, week, timeSlots, source)
+		return Calendar(
+				owner = owner,
+				week = week,
+				timeSlots = timeSlots,
+				source = source
+		)
 	}
 
 	private fun timeSlotsFor(week: Week): List<TimeSlot> {
@@ -20,10 +24,10 @@ class CalendarFactory(private val dateRepository: DateRepository) {
 		var next = current + 1
 		do {
 			timeSlots.add(
-					TimeSlotImpl(
-							dates[current],
-							dates[next],
-							false
+					TimeSlot(
+							start = dates[current],
+							end = dates[next],
+							isBusy = false
 					)
 			)
 			current = next

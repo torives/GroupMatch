@@ -11,7 +11,6 @@ import br.com.yves.groupmatch.data.loadCalendar.DateRepositoryFactory
 import br.com.yves.groupmatch.domain.compareCalendars.CompareCalendarsFactory
 import br.com.yves.groupmatch.domain.loadCalendar.LoadCalendar
 import br.com.yves.groupmatch.domain.models.calendar.Calendar
-import br.com.yves.groupmatch.domain.models.calendar.CalendarImpl
 import br.com.yves.groupmatch.presentation.ui.bluetooth.BluetoothMessageHandler
 import br.com.yves.groupmatch.presentation.ui.bluetooth.ServerBluetoothMessageHandler
 import br.com.yves.groupmatch.presentation.ui.bluetooth.client.BluetoothClient
@@ -104,7 +103,7 @@ class ServerPresenter(
 			Log.d(TAG, message)
 		}
 		try {
-			val busyCalendar = Gson().fromJson(message, CalendarImpl::class.java)
+			val busyCalendar = Gson().fromJson(message, Calendar::class.java)
 
 			if (receivedCalendars.isEmpty()) {
 				view.toggleMatchButtonVisibility(true)

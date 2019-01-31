@@ -14,7 +14,7 @@ class TimeSlotRepositoryImpl: TimeSlotRepository {
 	}
 
 	override fun update(timeSlot: TimeSlot) {
-		database.timeSlotDAO().update(timeSlot as TimeSlotRoom)
+		val timeSlotRoom = TimeSlotMapper.
+		database.timeSlotDAO().update(timeSlot)
 	}
-
 }

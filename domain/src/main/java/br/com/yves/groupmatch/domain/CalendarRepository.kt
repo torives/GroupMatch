@@ -8,4 +8,5 @@ interface CalendarRepository {
 	fun update(calendar: Calendar)
 	fun delete(calendar: Calendar)
 	fun getCalendar(week: Week): Calendar?
+	fun getCalendar(id: Long): Calendar?
 }

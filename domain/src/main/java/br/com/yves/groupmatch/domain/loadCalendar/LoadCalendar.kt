@@ -29,4 +29,3 @@ class LoadCalendar(
 		return calendar
 	}
 }
-

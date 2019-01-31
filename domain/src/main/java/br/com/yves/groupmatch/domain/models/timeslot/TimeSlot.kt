@@ -2,10 +2,15 @@ package br.com.yves.groupmatch.domain.models.timeslot
 
 import org.threeten.bp.LocalDateTime
 
-interface TimeSlot {
-	val start: LocalDateTime
-	val end: LocalDateTime
-	val isBusy: Boolean
+data class TimeSlot(
+		val id: Long = 0,
+		val start: LocalDateTime,
+		val end: LocalDateTime,
+		var isBusy: Boolean
+) {
+	init {
+		require(start < end) {
+			"Failed to instantiate ${this::class.java.name}. Start date ($start) must be smaller than end date ($end)"
+		}
+	}
 }
-
-

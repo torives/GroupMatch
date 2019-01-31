@@ -1,15 +1,12 @@
 package br.com.yves.groupmatch.data.loadCalendar
 
 import br.com.yves.groupmatch.data.db.RoomDB
-import br.com.yves.groupmatch.data.db.calendar.CalendarRoom
+import br.com.yves.groupmatch.data.db.calendar.CalendarMapper
 import br.com.yves.groupmatch.data.db.timeSlot.TimeSlotMapper
-import br.com.yves.groupmatch.data.db.week.WeekRoom
 import br.com.yves.groupmatch.domain.CalendarRepository
 import br.com.yves.groupmatch.domain.models.Week
 import br.com.yves.groupmatch.domain.models.calendar.Calendar
-import br.com.yves.groupmatch.domain.models.calendar.CalendarImpl
 import br.com.yves.groupmatch.domain.models.timeslot.TimeSlot
-import br.com.yves.groupmatch.domain.models.timeslot.TimeSlotImpl
 
 class CalendarRepositoryImpl : CalendarRepository {
 	private val database
@@ -25,10 +22,8 @@ class CalendarRepositoryImpl : CalendarRepository {
 		val calendarId = database.calendarDAO().insert(roomCalendar)
 
 		for (timeSlot in calendar.timeSlots) {
-			(timeSlot as TimeSlotImpl).let {
-				val roomTimeSlot = TimeSlotMapper.from(timeSlot, calendarId)
-				database.timeSlotDAO().insert(roomTimeSlot)
-			}
+			val roomTimeSlot = TimeSlotMapper.from(timeSlot, calendarId)
+			database.timeSlotDAO().insert(roomTimeSlot)
 		}
 	}
 
@@ -38,6 +33,10 @@ class CalendarRepositoryImpl : CalendarRepository {
 			val timeSlots = database.timeSlotDAO().getAllTimeSlotsFromCalendar(id)
 			this.timeSlots = timeSlots ?: listOf()
 		}
+	}
+
+	override fun getCalendar(id: Long): Calendar? {
+		TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
 	}
 
 
@@ -55,20 +54,4 @@ class CalendarRepositoryImpl : CalendarRepository {
 //endregion
 }
 
-
-object CalendarMapper {
-	fun map(calendar: Calendar): CalendarRoom =
-			CalendarRoom(
-					WeekRoom(calendar.week.start, calendar.week.end),
-					calendar.owner,
-					calendar.source
-			).apply { timeSlots = calendar.timeSlots }
-
-	fun map(calendar: CalendarRoom): Calendar = CalendarImpl(
-			calendar.owner,
-			calendar.week,
-			calendar.timeSlots,
-			calendar.source
-	)
-}
 

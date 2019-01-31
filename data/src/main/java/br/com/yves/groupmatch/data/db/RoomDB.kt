@@ -8,7 +8,7 @@ import androidx.room.TypeConverters
 import br.com.yves.groupmatch.data.R
 import br.com.yves.groupmatch.data.db.calendar.CalendarRoom
 import br.com.yves.groupmatch.data.db.calendar.CalendarRoomDAO
-import br.com.yves.groupmatch.data.db.calendar.SourceConverter
+import br.com.yves.groupmatch.data.db.calendar.CalendarSourceConverter
 import br.com.yves.groupmatch.data.db.timeSlot.TimeSlotRoom
 import br.com.yves.groupmatch.data.db.timeSlot.TimeSlotRoomDAO
 
@@ -16,7 +16,7 @@ import br.com.yves.groupmatch.data.db.timeSlot.TimeSlotRoomDAO
 		entities = [TimeSlotRoom::class, CalendarRoom::class],
 		version = 3
 )
-@TypeConverters(LocalDateTimeConverter::class, SourceConverter::class)
+@TypeConverters(LocalDateTimeConverter::class, CalendarSourceConverter::class)
 abstract class RoomDB : RoomDatabase() {
 
 	abstract fun timeSlotDAO(): TimeSlotRoomDAO
