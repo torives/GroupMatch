@@ -16,7 +16,7 @@ class CalendarFactory(private val dateRepository: DateRepository) {
 		)
 	}
 
-	private fun timeSlotsFor(week: Week): List<TimeSlot> {
+	private fun timeSlotsFor(week: Week): MutableList<TimeSlot> {
 		val timeSlots = mutableListOf<TimeSlot>()
 		val dates = dateRepository.getAllDatesFrom(week)
 

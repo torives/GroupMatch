@@ -24,86 +24,86 @@ class CompareCalendars(
 
 	private data class MergedTimeSlot(val date: LocalDateTime, val sessionMemberStatus: Map<SessionMember, Boolean>)
 
-	data class MatchFreeSlot(
-			override val start: LocalDateTime,
-			override val end: LocalDateTime,
-			val sessionMembers: Set<SessionMember> = mutableSetOf()
-	) : TimeSlot {
-		override val isBusy: Boolean = false
-
-		init {
-			require(start < end) {
-				"Failed to instantiate ${this::class.java.name}. Start date ($start) must be smaller than end date ($end)"
-			}
-		}
-
-		fun canMerge(other: MatchFreeSlot): Boolean {
-			return other.end == this.start || other.start == this.end
-		}
-
-		fun merge(other: MatchFreeSlot): MatchFreeSlot {
-			require(other.end == this.start || other.start == this.end) {
-				"Cannot merge slots that aren't contiguous"
-			}
-			val ordered = listOf(this, other).sortedBy { it.start }
-			val newMembers = this.sessionMembers.intersect(other.sessionMembers)
-
-			return MatchFreeSlot(ordered.first().start, ordered.last().end, newMembers)
-		}
-	}
+//	data class MatchFreeSlot(
+//			override val start: LocalDateTime,
+//			override val end: LocalDateTime,
+//			val sessionMembers: Set<SessionMember> = mutableSetOf()
+//	) : TimeSlot() {
+//		override val isBusy: Boolean = false
+//
+//		init {
+//			require(start < end) {
+//				"Failed to instantiate ${this::class.java.name}. Start date ($start) must be smaller than end date ($end)"
+//			}
+//		}
+//
+//		fun canMerge(other: MatchFreeSlot): Boolean {
+//			return other.end == this.start || other.start == this.end
+//		}
+//
+//		fun merge(other: MatchFreeSlot): MatchFreeSlot {
+//			require(other.end == this.start || other.start == this.end) {
+//				"Cannot merge slots that aren't contiguous"
+//			}
+//			val ordered = listOf(this, other).sortedBy { it.start }
+//			val newMembers = this.sessionMembers.intersect(other.sessionMembers)
+//
+//			return MatchFreeSlot(ordered.first().start, ordered.last().end, newMembers)
+//		}
+//	}
 
 	private val allSessionUsers: Set<SessionMember> by lazy {
 		calendars.map { SessionMember(it.owner) }.toSet()
 	}
 
 	override fun execute(): CalendarMatch {
-		check(calendars.isNotEmpty()) {
-			"Cannot compare calendars with empty calendar list"
-		}
-
-		val weekDates = getAllDatesFromReferenceWeek(calendars)
-		val busyDates = mapBusyDatesToMatchSessionMember(calendars)
-		val mergedTimeSlots = createMergedTimeSlots(weekDates, busyDates)
-
-		//FreeSlots
-		val freeMergedSlots = mergedTimeSlots.map { timeSlot ->
-			val freeMembers = timeSlot.sessionMemberStatus.mapNotNull { (member, isBusy) ->
-				if (isBusy.not()) member else null
-			}
-			Pair(timeSlot.date, freeMembers.toSet())
-		}
-
-		val trueSlots = freeMergedSlots.map {
-			/*
-			 cada MatchFreeSlot representa um range de horário. TimeSlot representa um limite de horãrio apenas.
-			 ent"ao pra contruir um MatchFreeSlot vc precisa de dois TimeSlots.
-
-			 se o primeiro timeslot é livre e o segundo eh ocupado
-			 é um MatchFreeSlot
-
-			 se o primeiro timeslot é ocupado e o segundo é livre,
-			 não ~~ um MatchFreeSlot
-			* */
-			MatchFreeSlot(freeMergedSlots.first().first, freeMergedSlots.first().first.plusHours(1), freeMergedSlots.first().second)
-		}
-		trueSlots.sortedBy { it.start }
-		val result = mutableListOf<MatchFreeSlot>()
-		var current = trueSlots.first()
-		result.add(current)
-		for (i in 1 until trueSlots.lastIndex) {
-			val next = trueSlots[i]
-
-			current = if (current.canMerge(next)) {
-				val new = current.merge(next)
-				result.add(new)
-
-				new
-			} else {
-				next
-			}
-		}
-
-		result.sortedBy { it.sessionMembers.size }
+//		check(calendars.isNotEmpty()) {
+//			"Cannot compare calendars with empty calendar list"
+//		}
+//
+//		val weekDates = getAllDatesFromReferenceWeek(calendars)
+//		val busyDates = mapBusyDatesToMatchSessionMember(calendars)
+//		val mergedTimeSlots = createMergedTimeSlots(weekDates, busyDates)
+//
+//		//FreeSlots
+//		val freeMergedSlots = mergedTimeSlots.map { timeSlot ->
+//			val freeMembers = timeSlot.sessionMemberStatus.mapNotNull { (member, isBusy) ->
+//				if (isBusy.not()) member else null
+//			}
+//			Pair(timeSlot.date, freeMembers.toSet())
+//		}
+//
+//		val trueSlots = freeMergedSlots.map {
+//			/*
+//			 cada MatchFreeSlot representa um range de horário. TimeSlot representa um limite de horãrio apenas.
+//			 ent"ao pra contruir um MatchFreeSlot vc precisa de dois TimeSlots.
+//
+//			 se o primeiro timeslot é livre e o segundo eh ocupado
+//			 é um MatchFreeSlot
+//
+//			 se o primeiro timeslot é ocupado e o segundo é livre,
+//			 não ~~ um MatchFreeSlot
+//			* */
+//			MatchFreeSlot(freeMergedSlots.first().first, freeMergedSlots.first().first.plusHours(1), freeMergedSlots.first().second)
+//		}
+//		trueSlots.sortedBy { it.start }
+//		val result = mutableListOf<MatchFreeSlot>()
+//		var current = trueSlots.first()
+//		result.add(current)
+//		for (i in 1 until trueSlots.lastIndex) {
+//			val next = trueSlots[i]
+//
+//			current = if (current.canMerge(next)) {
+//				val new = current.merge(next)
+//				result.add(new)
+//
+//				new
+//			} else {
+//				next
+//			}
+//		}
+//
+//		result.sortedBy { it.sessionMembers.size }
 
 		return CalendarMatch(mapOf())
 	}

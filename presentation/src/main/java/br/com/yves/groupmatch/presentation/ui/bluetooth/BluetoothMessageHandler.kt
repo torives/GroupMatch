@@ -8,7 +8,7 @@ import br.com.yves.groupmatch.presentation.ui.bluetooth.server.ServerBluetoothSe
 import java.lang.ref.WeakReference
 
 /**
- * The Handler that gets information back from the ServerBluetoothService
+ * The Handler that gets information back map the ServerBluetoothService
  */
 abstract class BluetoothMessageHandler(listener: Listener) : Handler() {
 

@@ -3,7 +3,7 @@ package br.com.yves.groupmatch.domain.models.timeslot
 import org.threeten.bp.LocalDateTime
 
 data class TimeSlot(
-		val id: Long = 0,
+		val calendarId: Long = 0,
 		val start: LocalDateTime,
 		val end: LocalDateTime,
 		var isBusy: Boolean

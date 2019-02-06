@@ -7,11 +7,6 @@ fun Int.toByteArray(): ByteArray {
 	val result = ByteArray(Int.SIZE_BITS / 8)
 	var number = unaryPlus()
 
-	val map = mapOf<String, String>()
-	for ((timeSlot, busyUsers) in map) {
-
-	}
-
 	for (i in 0 until result.size) {
 		result[i] = number.and(mask).toByte()
 		number = number.shr(8)

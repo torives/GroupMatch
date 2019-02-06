@@ -7,7 +7,7 @@ data class Calendar(
 		val id: Long = 0,
 		val owner: String,
 		val week: Week,
-		val timeSlots: List<TimeSlot>,
+		val timeSlots: MutableList<TimeSlot>,
 		val source: Source
 ) {
 	enum class Source {

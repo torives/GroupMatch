@@ -1,8 +1,6 @@
 package br.com.yves.groupmatch.data.db.calendar
 
 import androidx.room.*
-import br.com.yves.groupmatch.data.db.timeSlot.TimeSlotRoom
-import br.com.yves.groupmatch.data.db.week.WeekRoom
 import org.threeten.bp.LocalDateTime
 
 @Dao
@@ -14,14 +12,18 @@ interface CalendarRoomDAO {
 	@Update
 	fun update(calendar: CalendarRoom)
 
-	@Delete
-	fun delete(calendar: CalendarRoom)
+	@Query("""
+		DELETE
+		FROM ${CalendarRoom.TABLE_NAME}
+		WHERE ${CalendarRoom.COLUMN_ID} == :calendarId
+	""")
+	fun delete(calendarId: Long)
 
 	@Query("""
 		SELECT *
 		FROM ${CalendarRoom.TABLE_NAME}
-		WHERE ${WeekRoom.COLUMN_START} == :start
-		AND ${WeekRoom.COLUMN_END} == :end
+		WHERE ${CalendarRoom.COLUMN_INITIAL_DATE} == :start
+		AND ${CalendarRoom.COLUMN_FINAL_DATE} == :end
 	""")
 	fun getCalendar(start: LocalDateTime, end: LocalDateTime): CalendarRoom?
 

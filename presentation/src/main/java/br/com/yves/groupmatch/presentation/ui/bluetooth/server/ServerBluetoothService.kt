@@ -312,7 +312,7 @@ class ServerBluetoothService
 			// Keep listening to the InputStream while connected
 			while (true) {
 				try {
-					// Read from the InputStream
+					// Read map the InputStream
 					inStream.read(messageSizeBuffer)
 					val totalMessageBytes = messageSizeBuffer.toInt()
 
