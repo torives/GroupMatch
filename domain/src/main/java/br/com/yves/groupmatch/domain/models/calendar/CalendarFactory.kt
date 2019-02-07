@@ -17,23 +17,12 @@ class CalendarFactory(private val dateRepository: DateRepository) {
 	}
 
 	private fun timeSlotsFor(week: Week): MutableList<TimeSlot> {
-		val timeSlots = mutableListOf<TimeSlot>()
-		val dates = dateRepository.getAllDatesFrom(week)
-
-		var current = dates.indices.first
-		var next = current + 1
-		do {
-			timeSlots.add(
-					TimeSlot(
-							start = dates[current],
-							end = dates[next],
-							isBusy = false
-					)
+		return dateRepository.getAllDatesFrom(week).map { date ->
+			TimeSlot(
+					start = date,
+					end = date.plusHours(1),
+					isBusy = false
 			)
-			current = next
-			next++
-		} while (next <= dates.indices.last)
-
-		return timeSlots
+		}.toMutableList()
 	}
 }
