@@ -8,7 +8,8 @@ import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.timeslot_view.view.*
 
 class TimeSlotAdapter(var calendar: CalendarViewModel) : RecyclerView.Adapter<TimeSlotAdapter.TimeSlotViewHolder>() {
-	private val totalColumns = calendar.daysCount
+	private val columns = calendar.daysCount
+	private val rows = calendar.timeslots.size/columns
 	var listener: OnItemClickListener? = null
 
 	override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TimeSlotViewHolder {
@@ -21,7 +22,7 @@ class TimeSlotAdapter(var calendar: CalendarViewModel) : RecyclerView.Adapter<Ti
 	}
 
 	override fun onBindViewHolder(holder: TimeSlotViewHolder, position: Int) {
-		calendar.timeslots.getOrNull(position)?.apply {
+		getTimeSlotAt(position)?.apply {
 			holder.itemView.hourTextView.text = hour
 			holder.itemView.cardView.setCardBackgroundColor(Color.parseColor(status.hexColor))
 		} ?: Log.d(TAG, "Could not find a model to bind ViewHolder at position: $position")
@@ -29,10 +30,23 @@ class TimeSlotAdapter(var calendar: CalendarViewModel) : RecyclerView.Adapter<Ti
 
 	fun getTimeSlotAt(position: Int): TimeSlotViewModel? {
 
-		fun rowAt(position: Int) = position / totalColumns + 1
+		fun rowAt(position: Int): Int {
+			val matrixPosition = position + 1
+			val reminder = matrixPosition.rem(columns)
 
-		val rowIndex = rowAt(position) - 1
-		return calendar.timeslots.getOrNull(rowIndex)
+			return if (reminder == 0) columns else reminder
+		}
+
+		fun columnAt(position: Int) = position / columns + 1
+
+		fun matrixToIndex(row: Int, column: Int): Int {
+			return row*(rows) + (column)
+		}
+
+        val columnIndex = columnAt(position) - 1
+        val rowIndex = rowAt(position) - 1
+        val index = matrixToIndex(rowIndex, columnIndex)
+		return calendar.timeslots.getOrNull(index)
 	}
 
 	interface OnItemClickListener {
