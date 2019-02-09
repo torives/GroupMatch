@@ -9,7 +9,7 @@ import kotlinx.android.synthetic.main.timeslot_view.view.*
 
 class TimeSlotAdapter(var calendar: CalendarViewModel) : RecyclerView.Adapter<TimeSlotAdapter.TimeSlotViewHolder>() {
 	private val columns = calendar.daysCount
-	private val rows = calendar.timeslots.size/columns
+	private val rows = calendar.timeSlots.size/columns
 	var listener: OnItemClickListener? = null
 
 	override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TimeSlotViewHolder {
@@ -18,7 +18,7 @@ class TimeSlotAdapter(var calendar: CalendarViewModel) : RecyclerView.Adapter<Ti
 	}
 
 	override fun getItemCount(): Int {
-		return calendar.timeslots.size
+		return calendar.timeSlots.size
 	}
 
 	override fun onBindViewHolder(holder: TimeSlotViewHolder, position: Int) {
@@ -46,7 +46,7 @@ class TimeSlotAdapter(var calendar: CalendarViewModel) : RecyclerView.Adapter<Ti
         val columnIndex = columnAt(position) - 1
         val rowIndex = rowAt(position) - 1
         val index = matrixToIndex(rowIndex, columnIndex)
-		return calendar.timeslots.getOrNull(index)
+		return calendar.timeSlots.getOrNull(index)
 	}
 
 	interface OnItemClickListener {
