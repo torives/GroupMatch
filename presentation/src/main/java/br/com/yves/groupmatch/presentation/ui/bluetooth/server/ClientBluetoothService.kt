@@ -311,7 +311,7 @@ class ClientBluetoothService(private val handler: BluetoothMessageHandler) : Blu
 
 				} catch (e: IOException) {
 					Log.d(TAG, "disconnected")
-//					lostConnection(socket.remoteDevice, this)
+					lostConnectionTo(socket.remoteDevice)
 					return
 				}
 			}
