@@ -30,7 +30,7 @@ class ClientAdapter(val onItemClick: ((BluetoothClient) -> Unit)? = null) :
 		}
 	}
 
-	//TODO: add status indicators
+	//TODO: insert status indicators
 	inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 		private val clientName: TextView by lazy {
 			itemView.findViewById<TextView>(

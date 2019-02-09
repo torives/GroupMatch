@@ -5,17 +5,19 @@ import androidx.room.*
 @Dao
 interface TimeSlotRoomDAO {
 
-	@Query("SELECT * FROM ${TimeSlotRoom.TABLE_NAME}")
-	fun getAllTimeSlots(): List<TimeSlotRoom>
+	@Query("""
+		SELECT *
+		FROM ${TimeSlotRoom.TABLE_NAME}
+		WHERE ${TimeSlotRoom.COLUMN_CALENDAR_ID} == :calendarId
+	""")
+	fun getTimeSlotsFromCalendar(calendarId: Long): List<TimeSlotRoom>?
 
-	//region Insert
-	@Insert(onConflict = OnConflictStrategy.REPLACE)
-	fun insertOrReplace(timeSlot: TimeSlotRoom)
-	//endregion
+	@Insert(onConflict = OnConflictStrategy.FAIL)
+	fun insert(timeSlot: TimeSlotRoom)
 
-    //region Delete
+	//region Delete
 	@Delete
-    fun delete(timeSlot: TimeSlotRoom)
+	fun delete(timeSlot: TimeSlotRoom)
 
 	@Query(value = "DELETE FROM ${TimeSlotRoom.TABLE_NAME}")
 	fun clear()
@@ -23,13 +25,4 @@ interface TimeSlotRoomDAO {
 
 	@Update
 	fun update(timeSlot: TimeSlotRoom)
-
-	@Query(
-		"""
-        SELECT * FROM ${TimeSlotRoom.TABLE_NAME}
-        WHERE ${TimeSlotRoom.COLUMN_DATE} >= :firstDate
-        AND ${TimeSlotRoom.COLUMN_DATE} <= :lastDate
-    """
-	)
-	fun getAllTimeSlotsBetween(firstDate: String, lastDate: String): List<TimeSlotRoom>
 }

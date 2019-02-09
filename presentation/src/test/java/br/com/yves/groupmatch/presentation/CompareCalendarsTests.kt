@@ -1,8 +1,8 @@
 import br.com.yves.groupmatch.domain.compareCalendars.CompareCalendars
 import br.com.yves.groupmatch.domain.createCalendar.CreateCalendarFactory
-import br.com.yves.groupmatch.domain.sendCalendar.BusyCalendarFactory
-import br.com.yves.groupmatch.domain.showCalendar.Calendar
-import br.com.yves.groupmatch.presentation.factory.DateRepositoryFactory
+import br.com.yves.groupmatch.domain.sendCalendar.CalendarFactory
+import br.com.yves.groupmatch.domain.loadCalendar.Calendar
+import br.com.yves.groupmatch.data.loadCalendar.DateRepositoryFactory
 import org.junit.Before
 import org.junit.Test
 
@@ -20,7 +20,7 @@ class CompareCalendarsTests {
 
 	@Test
 	fun compareTwoEmptyCalendars() {
-		val calendar = BusyCalendarFactory.create(emptyCalendar)
+		val calendar = CalendarFactory.create(emptyCalendar)
 		val compareCalendars = CompareCalendars(listOf(calendar, calendar), createCalendar)
 
 		val result = compareCalendars.execute()
@@ -36,8 +36,8 @@ class CompareCalendarsTests {
 			isBusy = true
 		}
 
-		val freeBusyCalendar = BusyCalendarFactory.create(emptyCalendar)
-		val busyBusyCalendar = BusyCalendarFactory.create(busySlotCalendar)
+		val freeBusyCalendar = CalendarFactory.create(emptyCalendar)
+		val busyBusyCalendar = CalendarFactory.create(busySlotCalendar)
 		val result = CompareCalendars(listOf(freeBusyCalendar, busyBusyCalendar), createCalendar).execute()
 
 		val resultTimeSlot = result.calendar.first()
@@ -51,8 +51,8 @@ class CompareCalendarsTests {
 			isBusy = true
 		}
 
-		val freeBusyCalendar = BusyCalendarFactory.create(emptyCalendar)
-		val busyBusyCalendar = BusyCalendarFactory.create(busySlotCalendar)
+		val freeBusyCalendar = CalendarFactory.create(emptyCalendar)
+		val busyBusyCalendar = CalendarFactory.create(busySlotCalendar)
 		val result = CompareCalendars(
 				listOf(freeBusyCalendar, busyBusyCalendar, busyBusyCalendar),
 				createCalendar

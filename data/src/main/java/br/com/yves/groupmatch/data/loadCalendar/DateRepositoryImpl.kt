@@ -1,7 +1,7 @@
-package br.com.yves.groupmatch.data.showCalendar
+package br.com.yves.groupmatch.data.loadCalendar
 
 import br.com.yves.groupmatch.domain.DateRepository
-import br.com.yves.groupmatch.domain.Week
+import br.com.yves.groupmatch.domain.models.Week
 import org.threeten.bp.DayOfWeek
 import org.threeten.bp.LocalDateTime
 import org.threeten.bp.LocalTime
@@ -10,7 +10,7 @@ import org.threeten.bp.temporal.TemporalAdjusters
 
 class DateRepositoryImpl : DateRepository {
 
-	override fun getCurrentWeek(): ClosedRange<LocalDateTime> {
+	override fun getCurrentWeek(): Week {
 		val today = getCurrentDay()
 		var firstWeekDay = when (today.dayOfWeek) {
 			DayOfWeek.MONDAY -> today
@@ -24,7 +24,7 @@ class DateRepositoryImpl : DateRepository {
 		firstWeekDay = firstWeekDay.with(LocalTime.MIN)
 		lastWeekDay = lastWeekDay.with(LocalTime.MAX)
 
-		return firstWeekDay.rangeTo(lastWeekDay)
+		return Week(firstWeekDay, lastWeekDay)
 	}
 
 	override fun getAllDatesFrom(week: Week): List<LocalDateTime> {

@@ -1,7 +1,7 @@
 package br.com.yves.groupmatch.domain.saveCalendar
 
-import br.com.yves.groupmatch.domain.TimeSlotRepository
+import br.com.yves.groupmatch.domain.CalendarRepository
 
 object SaveCalendarFactory {
-	fun create(timeSlotRepository: TimeSlotRepository) = SaveCalendar(timeSlotRepository)
+	fun create(calendarRepository: CalendarRepository) = SaveCalendar(calendarRepository)
 }

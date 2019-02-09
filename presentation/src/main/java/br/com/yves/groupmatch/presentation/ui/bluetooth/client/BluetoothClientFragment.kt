@@ -12,6 +12,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.annotation.StringRes
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import br.com.yves.groupmatch.R
@@ -139,6 +140,10 @@ class BluetoothClientFragment : Fragment(), BluetoothView {
 			fab.show()
 			serverAdapter.clear()
 		}
+	}
+
+	override fun navigateToMatchResult(result: MatchResult) {
+		findNavController().navigate(R.id.matchResultFragment)
 	}
 
 	override fun displayToast(message: String) {

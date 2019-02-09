@@ -1,11 +1,11 @@
 package br.com.yves.groupmatch.domain.sendCalendar
 
+import br.com.yves.groupmatch.domain.models.calendar.Calendar
 import br.com.yves.groupmatch.domain.UseCase
-import br.com.yves.groupmatch.domain.showCalendar.Calendar
 
 class SendCalendar(
-		private val bluetoothService: BluetoothSenderService,
-		private val encoder: CalendarArchiver
+		private val bluetoothService: BluetoothService,
+		private val encoder: CalendarEncoder
 ) : UseCase<Unit>() {
 	private lateinit var calendar: Calendar
 
@@ -15,8 +15,7 @@ class SendCalendar(
 	}
 
 	override fun execute() {
-		val transferCalendar = BusyCalendarFactory.create(calendar)
-		val payload = encoder.encode(transferCalendar)
+		val payload = encoder.encode(calendar)
 		bluetoothService.send(payload)
 	}
 }

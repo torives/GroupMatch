@@ -1,11 +1,11 @@
 package br.com.yves.groupmatch.domain.compareCalendars
 
-import br.com.yves.groupmatch.domain.createCalendar.CreateCalendar
-import br.com.yves.groupmatch.domain.sendCalendar.BusyCalendar
+import br.com.yves.groupmatch.domain.models.calendar.Calendar
+import br.com.yves.groupmatch.domain.DateRepository
 
 object CompareCalendarsFactory {
 	fun create(
-			calendars: List<BusyCalendar>,
-			createCalendar: CreateCalendar
-	) = CompareCalendars(calendars, createCalendar)
+			calendars: List<Calendar>,
+			dateRepository: DateRepository
+	) = CompareCalendars(calendars, dateRepository)
 }

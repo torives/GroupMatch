@@ -16,6 +16,7 @@ interface BluetoothView {
 	fun registerBroadcastReceiver(receiver: BroadcastReceiver, filter: IntentFilter)
 	fun unregisterBroadcastReceiver(receiver: BroadcastReceiver)
 	fun resetState()
+	fun navigateToMatchResult(result: MatchResult)
 
 	//DEBUG
 	fun displayToast(message: String)

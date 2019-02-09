@@ -7,15 +7,17 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.util.Log
+import br.com.yves.groupmatch.BuildConfig
 import br.com.yves.groupmatch.R
 import br.com.yves.groupmatch.data.sendCalendar.CalendarArchiverFactory
+import br.com.yves.groupmatch.domain.loadCalendar.LoadCalendar
 import br.com.yves.groupmatch.domain.sendCalendar.SendCalendar
-import br.com.yves.groupmatch.domain.showCalendar.ShowCalendar
 import br.com.yves.groupmatch.presentation.runOnBackground
 import br.com.yves.groupmatch.presentation.ui.bluetooth.BluetoothMessageHandler
 import br.com.yves.groupmatch.presentation.ui.bluetooth.ClientBluetoothMessageHandler
 import br.com.yves.groupmatch.presentation.ui.bluetooth.server.ClientBluetoothService
 import br.com.yves.groupmatch.presentation.ui.bluetooth.server.ServerBluetoothService
+import com.google.gson.Gson
 
 data class BluetoothServer(val name: String, val address: String)
 data class BluetoothClient(val name: String, val status: BluetoothClientStatus) {
@@ -31,7 +33,7 @@ enum class BluetoothConnectionState {
 class ClientPresenter(
 		private val view: BluetoothView,
 		private val bluetoothAdapter: BluetoothAdapter,
-		private val getCalendar: ShowCalendar
+		private val getCalendar: LoadCalendar
 ) : BluetoothMessageHandler.Listener {
 
 	private val bluetoothService = ClientBluetoothService(ClientBluetoothMessageHandler(this))
@@ -122,8 +124,17 @@ class ClientPresenter(
 
 	//region BluetoothMessageHandler.Listener
 	override fun onMessageRead(message: String) {
+		if (BuildConfig.DEBUG) {
+			view.displayToast(message)
+		}
 		Log.d(TAG, "Received message: $message")
-		view.displayToast(message)
+
+		try {
+			val result = Gson().fromJson(message, MatchResult::class.java)
+			view.navigateToMatchResult(result)
+		} catch (ex: Exception) {
+			Log.e(TAG, "Failed to parse MatchResult", ex)
+		}
 	}
 
 	override fun onDeviceConnected(device: BluetoothDevice) {

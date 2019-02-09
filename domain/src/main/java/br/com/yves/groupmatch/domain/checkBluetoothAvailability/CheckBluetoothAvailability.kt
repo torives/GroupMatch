@@ -22,9 +22,3 @@ class CheckBluetoothAvailability(private val bluetoothService: BluetoothService)
 	}
 }
 
-enum class BluetoothStatus {
-	Available,
-	Disabled,
-	Unsupported,
-	NoLocationPermission
-}
