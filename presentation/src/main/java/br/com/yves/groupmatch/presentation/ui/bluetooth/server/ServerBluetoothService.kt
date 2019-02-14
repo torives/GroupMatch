@@ -317,14 +317,14 @@ class ServerBluetoothService
 					val totalMessageBytes = messageSizeBuffer.toInt()
 
 					while (bytesRead < totalMessageBytes) {
-						bytesRead += socket.inputStream.read(messageBuffer)
-						message = message.plus(messageBuffer)
+						val bytesRemaining = totalMessageBytes - bytesRead
+						val length = if(bytesRemaining > messageBuffer.size) messageBuffer.size else bytesRemaining
+						bytesRead += socket.inputStream.read(messageBuffer, 0, length)
+						message = message.plus(messageBuffer.slice(0 until length))
 					}
 
 					handler.obtainMessage(
 							BluetoothMessageHandler.MESSAGE_READ,
-							bytesRead,
-							-1,
 							message
 					).sendToTarget()
 

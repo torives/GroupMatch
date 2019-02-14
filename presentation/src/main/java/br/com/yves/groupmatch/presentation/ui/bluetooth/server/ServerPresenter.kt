@@ -18,6 +18,10 @@ import br.com.yves.groupmatch.presentation.ui.bluetooth.client.BluetoothConnecti
 import com.google.gson.Gson
 import kotlinx.coroutines.*
 
+//TODO: Tratar as Sources dos calendários no SendCalendar
+//TODO: Atualizar a lista de calendários caso um cliente seja desconectado
+//TODO: Atualizar o status do botão de match caso um cliente seja desconectado
+//TODO: Identificar o calendario através do nome de usuário
 class ServerPresenter(
 		private val view: ServerView,
 		private val bluetoothAdapter: BluetoothAdapter,
