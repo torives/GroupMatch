@@ -29,7 +29,7 @@ abstract class BluetoothMessageHandler(listener: Listener) : Handler() {
 		when (msg.what) {
 			MESSAGE_STATE_CHANGE -> onStateChange(msg.arg1)
 			MESSAGE_WRITE -> onMessageWrite(msg)
-			MESSAGE_READ -> onMessageRead(msg.obj as ByteArray)
+			MESSAGE_READ -> onMessageRead(msg.obj as String)
 			MESSAGE_CONNECTION_FAILED -> onConnectionFailed(msg.obj as BluetoothDevice)
 			MESSAGE_CONNECTION_LOST -> onConnectionLost(msg.obj as BluetoothDevice)
 			MESSAGE_DEVICE_CONNECTED -> onDeviceConnected(msg.obj as BluetoothDevice)
@@ -57,9 +57,9 @@ abstract class BluetoothMessageHandler(listener: Listener) : Handler() {
 		throw NotImplementedError("Subclasses must override onMessageWrite method")
 	}
 
-	open fun onMessageRead(buffer: ByteArray) {
-		val readMessage = String(buffer)
-		listener?.onMessageRead(readMessage)
+	open fun onMessageRead(buffer: String) {
+//		val readMessage = String(buffer)
+		listener?.onMessageRead(buffer)
 	}
 
 	open fun onConnectionFailed(device: BluetoothDevice) {

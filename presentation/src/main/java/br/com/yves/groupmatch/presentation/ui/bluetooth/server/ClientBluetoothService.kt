@@ -20,7 +20,6 @@ import android.bluetooth.BluetoothAdapter
 import android.bluetooth.BluetoothDevice
 import android.bluetooth.BluetoothSocket
 import android.util.Log
-import br.com.yves.groupmatch.data.toByteArray
 import br.com.yves.groupmatch.data.toInt
 import br.com.yves.groupmatch.domain.sendCalendar.BluetoothService
 import br.com.yves.groupmatch.presentation.ui.bluetooth.BluetoothMessageHandler
@@ -150,7 +149,7 @@ class ClientBluetoothService(private val handler: BluetoothMessageHandler) : Blu
 	 * @param out The bytes to write
 	 * @see ConnectedThread.write
 	 */
-	private fun  write(out: ByteArray) {
+	private fun write(out: ByteArray) {
 		// Create temporary object
 		val r: ConnectedThread?
 		// Synchronize a copy of the ConnectedThread
@@ -190,11 +189,8 @@ class ClientBluetoothService(private val handler: BluetoothMessageHandler) : Blu
 
 	//region BluetoothService
 	override fun send(message: ByteArray) {
-		with(message) {
-			val byteCountArray = size.toByteArray()
-			val payload = byteCountArray.plus(this)
-			write(payload)
-		}
+		val payload = message.plus("\n".toByteArray())
+		write(payload)
 	}
 	//endregion
 

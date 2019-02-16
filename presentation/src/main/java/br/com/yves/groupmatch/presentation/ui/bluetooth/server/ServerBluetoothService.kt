@@ -25,9 +25,7 @@ import android.util.Log
 import br.com.yves.groupmatch.data.toByteArray
 import br.com.yves.groupmatch.data.toInt
 import br.com.yves.groupmatch.presentation.ui.bluetooth.BluetoothMessageHandler
-import java.io.IOException
-import java.io.InputStream
-import java.io.OutputStream
+import java.io.*
 import java.util.*
 
 /**
@@ -305,29 +303,14 @@ class ServerBluetoothService
 
 		override fun run() {
 			Log.i(TAG, "BEGIN mConnectedThread")
-			val messageSizeBuffer = ByteArray(4)
-			val messageBuffer = ByteArray(1024)
-			var message = ByteArray(0)
-			var bytesRead = 0
-			// Keep listening to the InputStream while connected
+			val reader = BufferedReader(InputStreamReader(inStream))
 			while (true) {
 				try {
-					// Read map the InputStream
-					inStream.read(messageSizeBuffer)
-					val totalMessageBytes = messageSizeBuffer.toInt()
-
-					while (bytesRead < totalMessageBytes) {
-						val bytesRemaining = totalMessageBytes - bytesRead
-						val length = if(bytesRemaining > messageBuffer.size) messageBuffer.size else bytesRemaining
-						bytesRead += socket.inputStream.read(messageBuffer, 0, length)
-						message = message.plus(messageBuffer.slice(0 until length))
-					}
-
+					val message = reader.readLine()
 					handler.obtainMessage(
 							BluetoothMessageHandler.MESSAGE_READ,
 							message
 					).sendToTarget()
-
 				} catch (e: IOException) {
 					Log.d(TAG, "disconnected")
 					lostConnection(socket.remoteDevice, this)
