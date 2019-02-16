@@ -102,17 +102,18 @@ class ServerPresenter(
 	//region BluetoothMessageHandler.Listener
 	//TODO: identificar de que client é o calendar em questão para atualizar a lista
 	override fun onMessageRead(message: String) {
-		if (BuildConfig.DEBUG) {
-			view.displayToast(message)
-			Log.d(TAG, message)
-		}
 		try {
 			val busyCalendar = Gson().fromJson(message, Calendar::class.java)
+			receivedCalendars.add(busyCalendar)
 
-			if (receivedCalendars.isEmpty()) {
+			if (BuildConfig.DEBUG) {
+				view.displayToast(busyCalendar.toString())
+				Log.d(TAG, busyCalendar.toString())
+			}
+
+			if (receivedCalendars.isNotEmpty()) {
 				view.toggleMatchButtonVisibility(true)
 			}
-			receivedCalendars.add(busyCalendar)
 		} catch (ex: Exception) {
 			Log.e(TAG, "Failed to parse received message to ClientCalendar", ex)
 		}
@@ -153,6 +154,10 @@ class ServerPresenter(
 						BluetoothClient.BluetoothClientStatus.Disconnected
 				)
 		)
+		receivedCalendars.removeAll { it.owner == device.name }
+		if (receivedCalendars.isEmpty()) {
+			view.toggleMatchButtonVisibility(false)
+		}
 	}
 	//endregion
 
