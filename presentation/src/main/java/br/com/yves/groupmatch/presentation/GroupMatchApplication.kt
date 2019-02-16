@@ -4,7 +4,7 @@ import android.app.Application
 import br.com.yves.groupmatch.data.db.RoomDB
 import com.jakewharton.threetenabp.AndroidThreeTen
 
-class Application : Application() {
+class GroupMatchApplication : Application() {
 
 	override fun onCreate() {
 		super.onCreate()

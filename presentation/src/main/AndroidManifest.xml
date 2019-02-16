@@ -4,7 +4,7 @@
     package="br.com.yves.groupmatch">
 
     <application
-        android:name="br.com.yves.groupmatch.presentation.Application"
+        android:name="br.com.yves.groupmatch.presentation.GroupMatchApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
