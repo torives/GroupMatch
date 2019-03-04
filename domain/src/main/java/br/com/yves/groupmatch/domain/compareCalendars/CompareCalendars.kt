@@ -68,11 +68,22 @@ class CompareCalendars(
 
 		val result = mutableListOf<MatchTimeSlot>()
 		var builder = MatchTimeSlotBuilder()
-		resultSlots.forEach { slot ->
+		resultSlots.forEachIndexed { index, slot ->
 			if (builder.start != null){
-				if (slot.start.dayOfWeek != builder.start?.dayOfWeek || slot.isBusy) {
-					builder.setEnd(slot.start)
-					result.add(builder.build())
+				when {
+					slot.isBusy -> {
+						builder.setEnd(slot.start)
+						result.add(builder.build())
+					}
+					slot.start.dayOfWeek != builder.start?.dayOfWeek -> {
+						builder.setEnd(slot.start)
+						result.add(builder.build())
+						builder.setStart(slot.start)
+					}
+					resultSlots.indices.last == index -> {
+						builder.setEnd(slot.end)
+						result.add(builder.build())
+					}
 				}
 			} else if (!slot.isBusy){
 				builder.setStart(slot.start)
