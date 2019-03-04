@@ -57,6 +57,7 @@ class ServerPresenter(
 
 		// calcula o resultado
 		val localCalendar = loadCalendar.execute()
+		receivedCalendars.add(localCalendar)
 		val compare = CompareCalendarsFactory.create(
 				receivedCalendars,
 				DateRepositoryFactory.create()
