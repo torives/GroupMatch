@@ -7,4 +7,13 @@ open class Week(
 		open val end: LocalDateTime
 ) : ClosedRange<LocalDateTime> {
 	override var endInclusive = end
+
+	override fun equals(other: Any?): Boolean {
+		val otherWeek = other as? Week
+		return if(otherWeek == null) {
+			false
+		} else {
+			this.start == otherWeek.start && this.end == otherWeek.end
+		}
+	}
 }
