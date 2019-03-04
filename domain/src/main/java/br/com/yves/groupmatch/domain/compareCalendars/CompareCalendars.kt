@@ -20,14 +20,22 @@ class CompareCalendars(
 		}
 	}
 
-	private class MergedTimeSlotBuilder {
-		private lateinit var date: LocalDateTime
-		private lateinit var status: Map<SessionMember, Boolean>
+	private class MatchTimeSlotBuilder {
+		var start: LocalDateTime? = null
+			private set
+		var end: LocalDateTime? = null
+			private set
 
-		fun date(date: LocalDateTime) = apply { this.date = date }
-		fun status(status: Map<SessionMember, Boolean>) = apply { this.status = status }
+		fun setStart(start: LocalDateTime) = apply { this.start = start }
+		fun setEnd(end: LocalDateTime) = apply { this.end = end }
 
-		fun build(): MergedTimeSlot = MergedTimeSlot(date, status)
+		fun build(): MatchTimeSlot {
+			val slot = MatchTimeSlot(start!!, end!!, false)
+			start = null
+			end = null
+
+			return slot
+		}
 	}
 
 	private data class MergedTimeSlot(val date: LocalDateTime, val sessionMemberStatus: Map<SessionMember, Boolean>)
@@ -40,6 +48,11 @@ class CompareCalendars(
 	override fun execute(): CalendarMatch {
 
 		val week = calendars.first().week
+
+
+
+
+
 		val resultSlots = calendars.first().timeSlots.map { MatchTimeSlot(it.start, it.end, it.isBusy) }
 		val timeSlots = calendars.map { it.timeSlots }
 
@@ -49,9 +62,21 @@ class CompareCalendars(
 			}
 		}
 
+
+		val result = mutableListOf<MatchTimeSlot>()
+		var builder = MatchTimeSlotBuilder()
 		resultSlots.forEach { slot ->
-			
+			if (slot.isBusy.not()) {
+				if (builder.start == null)
+					builder.setStart(slot.start)
+			} else {
+				if (builder.start != null) {
+					builder.setEnd(slot.start)
+					result.add(builder.build())
+				}
+			}
 		}
+		print(result)
 
 
 //		val busyDates = mapBusyDatesToMatchSessionMember(calendars)
@@ -97,34 +122,6 @@ class CompareCalendars(
 
 		return CalendarMatch()
 	}
-
-	private fun createMergedTimeSlots(
-			weekDates: List<LocalDateTime>,
-			busyDates: Map<LocalDateTime, Set<SessionMember>>
-	): List<MergedTimeSlot> {
-
-		val mergedTimeSlots = mutableListOf<MergedTimeSlot>()
-		val builder = MergedTimeSlotBuilder()
-
-		weekDates.forEach { date ->
-			builder.date(date)
-			val userSet = mutableMapOf<SessionMember, Boolean>()
-
-			if (busyDates.containsKey(date)) {
-				busyDates.getValue(date).forEach { user ->
-					userSet[user] = true
-				}
-			} else {
-				allSessionUsers.forEach { user ->
-					userSet[user] = false
-				}
-			}
-			builder.status(userSet)
-			mergedTimeSlots.add(builder.build())
-		}
-		return mergedTimeSlots
-	}
-
 
 	private fun areCalendarsComparable(): Boolean {
 		return areCalendarsWellFormed() && areCalendarsReferencingSameWeek()
