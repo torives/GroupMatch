@@ -47,7 +47,10 @@ class CompareCalendars(
 
 	override fun execute(): CalendarMatch {
 
-		val week = calendars.first().week
+//		val week = calendars.first().week
+//		val weekDates = dateRepository.getAllDatesFrom(week)
+//		val weekDays = weekDates.groupBy { it.dayOfWeek }
+
 
 
 
@@ -66,16 +69,29 @@ class CompareCalendars(
 		val result = mutableListOf<MatchTimeSlot>()
 		var builder = MatchTimeSlotBuilder()
 		resultSlots.forEach { slot ->
-			if (slot.isBusy.not()) {
-				if (builder.start == null)
-					builder.setStart(slot.start)
-			} else {
-				if (builder.start != null) {
+			if (builder.start != null){
+				if (slot.start.dayOfWeek != builder.start?.dayOfWeek || slot.isBusy) {
 					builder.setEnd(slot.start)
 					result.add(builder.build())
 				}
+			} else if (!slot.isBusy){
+				builder.setStart(slot.start)
 			}
 		}
+
+//			if (slot.isBusy.not()) {
+//				if (builder.start == null) {
+//					builder.setStart(slot.start)
+//				} else if (slot.start.dayOfWeek == builder.start?.dayOfWeek) {
+//
+//				}
+//			} else {
+//				if (builder.start != null || slot.start.dayOfWeek != builder.start?.dayOfWeek) {
+//					builder.setEnd(slot.start)
+//					result.add(builder.build())
+//				}
+//			}
+//		}
 		print(result)
 
 
