@@ -6,10 +6,10 @@ import androidx.room.ForeignKey
 import androidx.room.ForeignKey.CASCADE
 import androidx.room.Index
 import br.com.yves.groupmatch.data.db.calendar.CalendarRoom
-import br.com.yves.groupmatch.data.db.timeSlot.TimeSlotRoom.Companion.COLUMN_CALENDAR_ID
-import br.com.yves.groupmatch.data.db.timeSlot.TimeSlotRoom.Companion.COLUMN_END
-import br.com.yves.groupmatch.data.db.timeSlot.TimeSlotRoom.Companion.COLUMN_START
-import br.com.yves.groupmatch.data.db.timeSlot.TimeSlotRoom.Companion.TABLE_NAME
+import br.com.yves.groupmatch.data.db.timeSlot.CalendarTimeSlotRoom.Companion.COLUMN_CALENDAR_ID
+import br.com.yves.groupmatch.data.db.timeSlot.CalendarTimeSlotRoom.Companion.COLUMN_END
+import br.com.yves.groupmatch.data.db.timeSlot.CalendarTimeSlotRoom.Companion.COLUMN_START
+import br.com.yves.groupmatch.data.db.timeSlot.CalendarTimeSlotRoom.Companion.TABLE_NAME
 import org.threeten.bp.LocalDateTime
 
 @Entity(
@@ -29,10 +29,10 @@ import org.threeten.bp.LocalDateTime
 		],
 		indices = [
 			Index(COLUMN_START, COLUMN_END, unique = true),
-			Index(TimeSlotRoom.COLUMN_CALENDAR_ID)
+			Index(CalendarTimeSlotRoom.COLUMN_CALENDAR_ID)
 		]
 )
-data class TimeSlotRoom(
+data class CalendarTimeSlotRoom(
 		@ColumnInfo(name = COLUMN_CALENDAR_ID) val calendarId: Long,
 		@ColumnInfo(name = COLUMN_START) val start: LocalDateTime,
 		@ColumnInfo(name = COLUMN_END) val end: LocalDateTime,

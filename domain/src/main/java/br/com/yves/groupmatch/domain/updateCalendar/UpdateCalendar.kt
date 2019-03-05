@@ -2,23 +2,23 @@ package br.com.yves.groupmatch.domain.updateCalendar
 
 import br.com.yves.groupmatch.domain.CalendarRepository
 import br.com.yves.groupmatch.domain.UseCase
-import br.com.yves.groupmatch.domain.models.timeslot.TimeSlot
+import br.com.yves.groupmatch.domain.models.slots.CalendarTimeSlot
 
 class UpdateCalendar(private val repository: CalendarRepository) : UseCase<Unit>() {
 
-    private lateinit var timeSlot: TimeSlot
+    private lateinit var calendarTimeSlot: CalendarTimeSlot
 
-    fun with(timeSlot: TimeSlot): UpdateCalendar {
-        this.timeSlot = timeSlot
+    fun with(calendarTimeSlot: CalendarTimeSlot): UpdateCalendar {
+        this.calendarTimeSlot = calendarTimeSlot
         return this
     }
 
     override fun execute() {
-        this.timeSlot.isBusy = this.timeSlot.isBusy.not()
-        repository.getCalendar(timeSlot.calendarId)?.apply {
-            val index = timeSlots.indexOfFirst { it.start == timeSlot.start && it.end == timeSlot.end }
+        this.calendarTimeSlot.isBusy = this.calendarTimeSlot.isBusy.not()
+        repository.getCalendar(calendarTimeSlot.calendarId)?.apply {
+            val index = calendarTimeSlots.indexOfFirst { it.start == calendarTimeSlot.start && it.end == calendarTimeSlot.end }
             if (index >= 0) {
-                timeSlots[index] = timeSlot
+                calendarTimeSlots[index] = calendarTimeSlot
                 repository.update(this)
             } else {
                 //log this bitch

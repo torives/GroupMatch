@@ -9,17 +9,17 @@ import br.com.yves.groupmatch.data.R
 import br.com.yves.groupmatch.data.db.calendar.CalendarRoom
 import br.com.yves.groupmatch.data.db.calendar.CalendarRoomDAO
 import br.com.yves.groupmatch.data.db.calendar.CalendarSourceConverter
-import br.com.yves.groupmatch.data.db.timeSlot.TimeSlotRoom
-import br.com.yves.groupmatch.data.db.timeSlot.TimeSlotRoomDAO
+import br.com.yves.groupmatch.data.db.timeSlot.CalendarTimeSlotRoom
+import br.com.yves.groupmatch.data.db.timeSlot.CalendarTimeSlotRoomDAO
 
 @Database(
-		entities = [TimeSlotRoom::class, CalendarRoom::class],
+		entities = [CalendarTimeSlotRoom::class, CalendarRoom::class],
 		version = 3
 )
 @TypeConverters(LocalDateTimeConverter::class, CalendarSourceConverter::class)
 abstract class RoomDB : RoomDatabase() {
 
-	abstract fun timeSlotDAO(): TimeSlotRoomDAO
+	abstract fun timeSlotDAO(): CalendarTimeSlotRoomDAO
 	abstract fun calendarDAO(): CalendarRoomDAO
 
 	companion object {

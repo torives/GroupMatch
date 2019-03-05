@@ -2,11 +2,11 @@ package br.com.yves.groupmatch.data.loadCalendar
 
 import br.com.yves.groupmatch.data.db.RoomDB
 import br.com.yves.groupmatch.data.db.calendar.CalendarRoomMapper
-import br.com.yves.groupmatch.data.db.timeSlot.TimeSlotRoomMapper
+import br.com.yves.groupmatch.data.db.timeSlot.CalendarTimeSlotRoomMapper
 import br.com.yves.groupmatch.domain.CalendarRepository
 import br.com.yves.groupmatch.domain.models.Week
 import br.com.yves.groupmatch.domain.models.calendar.Calendar
-import br.com.yves.groupmatch.domain.models.timeslot.TimeSlot
+import br.com.yves.groupmatch.domain.models.slots.CalendarTimeSlot
 
 class CalendarRepositoryImpl : CalendarRepository {
 	private val database
@@ -14,15 +14,15 @@ class CalendarRepositoryImpl : CalendarRepository {
 
 	//region CalendarRepository
 	override fun insert(calendar: Calendar) {
-		require(calendar.timeSlots.isNotEmpty()) {
-			"Attempt to insert calendar with no ${TimeSlot::class.java.simpleName}s into database"
+		require(calendar.calendarTimeSlots.isNotEmpty()) {
+			"Attempt to insert calendar with no ${CalendarTimeSlot::class.java.simpleName}s into database"
 		}
 
 		val roomCalendar = CalendarRoomMapper.map(calendar)
 		val calendarId = database.calendarDAO().insert(roomCalendar)
 
-		for (timeSlot in calendar.timeSlots) {
-			val roomTimeSlot = TimeSlotRoomMapper.map(timeSlot, calendarId)
+		for (timeSlot in calendar.calendarTimeSlots) {
+			val roomTimeSlot = CalendarTimeSlotRoomMapper.map(timeSlot, calendarId)
 			database.timeSlotDAO().insert(roomTimeSlot)
 		}
 	}
@@ -47,7 +47,7 @@ class CalendarRepositoryImpl : CalendarRepository {
 		val calendarRoom = CalendarRoomMapper.map(calendar)
 		database.calendarDAO().update(calendarRoom)
 
-		val timeSlots = calendar.timeSlots.map { TimeSlotRoomMapper.map(it) }
+		val timeSlots = calendar.calendarTimeSlots.map { CalendarTimeSlotRoomMapper.map(it) }
 		timeSlots.forEach {
 			database.timeSlotDAO().update(it)
 		}

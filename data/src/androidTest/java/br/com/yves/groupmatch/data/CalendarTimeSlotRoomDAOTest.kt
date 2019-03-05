@@ -4,7 +4,7 @@ import androidx.room.Room
 import androidx.test.InstrumentationRegistry
 import androidx.test.runner.AndroidJUnit4
 import br.com.yves.groupmatch.data.db.RoomDB
-import br.com.yves.groupmatch.data.db.timeSlot.TimeSlotRoom
+import br.com.yves.groupmatch.data.db.timeSlot.CalendarTimeSlotRoom
 import com.jakewharton.threetenabp.AndroidThreeTen
 import org.junit.After
 import org.junit.Before
@@ -14,7 +14,7 @@ import org.threeten.bp.LocalDateTime
 import org.threeten.bp.temporal.TemporalAdjusters
 
 @RunWith(AndroidJUnit4::class)
-open class TimeSlotRoomDAOTest {
+open class CalendarTimeSlotRoomDAOTest {
 	private lateinit var roomDB: RoomDB
 
 	@Before
@@ -33,7 +33,7 @@ open class TimeSlotRoomDAOTest {
 	fun insertEventRoom() {
 		//region Given
 		val eventRoomDao = roomDB.timeSlotDAO()
-		val event = TimeSlotRoom(0, LocalDateTime.now())
+		val event = CalendarTimeSlotRoom(0, LocalDateTime.now())
 		//endregion
 
 		//region When
@@ -41,7 +41,7 @@ open class TimeSlotRoomDAOTest {
 		//endregion
 
 		//region Then
-		val cursor = roomDB.query("SELECT * FROM ${TimeSlotRoom.TABLE_NAME}", null)
+		val cursor = roomDB.query("SELECT * FROM ${CalendarTimeSlotRoom.TABLE_NAME}", null)
 		assert(cursor.count == 1)
 		//endregion
 	}
@@ -52,7 +52,7 @@ open class TimeSlotRoomDAOTest {
 		val eventRoomDao = roomDB.timeSlotDAO()
 		val initialDay = LocalDateTime.now().with(TemporalAdjusters.firstDayOfMonth())
 		val finalDay = LocalDateTime.now().with(TemporalAdjusters.lastDayOfMonth())
-		val event = TimeSlotRoom(0, LocalDateTime.now())
+		val event = CalendarTimeSlotRoom(0, LocalDateTime.now())
 
 		eventRoomDao.insert(event)
 		//endregion
@@ -74,7 +74,7 @@ open class TimeSlotRoomDAOTest {
 		val eventRoomDao = roomDB.timeSlotDAO()
 		val initialDay = LocalDateTime.now().with(TemporalAdjusters.firstDayOfMonth())
 		val finalDay = LocalDateTime.now().with(TemporalAdjusters.lastDayOfMonth())
-		val event = TimeSlotRoom(0, initialDay)
+		val event = CalendarTimeSlotRoom(0, initialDay)
 
 		eventRoomDao.insert(event)
 		//endregion
@@ -96,7 +96,7 @@ open class TimeSlotRoomDAOTest {
 		val eventRoomDao = roomDB.timeSlotDAO()
 		val initialDay = LocalDateTime.now().with(TemporalAdjusters.firstDayOfMonth())
 		val finalDay = LocalDateTime.now().with(TemporalAdjusters.lastDayOfMonth())
-		val event = TimeSlotRoom(0, initialDay.with(TemporalAdjusters.firstDayOfNextMonth()))
+		val event = CalendarTimeSlotRoom(0, initialDay.with(TemporalAdjusters.firstDayOfNextMonth()))
 
 		eventRoomDao.insert(event)
 		//endregion

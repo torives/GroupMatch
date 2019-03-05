@@ -1,6 +1,6 @@
 package br.com.yves.groupmatch.presentation.ui.calendar
 
-import br.com.yves.groupmatch.domain.models.timeslot.TimeSlot
+import br.com.yves.groupmatch.domain.models.slots.CalendarTimeSlot
 import org.threeten.bp.LocalDate
 import org.threeten.bp.LocalDateTime
 import org.threeten.bp.LocalTime
@@ -12,8 +12,8 @@ object TimeSlotViewModelMapper {
 	private const val datePattern = "dd/MM/yyyy"
 	private const val hourPattern = "HH:mm"
 
-	fun map(timeSlot: TimeSlot): TimeSlotViewModel {
-		timeSlot.apply {
+	fun map(calendarTimeSlot: CalendarTimeSlot): TimeSlotViewModel {
+		calendarTimeSlot.apply {
 			val dayAndMonth = DateTimeFormatter
 					.ofPattern(datePattern)
 					.format(start)
@@ -27,7 +27,7 @@ object TimeSlotViewModelMapper {
 		}
 	}
 
-	fun map(calendarId: Long, timeSlot: TimeSlotViewModel): TimeSlot {
+	fun map(calendarId: Long, timeSlot: TimeSlotViewModel): CalendarTimeSlot {
 		timeSlot.apply {
 			val start = LocalDateTime.of(
 					LocalDate.parse(dayAndMonth, DateTimeFormatter.ofPattern(datePattern)),
@@ -36,7 +36,7 @@ object TimeSlotViewModelMapper {
 			val end = start.plusHours(1)
 			val isBusy = status == TimeSlotViewModel.Status.Busy
 
-			return TimeSlot(calendarId, start, end, isBusy)
+			return CalendarTimeSlot(calendarId, start, end, isBusy)
 		}
 	}
 }
