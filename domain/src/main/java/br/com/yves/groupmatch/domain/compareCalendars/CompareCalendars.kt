@@ -11,7 +11,7 @@ import org.threeten.bp.LocalDateTime
 class CompareCalendars(
 		private val calendars: List<Calendar>,
 		private val dateRepository: DateRepository
-) : UseCase<CalendarMatch>() {
+) : UseCase<List<TimeSlot>>() {
 	init {
 		require(calendars.isNotEmpty()) {
 			"Failed to instantiate ${this::class.java.name}. Can't compare calendars with empty calendar list"
@@ -21,7 +21,7 @@ class CompareCalendars(
 		}
 	}
 
-	override fun execute(): CalendarMatch {
+	override fun execute(): List<TimeSlot> {
 
 		fun consolidateBusyStatus(slots: List<TimeSlot>, calendarTimeSlots: List<List<CalendarTimeSlot>>) {
 			slots.forEachIndexed { index, slot ->
@@ -66,10 +66,7 @@ class CompareCalendars(
 		val calendarTimeSlots = calendars.map { it.calendarTimeSlots }
 
 		consolidateBusyStatus(matchSlots, calendarTimeSlots)
-		val matchResult = generateMatchResult(matchSlots)
-
-
-		return CalendarMatch()
+		return generateMatchResult(matchSlots)
 	}
 
 	private fun areCalendarsComparable(): Boolean {

@@ -138,9 +138,12 @@ class BluetoothServerFragment : Fragment(), ServerView {
 		}
 	}
 
-	override fun navigateToResultList(result: CalendarMatch) {
+	override fun navigateToResultList(result: MatchResultViewModel) {
+		val args = Bundle().apply {
+			putSerializable("result", result)
+		}
 		runOnUiThread {
-			findNavController().navigate(R.id.matchResultFragment)
+			findNavController().navigate(R.id.matchResultFragment, args)
 		}
 	}
 

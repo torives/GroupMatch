@@ -13,7 +13,7 @@ interface ServerView {
 	fun toggleDiscoverabilityButton(isEnabled: Boolean)
 	fun toggleMatchButtonVisibility(isVisible: Boolean)
 	fun sendIntent(intent: Intent, requestCode: Int? = null)
-	fun navigateToResultList(result: CalendarMatch)
+	fun navigateToResultList(result: MatchResultViewModel)
 	//DEBUG
 	fun displayToast(message: String)
 

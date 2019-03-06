@@ -11,12 +11,16 @@ import br.com.yves.groupmatch.data.loadCalendar.DateRepositoryFactory
 import br.com.yves.groupmatch.domain.compareCalendars.CompareCalendarsFactory
 import br.com.yves.groupmatch.domain.loadCalendar.LoadCalendar
 import br.com.yves.groupmatch.domain.models.calendar.Calendar
+import br.com.yves.groupmatch.domain.models.slots.TimeSlot
 import br.com.yves.groupmatch.presentation.ui.bluetooth.BluetoothMessageHandler
 import br.com.yves.groupmatch.presentation.ui.bluetooth.ServerBluetoothMessageHandler
 import br.com.yves.groupmatch.presentation.ui.bluetooth.client.BluetoothClient
 import br.com.yves.groupmatch.presentation.ui.bluetooth.client.BluetoothConnectionState
 import com.google.gson.Gson
 import kotlinx.coroutines.*
+import org.threeten.bp.DayOfWeek
+import org.threeten.bp.temporal.ChronoUnit
+import java.io.Serializable
 
 //TODO: Tratar as Sources dos calendários no SendCalendar
 //TODO: Atualizar a lista de calendários caso um cliente seja desconectado
@@ -69,7 +73,21 @@ class ServerPresenter(
 		val payload = Gson().toJson(result)
 		bluetoothService.write(payload.toByteArray())
 
-		view.navigateToResultList(result)
+		generateResultViewModel(result)
+//		view.navigateToResultList(result)
+	}
+
+	private fun generateResultViewModel(result: List<TimeSlot>) {
+		val weekDays = result
+				.groupBy { it.start.dayOfWeek }
+				.toMutableMap()
+
+		weekDays.entries.forEach { entry ->
+			weekDays[entry.key] = entry.value.sortedByDescending { it.start.until(it.end, ChronoUnit.SECONDS) }
+		}
+
+		print(weekDays)
+		view.navigateToResultList(MatchResultViewModel(weekDays))
 	}
 
 	fun onEmptyList() {
@@ -168,3 +186,7 @@ class ServerPresenter(
 		private const val REQUEST_ENABLE_DISCOVERABILITY = 100
 	}
 }
+
+data class MatchResultViewModel(
+		val result: Map<DayOfWeek, List<TimeSlot>>
+): Serializable
