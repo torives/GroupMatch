@@ -16,6 +16,7 @@ import br.com.yves.groupmatch.domain.compareCalendars.CalendarMatch
 import br.com.yves.groupmatch.presentation.runOnBackground
 import br.com.yves.groupmatch.presentation.runOnUiThread
 import br.com.yves.groupmatch.presentation.ui.bluetooth.client.BluetoothClient
+import br.com.yves.groupmatch.presentation.ui.bluetooth.result.MatchResultFragment
 import kotlinx.android.synthetic.main.fragment_bluetooth_server.*
 
 
@@ -140,7 +141,7 @@ class BluetoothServerFragment : Fragment(), ServerView {
 
 	override fun navigateToResultList(result: MatchResultViewModel) {
 		val args = Bundle().apply {
-			putSerializable("result", result)
+			putSerializable(MatchResultFragment.ARG_MATCH_RESULT, result)
 		}
 		runOnUiThread {
 			findNavController().navigate(R.id.matchResultFragment, args)

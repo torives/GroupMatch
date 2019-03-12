@@ -18,9 +18,11 @@ import br.com.yves.groupmatch.presentation.ui.bluetooth.client.BluetoothClient
 import br.com.yves.groupmatch.presentation.ui.bluetooth.client.BluetoothConnectionState
 import com.google.gson.Gson
 import kotlinx.coroutines.*
-import org.threeten.bp.DayOfWeek
-import org.threeten.bp.temporal.ChronoUnit
+import org.threeten.bp.format.DateTimeFormatter
+import org.threeten.bp.format.FormatStyle
+import org.threeten.bp.format.TextStyle
 import java.io.Serializable
+import java.util.*
 
 //TODO: Tratar as Sources dos calendários no SendCalendar
 //TODO: Atualizar a lista de calendários caso um cliente seja desconectado
@@ -78,16 +80,15 @@ class ServerPresenter(
 	}
 
 	private fun generateResultViewModel(result: List<TimeSlot>) {
-		val weekDays = result
-				.groupBy { it.start.dayOfWeek }
-				.toMutableMap()
-
-		weekDays.entries.forEach { entry ->
-			weekDays[entry.key] = entry.value.sortedByDescending { it.start.until(it.end, ChronoUnit.SECONDS) }
-		}
-
-		print(weekDays)
-		view.navigateToResultList(MatchResultViewModel(weekDays))
+		val viewModels = result
+				.sortedByDescending { it.duration }
+				.map {
+					MatchResultViewModel.MatchResult(
+							it.start.dayOfWeek.getDisplayName(TextStyle.SHORT, Locale.getDefault()),
+							"${it.start.format(DateTimeFormatter.ofLocalizedTime(FormatStyle.SHORT))} - ${it.end.format(DateTimeFormatter.ofLocalizedTime(FormatStyle.SHORT))}"
+					)
+				}
+		view.navigateToResultList(MatchResultViewModel(viewModels))
 	}
 
 	fun onEmptyList() {
@@ -119,7 +120,7 @@ class ServerPresenter(
 	}
 
 	//region BluetoothMessageHandler.Listener
-	//TODO: identificar de que client é o calendar em questão para atualizar a lista
+//TODO: identificar de que client é o calendar em questão para atualizar a lista
 	override fun onMessageRead(message: String) {
 		try {
 			val busyCalendar = Gson().fromJson(message, Calendar::class.java)
@@ -178,7 +179,7 @@ class ServerPresenter(
 			view.toggleMatchButtonVisibility(false)
 		}
 	}
-	//endregion
+//endregion
 
 	companion object {
 		private val TAG = ServerPresenter::class.java.simpleName
@@ -188,5 +189,9 @@ class ServerPresenter(
 }
 
 data class MatchResultViewModel(
-		val result: Map<DayOfWeek, List<TimeSlot>>
-): Serializable
+		val matchResult: List<MatchResult>
+) : Serializable {
+
+	data class MatchResult(val weekDay: String,
+	                       val timePeriod: String)
+}
