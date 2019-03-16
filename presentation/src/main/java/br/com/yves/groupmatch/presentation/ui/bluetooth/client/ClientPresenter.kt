@@ -16,6 +16,7 @@ import br.com.yves.groupmatch.presentation.runOnBackground
 import br.com.yves.groupmatch.presentation.ui.bluetooth.BluetoothMessageHandler
 import br.com.yves.groupmatch.presentation.ui.bluetooth.ClientBluetoothMessageHandler
 import br.com.yves.groupmatch.presentation.ui.bluetooth.server.ClientBluetoothService
+import br.com.yves.groupmatch.presentation.ui.bluetooth.server.MatchResultViewModel
 import br.com.yves.groupmatch.presentation.ui.bluetooth.server.ServerBluetoothService
 import com.google.gson.Gson
 
@@ -130,8 +131,8 @@ class ClientPresenter(
 		Log.d(TAG, "Received message: $message")
 
 		try {
-			val result = Gson().fromJson(message, MatchResult::class.java)
-			view.navigateToMatchResult(result)
+			val result = Gson().fromJson(message, MatchResultViewModel::class.java)
+			//view.navigateToMatchResult(result)
 		} catch (ex: Exception) {
 			Log.e(TAG, "Failed to parse MatchResult", ex)
 		}

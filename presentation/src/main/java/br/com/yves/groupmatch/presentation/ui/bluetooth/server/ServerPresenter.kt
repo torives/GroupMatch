@@ -71,24 +71,23 @@ class ServerPresenter(
 		val result = compare.execute()
 		Log.i(TAG, result.toString())
 
+		val vms = generateResultViewModel(result)
+		val vm = MatchResultViewModel(vms)
 
-		val payload = Gson().toJson(result)
+		val payload = Gson().toJson(vm)
 		bluetoothService.write(payload.toByteArray())
 
-		generateResultViewModel(result)
-//		view.navigateToResultList(result)
+		view.navigateToResultList(vm)
 	}
 
-	private fun generateResultViewModel(result: List<TimeSlot>) {
-		val viewModels = result
-				.sortedByDescending { it.duration }
+	private fun generateResultViewModel(result: List<TimeSlot>): List<MatchResultViewModel.MatchResult> {
+		return result.sortedByDescending { it.duration }
 				.map {
 					MatchResultViewModel.MatchResult(
 							it.start.dayOfWeek.getDisplayName(TextStyle.SHORT, Locale.getDefault()),
 							"${it.start.format(DateTimeFormatter.ofLocalizedTime(FormatStyle.SHORT))} - ${it.end.format(DateTimeFormatter.ofLocalizedTime(FormatStyle.SHORT))}"
 					)
 				}
-		view.navigateToResultList(MatchResultViewModel(viewModels))
 	}
 
 	fun onEmptyList() {

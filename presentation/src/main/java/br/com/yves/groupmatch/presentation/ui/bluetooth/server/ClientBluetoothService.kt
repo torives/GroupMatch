@@ -23,9 +23,7 @@ import android.util.Log
 import br.com.yves.groupmatch.data.toInt
 import br.com.yves.groupmatch.domain.sendCalendar.BluetoothService
 import br.com.yves.groupmatch.presentation.ui.bluetooth.BluetoothMessageHandler
-import java.io.IOException
-import java.io.InputStream
-import java.io.OutputStream
+import java.io.*
 import java.util.*
 
 /**
@@ -282,29 +280,14 @@ class ClientBluetoothService(private val handler: BluetoothMessageHandler) : Blu
 
 		override fun run() {
 			Log.i(TAG, "BEGIN mConnectedThread")
-			val messageSizeBuffer = ByteArray(4)
-			val messageBuffer = ByteArray(1024)
-			var message = ByteArray(0)
-			var bytesRead = 0
-			// Keep listening to the InputStream while connected
+			val reader = BufferedReader(InputStreamReader(inStream))
 			while (true) {
 				try {
-					// Read map the InputStream
-					inStream.read(messageSizeBuffer)
-					val totalMessageBytes = messageSizeBuffer.toInt()
-
-					while (bytesRead < totalMessageBytes) {
-						bytesRead += socket.inputStream.read(messageBuffer)
-						message = message.plus(messageBuffer)
-					}
-
+					val message: String = reader.readLine()
 					handler.obtainMessage(
 							BluetoothMessageHandler.MESSAGE_READ,
-							bytesRead,
-							-1,
 							message
 					).sendToTarget()
-
 				} catch (e: IOException) {
 					Log.d(TAG, "disconnected")
 					lostConnectionTo(socket.remoteDevice)

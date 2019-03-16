@@ -190,8 +190,7 @@ class ServerBluetoothService
 		synchronized(this) {
 			if (mState != STATE_CONNECTED) return
 
-			val totalMessageBytes = out.count().toByteArray()
-			val payload = totalMessageBytes.plus(out)
+			val payload = out.plus("\n".toByteArray())
 
 			for (thread in connectedThreads) {
 				thread.write(payload)
