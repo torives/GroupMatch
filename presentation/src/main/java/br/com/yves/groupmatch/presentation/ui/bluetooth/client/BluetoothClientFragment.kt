@@ -18,6 +18,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import br.com.yves.groupmatch.R
 import br.com.yves.groupmatch.presentation.runOnBackground
 import br.com.yves.groupmatch.presentation.runOnUiThread
+import br.com.yves.groupmatch.presentation.ui.bluetooth.result.MatchResultFragment
+import br.com.yves.groupmatch.presentation.ui.bluetooth.server.MatchResultViewModel
 import kotlinx.android.synthetic.main.fragment_bluetooth_client.*
 
 class BluetoothClientFragment : Fragment(), BluetoothView {
@@ -142,8 +144,13 @@ class BluetoothClientFragment : Fragment(), BluetoothView {
 		}
 	}
 
-	override fun navigateToMatchResult(result: MatchResult) {
-		findNavController().navigate(R.id.matchResultFragment)
+	override fun navigateToMatchResult(result: MatchResultViewModel) {
+		val args = Bundle().apply {
+			putSerializable(MatchResultFragment.ARG_MATCH_RESULT, result)
+		}
+		runOnUiThread {
+			findNavController().navigate(R.id.matchResultFragment, args)
+		}
 	}
 
 	override fun displayToast(message: String) {

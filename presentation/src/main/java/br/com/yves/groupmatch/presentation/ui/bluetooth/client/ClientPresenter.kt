@@ -132,7 +132,8 @@ class ClientPresenter(
 
 		try {
 			val result = Gson().fromJson(message, MatchResultViewModel::class.java)
-			//view.navigateToMatchResult(result)
+			bluetoothService.stop()
+			view.navigateToMatchResult(result)
 		} catch (ex: Exception) {
 			Log.e(TAG, "Failed to parse MatchResult", ex)
 		}
