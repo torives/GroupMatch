@@ -5,10 +5,10 @@
 
 ext {
     application = [
-            versionCode: 2,
-            versionName: "0.0.1"
+            versionCode: 3,
+            versionName: "1.0.0"
     ]
-
+    
     versions = [
             buildTools: "28.0.3",
             minSdk    : 23,
