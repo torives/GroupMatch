@@ -44,6 +44,7 @@ ext {
             coroutines          : "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutinesVersion",
             coroutines_core     : "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion",
             firebase            : 'com.google.firebase:firebase-core:16.0.8',
+            crashlytics         : 'com.crashlytics.sdk.android:crashlytics:2.9.9'
     ]
 
     testDependencies = [
