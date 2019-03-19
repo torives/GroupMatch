@@ -1,29 +1,25 @@
 package br.com.yves.groupmatch.presentation.ui.calendar
 
-import android.content.Context
-import android.graphics.Rect
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.annotation.DimenRes
 import androidx.navigation.fragment.NavHostFragment
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import br.com.yves.groupmatch.R
 import br.com.yves.groupmatch.presentation.factory.showCalendar.CalendarPresenterFactory
 import br.com.yves.groupmatch.presentation.runOnBackground
 import kotlinx.android.synthetic.main.fragment_calendar.*
 
 
-class CalendarFragment : NavHostFragment(), CalendarView, TimeSliceAdapter.ItemClickListener {
+class CalendarFragment : NavHostFragment(), CalendarView, TimeSlotAdapter.OnItemClickListener {
 
 	private var presenter: CalendarPresenter = CalendarPresenterFactory.create(this)
 
 	override fun onCreateView(
-		inflater: LayoutInflater,
-		container: ViewGroup?,
-		savedInstanceState: Bundle?
+			inflater: LayoutInflater,
+			container: ViewGroup?,
+			savedInstanceState: Bundle?
 	): View? {
 		return inflater.inflate(R.layout.fragment_calendar, container, false)
 	}
@@ -39,23 +35,23 @@ class CalendarFragment : NavHostFragment(), CalendarView, TimeSliceAdapter.ItemC
 	override fun showCalendar(calendar: CalendarViewModel) {
 		activity?.runOnUiThread {
 
-			var adapter = daysRecyclerView?.adapter as? TimeSliceAdapter
+			var adapter = daysRecyclerView?.adapter as? TimeSlotAdapter
 			adapter?.apply {
 				this.calendar = calendar
 				notifyDataSetChanged()
 			} ?: run {
-				adapter = TimeSliceAdapter(calendar)
+				adapter = TimeSlotAdapter(calendar)
 				adapter?.listener = this
 				daysRecyclerView?.adapter = adapter
 
 				daysRecyclerView?.addItemDecoration(
-					ItemOffsetDecoration(
-						context!!,
-						R.dimen.time_slot_item_spacing
-					)
+						ItemOffsetDecoration(
+								context!!,
+								R.dimen.time_slot_item_spacing
+						)
 				)
-				(daysRecyclerView?.layoutManager as GridLayoutManager).spanCount =
-						calendar.days.count()
+				(daysRecyclerView?.layoutManager as? GridLayoutManager)?.spanCount =
+						calendar.daysCount
 
 			}
 		}
@@ -68,35 +64,12 @@ class CalendarFragment : NavHostFragment(), CalendarView, TimeSliceAdapter.ItemC
 	}
 	//endregion
 
-	override fun onItemClick(view: View, position: Int) {
-		val adapter = daysRecyclerView.adapter as? TimeSliceAdapter
-		val day = adapter?.getDayAt(position)
-		val hour = adapter?.getHourAt(position)
-
-		if (day != null && hour != null) {
+	override fun onItemClick(calendarId: Long, position: Int) {
+		val adapter = daysRecyclerView.adapter as? TimeSlotAdapter
+		adapter?.getTimeSlotAt(position)?.let {
 			runOnBackground {
-				presenter.onTimeSlotClicked(day, hour)
+				presenter.onTimeSlotClicked(calendarId, it)
 			}
 		}
 	}
 }
-
-class ItemOffsetDecoration(private val mItemOffset: Int) : RecyclerView.ItemDecoration() {
-
-	constructor(context: Context, @DimenRes itemOffsetId: Int) : this(
-		context.resources.getDimensionPixelSize(
-			itemOffsetId
-		)
-	)
-
-	override fun getItemOffsets(
-		outRect: Rect,
-		view: View,
-		parent: RecyclerView,
-		state: RecyclerView.State
-	) {
-		super.getItemOffsets(outRect, view, parent, state)
-		outRect.set(mItemOffset, mItemOffset, mItemOffset, mItemOffset)
-	}
-}
-

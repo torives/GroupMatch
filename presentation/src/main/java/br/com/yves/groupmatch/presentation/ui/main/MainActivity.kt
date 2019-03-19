@@ -13,6 +13,7 @@ class MainActivity : AppCompatActivity() {
 		super.onCreate(savedInstanceState)
 		setContentView(R.layout.main_activity)
 
+		setSupportActionBar(findViewById(R.id.toolbar))
 		setupNavigation()
 	}
 
@@ -26,5 +27,5 @@ class MainActivity : AppCompatActivity() {
 	}
 
 	override fun onSupportNavigateUp() =
-		navHost.findNavController().navigateUp()
+			navHost.findNavController().navigateUp()
 }
