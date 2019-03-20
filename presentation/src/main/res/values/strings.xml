@@ -1,0 +1,32 @@
+<resources>
+    <string name="app_name" translatable="false">GroupMatch</string>
+
+    <!--region ConnectionRoleFragment UI Elements-->
+    <string name="fragment_connection_role_server_button">Server</string>
+    <string name="fragment_connection_role_client_button">Client</string>
+    <!--endregion-->
+
+    <!--region BottomNavigationMenut UI Elements-->
+    <string name="bottom_navigation_menu_calendar_item">Calendar</string>
+    <string name="bottom_navigation_menu_search_item">Search</string>
+    <string name="bottom_navigation_menu_settings_item">Settings</string>
+    <!--endregion-->
+
+    <!--region Server -->
+    <string name="actions">Actions</string>
+    <string name="restart">Restart</string>
+    <!--endregion-->
+
+    <!--region BluetoothClientFragment -->
+    <string name="waiting_server_connection">Waiting server connection…</string>
+    <string name="waiting_match_result">Waiting match result…</string>
+    <string name="failed_to_connect_to_server">Unable to establish connection to server</string>
+    <string name="lost_connection_to_server">Lost connection to server</string>
+    <!--endregion-->
+
+    <!--region BluetoothServerFragment -->
+    <string name="failed_to_connect_to_client">Unable to establish connection to client</string>
+    <string name="lost_connection_to_client">Lost connection to client</string>
+    <string name="bluetooth_server_fragment_match_button_title">Match</string>
+    <!--endregion-->
+</resources>

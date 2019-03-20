@@ -1,0 +1,55 @@
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
+
+Map<String, String> baseDependencies = rootProject.ext.dependencies
+Map<String, String> testDependencies = rootProject.ext.testDependencies
+Map<String, String> application = rootProject.ext.application
+Map<String, String> versions = rootProject.ext.versions
+
+android {
+    compileSdkVersion versions.compileSdk
+
+    defaultConfig {
+        minSdkVersion versions.minSdk
+        targetSdkVersion versions.targetSdk
+        versionCode application.versionCode
+        versionName application.versionName
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        kapt {
+            arguments {
+                arg("room.schemaLocation", "$projectDir/schemas".toString())
+            }
+        }
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation project(path: ':domain')
+
+    implementation baseDependencies.kotlin
+    implementation baseDependencies.app_compat
+    implementation baseDependencies.room
+    implementation baseDependencies.gson
+    kapt baseDependencies.room_compiler
+
+    testImplementation testDependencies.junit
+    testImplementation testDependencies.kotlinJUnit
+    testImplementation testDependencies.mockitoKotlin
+
+    androidTestImplementation testDependencies.mockitoKotlin
+    androidTestImplementation testDependencies.mockitoAndroid
+    androidTestImplementation testDependencies.supportRunner
+}

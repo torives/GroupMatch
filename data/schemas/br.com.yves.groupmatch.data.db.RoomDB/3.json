@@ -1,0 +1,138 @@
+{
+  "formatVersion": 1,
+  "database": {
+    "version": 3,
+    "identityHash": "f960a44793def6a0ab42960d61dd69d1",
+    "entities": [
+      {
+        "tableName": "time_slot",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`calendar_id` INTEGER NOT NULL, `start` TEXT NOT NULL, `end` TEXT NOT NULL, `is_busy` INTEGER NOT NULL, PRIMARY KEY(`calendar_id`, `start`, `end`), FOREIGN KEY(`calendar_id`) REFERENCES `calendar`(`calendarId`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "fields": [
+          {
+            "fieldPath": "calendarId",
+            "columnName": "calendar_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "start",
+            "columnName": "start",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "end",
+            "columnName": "end",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "isBusy",
+            "columnName": "is_busy",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "calendar_id",
+            "start",
+            "end"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [
+          {
+            "name": "index_time_slot_start_end",
+            "unique": true,
+            "columnNames": [
+              "start",
+              "end"
+            ],
+            "createSql": "CREATE UNIQUE INDEX `index_time_slot_start_end` ON `${TABLE_NAME}` (`start`, `end`)"
+          },
+          {
+            "name": "index_time_slot_calendar_id",
+            "unique": false,
+            "columnNames": [
+              "calendar_id"
+            ],
+            "createSql": "CREATE  INDEX `index_time_slot_calendar_id` ON `${TABLE_NAME}` (`calendar_id`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "calendar",
+            "onDelete": "CASCADE",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "calendar_id"
+            ],
+            "referencedColumns": [
+              "calendarId"
+            ]
+          }
+        ]
+      },
+      {
+        "tableName": "calendar",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`calendarId` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `owner` TEXT NOT NULL, `initial_date` TEXT NOT NULL, `final_date` TEXT NOT NULL, `source` INTEGER NOT NULL)",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "calendarId",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "owner",
+            "columnName": "owner",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "initialDate",
+            "columnName": "initial_date",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "finalDate",
+            "columnName": "final_date",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "source",
+            "columnName": "source",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "calendarId"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [
+          {
+            "name": "index_calendar_calendarId_initial_date_final_date",
+            "unique": true,
+            "columnNames": [
+              "calendarId",
+              "initial_date",
+              "final_date"
+            ],
+            "createSql": "CREATE UNIQUE INDEX `index_calendar_calendarId_initial_date_final_date` ON `${TABLE_NAME}` (`calendarId`, `initial_date`, `final_date`)"
+          }
+        ],
+        "foreignKeys": []
+      }
+    ],
+    "setupQueries": [
+      "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"f960a44793def6a0ab42960d61dd69d1\")"
+    ]
+  }
+}
