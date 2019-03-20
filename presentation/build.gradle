@@ -2,6 +2,7 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
+apply plugin: 'io.fabric'
 
 Map<String, String> baseDependencies = rootProject.ext.dependencies
 Map<String, String> testDependencies = rootProject.ext.testDependencies
@@ -24,6 +25,11 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            manifestPlaceholders = [appName: "GroupMatch"]
+        }
+        debug {
+            versionNameSuffix '.debug'
+            manifestPlaceholders = [appName: "GroupMatch Debug"]
         }
     }
 }
@@ -31,7 +37,6 @@ android {
 kapt {
     generateStubs = true
 }
-
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
@@ -52,6 +57,8 @@ dependencies {
     implementation baseDependencies.gson
     implementation baseDependencies.coroutines
     implementation baseDependencies.coroutines_core
+    implementation baseDependencies.firebase
+    implementation baseDependencies.crashlytics
 
     // Tests
     //FIXME: Mutreta para usar JSR-310 nos testes unitários. Deveria mockar.
@@ -61,3 +68,4 @@ dependencies {
     testImplementation testDependencies.junit
     testImplementation testDependencies.mockitoKotlin
 }
+apply plugin: 'com.google.gms.google-services'
