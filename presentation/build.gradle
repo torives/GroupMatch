@@ -3,6 +3,7 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 apply plugin: 'io.fabric'
+apply from: "$project.rootDir/distribution/keys.gradle"
 
 Map<String, String> baseDependencies = rootProject.ext.dependencies
 Map<String, String> testDependencies = rootProject.ext.testDependencies
@@ -21,10 +22,22 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
+    signingConfigs {
+        release {
+            storeFile file(STORE_FILE)
+            keyAlias KEY_ALIAS
+            storePassword STORE_PASSWORD
+            keyPassword KEY_PASSWORD
+        }
+    }
+
     buildTypes {
         release {
-            minifyEnabled false
+            signingConfig signingConfigs.release
+            minifyEnabled true
+            shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+
             manifestPlaceholders = [appName: "GroupMatch"]
         }
         debug {
