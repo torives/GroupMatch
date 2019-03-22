@@ -25,7 +25,7 @@ class GroupMatchApplication : Application() {
 		val crashlyticsKit = Crashlytics.Builder()
 				.core(CrashlyticsCore.Builder().disabled(BuildConfig.DEBUG).build())
 				.build()
-		Fabric.with(this, crashlyticsKit, Crashlytics())
+		Fabric.with(this, crashlyticsKit)
 	}
 
 	companion object {
