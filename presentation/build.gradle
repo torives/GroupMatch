@@ -5,11 +5,6 @@ apply plugin: 'kotlin-kapt'
 apply plugin: 'io.fabric'
 apply from: "$project.rootDir/distribution/keys.gradle"
 
-Map<String, String> baseDependencies = rootProject.ext.dependencies
-Map<String, String> testDependencies = rootProject.ext.testDependencies
-Map<String, String> application = rootProject.ext.application
-Map<String, String> versions = rootProject.ext.versions
-
 android {
     compileSdkVersion versions.compileSdk
 
@@ -52,26 +47,29 @@ kapt {
 }
 
 dependencies {
+    def dependencies = rootProject.ext.dependencies
+    def testDependencies = rootProject.ext.testDependencies
+
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation project(path: ':data')
     implementation project(path: ':domain')
 
-    implementation baseDependencies.kotlin
-    implementation baseDependencies.support_v4
-    implementation baseDependencies.app_compat
-    implementation baseDependencies.design
-    implementation baseDependencies.recycler_view
-    implementation baseDependencies.card_view
-    implementation baseDependencies.constraint_layout
-    implementation baseDependencies.lifecycle
-    implementation baseDependencies.navigation_fragment
-    implementation baseDependencies.navigation_ui
-    implementation baseDependencies.anko
-    implementation baseDependencies.gson
-    implementation baseDependencies.coroutines
-    implementation baseDependencies.coroutines_core
-    implementation baseDependencies.firebase
-    implementation baseDependencies.crashlytics
+    implementation dependencies.kotlin
+    implementation dependencies.support_v4
+    implementation dependencies.app_compat
+    implementation dependencies.design
+    implementation dependencies.recycler_view
+    implementation dependencies.card_view
+    implementation dependencies.constraint_layout
+    implementation dependencies.lifecycle
+    implementation dependencies.navigation_fragment
+    implementation dependencies.navigation_ui
+    implementation dependencies.anko
+    implementation dependencies.gson
+    implementation dependencies.coroutines
+    implementation dependencies.coroutines_core
+    implementation dependencies.firebase
+    implementation dependencies.crashlytics
 
     // Tests
     //FIXME: Mutreta para usar JSR-310 nos testes unitários. Deveria mockar.
