@@ -1,8 +1,11 @@
-apply plugin: 'com.android.application'
-apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-android-extensions'
-apply plugin: 'kotlin-kapt'
-apply plugin: 'io.fabric'
+plugins {
+    id "com.github.triplet.play" version "2.1.0"
+    id 'com.android.application'
+    id 'kotlin-android'
+    id 'kotlin-android-extensions'
+    id 'kotlin-kapt'
+    id 'io.fabric'
+}
 apply from: "$project.rootDir/distribution/keys.gradle"
 
 android {
@@ -40,6 +43,13 @@ android {
             manifestPlaceholders = [appName: "GroupMatch Debug"]
         }
     }
+}
+
+play {
+    serviceAccountCredentials = file("distribution/gradle_play_publisher_key.json")
+    defaultToAppBundles = true
+    track = "internal"
+    releaseStatus = "draft"
 }
 
 kapt {
