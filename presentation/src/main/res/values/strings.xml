@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name" translatable="false">GroupMatch</string>
+    <string name="notifications_default_channel_name">Default</string>'
 
     <!--region ConnectionRoleFragment UI Elements-->
     <string name="fragment_connection_role_server_button">Server</string>
