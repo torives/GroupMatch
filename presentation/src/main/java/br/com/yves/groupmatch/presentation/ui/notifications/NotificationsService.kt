@@ -1,7 +1,12 @@
 package br.com.yves.groupmatch.presentation.ui.notifications
 
+import android.app.NotificationManager
 import android.util.Log
+import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationManagerCompat
+import br.com.yves.groupmatch.R
 import com.google.firebase.messaging.FirebaseMessagingService
+import com.google.firebase.messaging.RemoteMessage
 
 class NotificationsService : FirebaseMessagingService() {
 	override fun onNewToken(p0: String?) {
@@ -13,12 +18,30 @@ class NotificationsService : FirebaseMessagingService() {
 		}
 	}
 
+	override fun onMessageReceived(p0: RemoteMessage?) {
+		super.onMessageReceived(p0)
+
+		p0?.notification?.let { notification ->
+			val builder = NotificationCompat.Builder(this, DEFAULT_CHANNEL_ID)
+					.setContentTitle(notification.title)
+					.setContentText(notification.body)
+					.setSmallIcon(R.mipmap.ic_launcher_round)
+					.setPriority(NotificationCompat.PRIORITY_DEFAULT)
+					.setAutoCancel(true)
+
+			with(NotificationManagerCompat.from(this)) {
+				notify(0, builder.build())
+			}
+		}
+	}
+
 	//TODO: Registrar o token no servidor
 	private fun sendRegistrationToServer(token: String) {
 
 	}
 
 	companion object {
+		private const val DEFAULT_CHANNEL_ID = "default_channel"
 		private val TAG = NotificationsService::class.java.simpleName
 	}
 }
