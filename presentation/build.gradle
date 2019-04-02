@@ -39,7 +39,7 @@ android {
             manifestPlaceholders = [appName: "GroupMatch"]
         }
         debug {
-            versionNameSuffix '.debug'
+            applicationIdSuffix '.debug'
             manifestPlaceholders = [appName: "GroupMatch Debug"]
         }
     }
