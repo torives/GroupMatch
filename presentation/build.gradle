@@ -80,6 +80,8 @@ dependencies {
     implementation dependencies.coroutines_core
     implementation dependencies.firebase
     implementation dependencies.crashlytics
+    implementation dependencies.play_services_auth
+    implementation dependencies.firebase_auth
 
     // Tests
     //FIXME: Mutreta para usar JSR-310 nos testes unitários. Deveria mockar.

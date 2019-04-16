@@ -27,6 +27,8 @@ ext {
 
     dependencies = [
             support_v4          : "androidx.legacy:legacy-support-v4:$supportVersion",
+            firebase_auth       : 'com.google.firebase:firebase-auth:16.2.1',
+            play_services_auth  : "com.google.android.gms:play-services-auth:16.0.1",
             app_compat          : "androidx.appcompat:appcompat:$supportVersion",
             design              : "com.google.android.material:material:$supportVersion",
             recycler_view       : "androidx.recyclerview:recyclerview:$supportVersion",
