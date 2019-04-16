@@ -8,45 +8,45 @@
     android:paddingEnd="64dp">
 
     <androidx.swiperefreshlayout.widget.CircleImageView
-        android:id="@+id/account_loggedin_profilePicture"
+        android:id="@+id/account_signedin_profilePicture"
         android:layout_width="200dp"
         android:layout_height="200dp"
 
         android:src="@drawable/ic_account"
 
-        app:layout_constraintBottom_toTopOf="@id/account_loggedin_name"
+        app:layout_constraintBottom_toTopOf="@id/account_signedin_name"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
-        android:id="@+id/account_loggedin_name"
+        android:id="@+id/account_signedin_name"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
 
         android:hint="Name"
         android:clickable="false"
 
-        app:layout_constraintBottom_toTopOf="@id/account_loggedin_email"
+        app:layout_constraintBottom_toTopOf="@id/account_signedin_email"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/account_loggedin_profilePicture" />
+        app:layout_constraintTop_toBottomOf="@id/account_signedin_profilePicture" />
 
     <EditText
-        android:id="@+id/account_loggedin_email"
+        android:id="@+id/account_signedin_email"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
 
         android:hint="Email"
         android:clickable="false"
 
-        app:layout_constraintBottom_toTopOf="@id/account_loggedin_signoffButton"
-        app:layout_constraintEnd_toEndOf="@id/account_loggedin_name"
-        app:layout_constraintStart_toStartOf="@id/account_loggedin_name"
-        app:layout_constraintTop_toBottomOf="@id/account_loggedin_name" />
+        app:layout_constraintBottom_toTopOf="@id/account_signedin_signoffButton"
+        app:layout_constraintEnd_toEndOf="@id/account_signedin_name"
+        app:layout_constraintStart_toStartOf="@id/account_signedin_name"
+        app:layout_constraintTop_toBottomOf="@id/account_signedin_name" />
 
     <Button
-        android:id="@+id/account_loggedin_signoffButton"
+        android:id="@+id/account_signedin_signoffButton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
 
@@ -55,6 +55,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/account_loggedin_email" />
+        app:layout_constraintTop_toBottomOf="@id/account_signedin_email" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
