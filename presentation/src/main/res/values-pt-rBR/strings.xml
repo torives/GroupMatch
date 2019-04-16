@@ -8,7 +8,7 @@
     <!--region BottomNavigationMenut UI Elements-->
     <string name="bottom_navigation_menu_calendar_item">Agenda</string>
     <string name="bottom_navigation_menu_search_item">Buscar</string>
-    <string name="bottom_navigation_menu_settings_item">Configurações</string>
+    <string name="bottom_navigation_menu_account_item">Conta</string>
     <string name="actions">Ações</string>
     <string name="restart">Reiniciar</string>
     <!--endregion-->
