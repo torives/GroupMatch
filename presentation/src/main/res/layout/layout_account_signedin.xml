@@ -7,7 +7,7 @@
     android:paddingStart="64dp"
     android:paddingEnd="64dp">
 
-    <androidx.swiperefreshlayout.widget.CircleImageView
+    <ImageView
         android:id="@+id/account_signedin_profilePicture"
         android:layout_width="200dp"
         android:layout_height="200dp"
@@ -25,7 +25,7 @@
         android:layout_height="wrap_content"
 
         android:hint="Name"
-        android:clickable="false"
+        android:enabled="false"
 
         app:layout_constraintBottom_toTopOf="@id/account_signedin_email"
         app:layout_constraintEnd_toEndOf="parent"
@@ -38,7 +38,7 @@
         android:layout_height="wrap_content"
 
         android:hint="Email"
-        android:clickable="false"
+        android:enabled="false"
 
         app:layout_constraintBottom_toTopOf="@id/account_signedin_signoffButton"
         app:layout_constraintEnd_toEndOf="@id/account_signedin_name"
