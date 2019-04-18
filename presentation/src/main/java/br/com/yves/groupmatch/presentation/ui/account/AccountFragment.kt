@@ -2,26 +2,24 @@ package br.com.yves.groupmatch.presentation.ui.account
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
+import android.widget.Button
 import androidx.annotation.LayoutRes
 import androidx.navigation.fragment.NavHostFragment
 import br.com.yves.groupmatch.R
+import br.com.yves.groupmatch.presentation.GroupMatchApplication
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
-import com.google.android.gms.common.api.ApiException
+import com.google.android.gms.common.SignInButton
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.GoogleAuthProvider
 import kotlinx.android.synthetic.main.fragment_account.*
-import kotlinx.android.synthetic.main.layout_account_signedin.*
-import kotlinx.android.synthetic.main.layout_account_signedout.*
 
 
 data class UserViewModel(val name: String)
@@ -39,7 +37,7 @@ interface AccountController {
 	fun onLogoutAttempt()
 }
 
-class AccountControllerImpl(private val view: AccountView): AccountController {
+class AccountControllerImpl(private val view: AccountView) : AccountController {
 
 	override fun onViewCreated() {
 		view.showSignedInLayout(UserViewModel(("")))
@@ -83,23 +81,21 @@ class AccountFragment : NavHostFragment(), AccountView {
 		accountController = AccountControllerFabric.create(this)
 		accountController.onViewCreated()
 
-//		account_signInButton.setOnClickListener(this)
-//
-//		context?.let { context ->
-//
-//			val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-//					.requestIdToken("248519334188-b1dj36u4ei6en068qf7egk71trhval0a.apps.googleusercontent.com")
-//					.requestEmail()
-//					.build()
-//			signInClient = GoogleSignIn.getClient(context, gso)
-//			mAuth = FirebaseAuth.getInstance()
-//
+		context?.let { context ->
+
+			val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+					.requestIdToken("248519334188-b1dj36u4ei6en068qf7egk71trhval0a.apps.googleusercontent.com")
+					.requestEmail()
+					.build()
+			signInClient = GoogleSignIn.getClient(GroupMatchApplication.instance, gso)
+			mAuth = FirebaseAuth.getInstance()
+
 //			mAuth.currentUser?.let {
-//				//TODO: Display logged in layout
+//				showSignedInLayout(UserViewModel(""))
 //			} ?: run {
-//				//TODO: Display logged out layout
+//				showSignedOffLayout()
 //			}
-//		}
+		}
 	}
 
 	override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -143,14 +139,16 @@ class AccountFragment : NavHostFragment(), AccountView {
 		}
 	}
 
-	private fun configureLoginButton(){
-		account_signInButton!!.setOnClickListener {
+	private fun configureLoginButton() {
+		val signInButton = view?.findViewById<SignInButton>(R.id.account_signInButton)
+		signInButton?.setOnClickListener {
 			accountController.onLoginAttempt()
 		}
 	}
 
 	private fun configureLogoutButton() {
-		account_signedin_signoffButton!!.setOnClickListener {
+		val signOffButton = view?.findViewById<Button>(R.id.account_signedin_signoffButton)
+		signOffButton?.setOnClickListener {
 			accountController.onLogoutAttempt()
 		}
 	}
