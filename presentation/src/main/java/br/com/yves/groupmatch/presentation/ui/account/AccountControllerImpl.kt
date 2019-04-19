@@ -1,5 +1,6 @@
 package br.com.yves.groupmatch.presentation.ui.account
 
+import android.content.Context
 import android.content.Intent
 import android.util.Log
 import br.com.yves.groupmatch.presentation.GroupMatchApplication
@@ -11,6 +12,48 @@ import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
+import java.lang.ref.WeakReference
+
+
+interface AuthenticationService {
+	fun login()
+	fun logoff()
+	fun getUserData()
+}
+
+object GroupMatchAuth: AuthenticationService {
+	private lateinit var activityReference: WeakReference<Context>
+	private val context: Context
+			get() {
+				return activityReference.get()?.let { context ->
+					context
+				} ?: run {
+					throw InitializationException()
+				}
+			}
+
+	fun configure(activity: Context) {
+		activityReference = WeakReference(activity)
+	}
+
+	//region AuthenticationService
+	override fun login() {
+		TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+	}
+
+	override fun logoff() {
+		TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+	}
+
+	override fun getUserData() {
+		TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+	}
+	//endregion
+
+	class InitializationException: Exception(
+			"${GroupMatchAuth::class.java.simpleName} was not initialized properly. You must call configure() passing an Activity before using this class methods"
+	)
+}
 
 class AccountControllerImpl(private val view: AccountView) : AccountController {
 
