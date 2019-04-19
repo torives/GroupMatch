@@ -18,9 +18,15 @@ import java.lang.ref.WeakReference
 
 
 interface AuthenticationService {
-	fun login()
+	fun login(callback: LoginCallback)
 	fun logoff()
 	fun getUser(): User?
+}
+
+interface LoginCallback {
+	fun onSuccess(user: User)
+	fun onFailure(exception: Exception)
+	fun onCanceld()
 }
 
 class ProxyActivity : Activity() {
@@ -54,9 +60,12 @@ class ProxyActivity : Activity() {
 }
 
 object GroupMatchAuth : AuthenticationService {
+	private val TAG = GroupMatchAuth::class.java.simpleName
 	private val signInClient: GoogleSignInClient
 	private val firebaseAuth = FirebaseAuth.getInstance()
 	private lateinit var activityReference: WeakReference<Context>
+	private var loginCallback: LoginCallback? = null
+
 	private val context: Context
 		get() {
 			return activityReference.get()?.let { context ->
@@ -65,7 +74,6 @@ object GroupMatchAuth : AuthenticationService {
 				throw InitializationException()
 			}
 		}
-	private val TAG = GroupMatchAuth::class.java.simpleName
 
 
 	init {
@@ -82,9 +90,11 @@ object GroupMatchAuth : AuthenticationService {
 	}
 
 	//region AuthenticationService
-	override fun login() {
+	override fun login(loginCallback: LoginCallback) {
+		this.loginCallback = loginCallback
 		val authIntent = signInClient.signInIntent
 		val intent = ProxyActivity.newIntent(context, authIntent)
+
 		context.startActivity(intent)
 	}
 
@@ -106,7 +116,8 @@ object GroupMatchAuth : AuthenticationService {
 			//TODO: Handle Exceptions
 			// The ApiException status code indicates the detailed failure reason.
 			// Please refer to the GoogleSignInStatusCodes class reference for more information.
-			e.printStackTrace()
+			loginCallback?.onFailure(e)
+			loginCallback = null
 //			Log.w(AccountControllerImpl.TAG, "signInResult:failed code=${e.statusCode}")
 //			view.showSignedOffLayout()
 		}
@@ -122,10 +133,12 @@ object GroupMatchAuth : AuthenticationService {
 						Log.d(TAG, "signInWithCredential:success")
 						val user = firebaseAuth.currentUser
 						//view.showSignedInLayout(UserViewModel(""))
+						loginCallback?.onSuccess(User(user!!.displayName!!))
 					} else {
 						Log.w(TAG, "signInWithCredential:failure", task.exception)
-						//view.showSignedOffLayout()
+						loginCallback?.onFailure(task.exception!!)
 					}
+					loginCallback = null
 				}
 	}
 
@@ -153,7 +166,20 @@ class AccountControllerImpl(
 	}
 
 	override fun onLoginAttempt() {
-		authService.login()
+		authService.login(object: LoginCallback {
+			override fun onSuccess(user: User) {
+				view.showSignedInLayout(UserViewModel(user.name))
+			}
+
+			override fun onFailure(exception: Exception) {
+				//TODO: handle error
+				view.showSignedOffLayout()
+			}
+
+			override fun onCanceld() {
+				//TODO: log
+			}
+		})
 	}
 
 	override fun onLogoutAttempt() {
