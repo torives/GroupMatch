@@ -5,7 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.setupWithNavController
 import br.com.yves.groupmatch.R
-import br.com.yves.groupmatch.presentation.ui.account.GroupMatchAuth
+import br.com.yves.groupmatch.data.auth.GroupMatchAuth
 import kotlinx.android.synthetic.main.main_activity.*
 
 class MainActivity : AppCompatActivity() {
@@ -16,7 +16,7 @@ class MainActivity : AppCompatActivity() {
 
 		setSupportActionBar(findViewById(R.id.toolbar))
 		setupNavigation()
-		GroupMatchAuth.configure(this)
+		GroupMatchAuth.setActivity(this)
 	}
 
 	private fun setupNavigation() {

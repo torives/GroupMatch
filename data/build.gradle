@@ -43,6 +43,8 @@ dependencies {
     implementation baseDependencies.app_compat
     implementation baseDependencies.room
     implementation baseDependencies.gson
+    implementation baseDependencies.play_services_auth
+    implementation baseDependencies.firebase_auth
     kapt baseDependencies.room_compiler
 
     testImplementation testDependencies.junit
