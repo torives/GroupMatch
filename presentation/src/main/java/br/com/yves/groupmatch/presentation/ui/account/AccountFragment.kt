@@ -1,6 +1,5 @@
 package br.com.yves.groupmatch.presentation.ui.account
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -32,12 +31,6 @@ class AccountFragment : NavHostFragment(), AccountView {
 
 		accountController = AccountControllerFactory.create(this)
 		accountController.onViewCreated()
-	}
-
-	override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-		super.onActivityResult(requestCode, resultCode, data)
-
-		accountController.onActivityResult(requestCode, resultCode, data)
 	}
 
 	//region AccountView
