@@ -8,10 +8,12 @@ import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageView
 import androidx.annotation.LayoutRes
 import androidx.navigation.fragment.NavHostFragment
 import br.com.yves.groupmatch.R
 import br.com.yves.groupmatch.presentation.factory.account.AccountControllerFactory
+import com.bumptech.glide.Glide
 import com.google.android.gms.common.SignInButton
 import kotlinx.android.synthetic.main.fragment_account.*
 
@@ -67,10 +69,17 @@ class AccountFragment : NavHostFragment(), AccountView {
 	private fun populateSignInLayout(user: UserViewModel) {
 		val nameEditText: EditText? = view?.findViewById(R.id.account_signedin_name)
 		val emailEditText: EditText? = view?.findViewById(R.id.account_signedin_email)
+		val profileImage: ImageView? = view?.findViewById(R.id.account_signedin_profilePicture)
 
 		user.apply {
 			nameEditText?.setText(name)
 			emailEditText?.setText(email)
+
+			profileImage?.let {
+				Glide.with(this@AccountFragment)
+						.load(profileImageURL)
+						.into(profileImage)
+			}
 		}
 	}
 
