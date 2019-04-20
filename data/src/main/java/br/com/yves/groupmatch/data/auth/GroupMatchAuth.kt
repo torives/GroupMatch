@@ -14,8 +14,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import java.lang.ref.WeakReference
 
-class GroupMatchAuth
-private constructor() : AuthenticationService {
+class GroupMatchAuth private constructor() : AuthenticationService {
 	private val firebaseAuth = FirebaseAuth.getInstance()
 	private lateinit var activityReference: WeakReference<Context>
 	private var loginCallback: LoginCallback? = null
@@ -27,17 +26,12 @@ private constructor() : AuthenticationService {
 			.build()
 
 	private val context: Context
-		get() {
-			return activityReference.get()?.let { context ->
-				context
-			} ?: run {
-				throw InitializationException()
-			}
-		}
+		get() = activityReference.get() ?: throw InitializationException()
+
 
 	//region AuthenticationService
-	override fun login(loginCallback: LoginCallback) {
-		this.loginCallback = loginCallback
+	override fun login(callback: LoginCallback) {
+		this.loginCallback = callback
 
 		val signInClient = GoogleSignIn.getClient(context, googleSignInOptions)
 		val authIntent = signInClient.signInIntent
@@ -47,11 +41,15 @@ private constructor() : AuthenticationService {
 	}
 
 	override fun logoff() {
-		TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+		firebaseAuth.signOut()
 	}
 
 	override fun getUser(): User? {
-		return null
+		return firebaseAuth.currentUser?.let {
+			User(it.displayName!!)
+		} ?: run {
+			null
+		}
 	}
 	//endregion
 

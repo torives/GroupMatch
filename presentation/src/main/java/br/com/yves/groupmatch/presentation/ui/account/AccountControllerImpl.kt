@@ -38,6 +38,7 @@ class AccountControllerImpl(
 	}
 
 	override fun onLogoutAttempt() {
+		authService.logoff()
 		view.showSignedOffLayout()
 	}
 	//endregion
