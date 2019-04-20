@@ -80,6 +80,8 @@ dependencies {
     implementation dependencies.coroutines_core
     implementation dependencies.firebase
     implementation dependencies.crashlytics
+    implementation dependencies.glide
+    kapt dependencies.glide_compiler
 
     // Tests
     //FIXME: Mutreta para usar JSR-310 nos testes unitários. Deveria mockar.
