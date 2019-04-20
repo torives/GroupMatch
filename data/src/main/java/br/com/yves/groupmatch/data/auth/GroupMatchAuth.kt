@@ -38,7 +38,7 @@ class GroupMatchAuth private constructor(applicationContext: Context) : Authenti
 
 		val signInClient = GoogleSignIn.getClient(activityContext, googleSignInOptions)
 		val authIntent = signInClient.signInIntent
-		val intent = ProxyActivity.newIntent(context, authIntent)
+		val intent = GoogleAuthenticationProxyActivity.newIntent(activityContext, authIntent)
 
 		activityContext.startActivity(intent)
 	}

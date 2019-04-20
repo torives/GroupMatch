@@ -5,7 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 
-class ProxyActivity : Activity() {
+class GoogleAuthenticationProxyActivity : Activity() {
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
 
@@ -17,7 +17,7 @@ class ProxyActivity : Activity() {
 		super.onActivityResult(requestCode, resultCode, data)
 
 		if (requestCode == AUTH_REQUEST && data != null) {
-			GroupMatchAuth.instance.onAuthResult(data)
+			GroupMatchAuth.instance.onGoogleAuthenticationResult(data)
 			finish()
 		}
 	}
@@ -27,7 +27,7 @@ class ProxyActivity : Activity() {
 		private const val AUTH_INTENT = "br.com.yves.groupmatch.authIntent"
 
 		fun newIntent(context: Context, authIntent: Intent): Intent {
-			return Intent(context, ProxyActivity::class.java).apply {
+			return Intent(context, GoogleAuthenticationProxyActivity::class.java).apply {
 				putExtra(AUTH_INTENT, authIntent)
 			}
 		}

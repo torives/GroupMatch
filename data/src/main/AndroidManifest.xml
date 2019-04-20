@@ -3,7 +3,7 @@
 
     <application>
         <activity
-            android:name=".auth.ProxyActivity"
+            android:name=".auth.GoogleAuthenticationProxyActivity"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
     </application>
 
