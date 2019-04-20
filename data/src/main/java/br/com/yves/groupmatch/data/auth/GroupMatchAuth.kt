@@ -10,7 +10,9 @@ import br.com.yves.groupmatch.domain.models.account.User
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.android.gms.common.Scopes
 import com.google.android.gms.common.api.ApiException
+import com.google.android.gms.common.api.Scope
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
@@ -24,6 +26,7 @@ class GroupMatchAuth private constructor(applicationContext: Context) : Authenti
 	private var loginCallback: LoginCallback? = null
 
 	private var googleSignInOptions = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+			.requestScopes(Scope("https://www.googleapis.com/auth/calendar.events"))
 			.requestIdToken(applicationContext.getString(R.string.server_client_id))
 			.requestEmail()
 			.build()
@@ -70,6 +73,7 @@ class GroupMatchAuth private constructor(applicationContext: Context) : Authenti
 	}
 
 	private fun firebaseLoginWithGoogle(account: GoogleSignInAccount) {
+		//TODO: send auth code to server
 		val credential = GoogleAuthProvider.getCredential(account.idToken, null)
 		firebaseAuth.signInWithCredential(credential)
 				.addOnCompleteListener { handleFirebaseLogin(it) }
