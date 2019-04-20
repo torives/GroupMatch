@@ -14,6 +14,7 @@ import androidx.navigation.fragment.NavHostFragment
 import br.com.yves.groupmatch.R
 import br.com.yves.groupmatch.presentation.factory.account.AccountControllerFactory
 import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import com.google.android.gms.common.SignInButton
 import kotlinx.android.synthetic.main.fragment_account.*
 
@@ -78,6 +79,7 @@ class AccountFragment : NavHostFragment(), AccountView {
 			profileImage?.let {
 				Glide.with(this@AccountFragment)
 						.load(profileImageURL)
+						.apply(RequestOptions.circleCropTransform())
 						.into(profileImage)
 			}
 		}
