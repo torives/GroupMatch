@@ -3,6 +3,7 @@ package br.com.yves.groupmatch.data.auth
 import android.content.Context
 import android.content.Intent
 import android.util.Log
+import br.com.yves.groupmatch.data.R
 import br.com.yves.groupmatch.domain.account.AuthenticationService
 import br.com.yves.groupmatch.domain.account.LoginCallback
 import br.com.yves.groupmatch.domain.models.account.User
@@ -10,23 +11,24 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
+import com.google.android.gms.tasks.Task
+import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import java.lang.ref.WeakReference
 
 
-class GroupMatchAuth private constructor() : AuthenticationService {
+class GroupMatchAuth private constructor(applicationContext: Context) : AuthenticationService {
 	private val firebaseAuth = FirebaseAuth.getInstance()
 	private lateinit var activityReference: WeakReference<Context>
 	private var loginCallback: LoginCallback? = null
 
-	//FIXME: Guardar o IdToken em um lugar seguro
-	private var googleSignInOptions: GoogleSignInOptions = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-			.requestIdToken("248519334188-b1dj36u4ei6en068qf7egk71trhval0a.apps.googleusercontent.com")
+	private var googleSignInOptions = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+			.requestIdToken(applicationContext.getString(R.string.server_client_id))
 			.requestEmail()
 			.build()
 
-	private val context: Context
+	private val activityContext: Context
 		get() = activityReference.get() ?: throw InitializationException()
 
 
@@ -34,11 +36,11 @@ class GroupMatchAuth private constructor() : AuthenticationService {
 	override fun login(callback: LoginCallback) {
 		this.loginCallback = callback
 
-		val signInClient = GoogleSignIn.getClient(context, googleSignInOptions)
+		val signInClient = GoogleSignIn.getClient(activityContext, googleSignInOptions)
 		val authIntent = signInClient.signInIntent
 		val intent = ProxyActivity.newIntent(context, authIntent)
 
-		context.startActivity(intent)
+		activityContext.startActivity(intent)
 	}
 
 	override fun logoff() {
@@ -50,55 +52,62 @@ class GroupMatchAuth private constructor() : AuthenticationService {
 	}
 	//endregion
 
-	internal fun onAuthResult(data: Intent) {
+	internal fun onGoogleAuthenticationResult(data: Intent) {
 		val task = GoogleSignIn.getSignedInAccountFromIntent(data)
 		try {
-			val account = task.getResult(ApiException::class.java)
-			firebaseAuthWithGoogle(account!!)
-		} catch (e: ApiException) {
-			//TODO: Handle Exceptions
-			// The ApiException status code indicates the detailed failure reason.
-			// Please refer to the GoogleSignInStatusCodes class reference for more information.
-			loginCallback?.onFailure(e)
+			task.getResult(ApiException::class.java)?.let { account ->
+				firebaseLoginWithGoogle(account)
+			} ?: run {
+				val exception = GoogleAuthenticationException()
+				Log.w(TAG, "Failed to authenticate with Google. ${exception.message}")
+				loginCallback?.onFailure(exception)
+			}
+		} catch (exception: ApiException) {
+			Log.w(TAG, "Failed to authenticate with Google. Error code=${exception.statusCode}")
+			loginCallback?.onFailure(exception)
 			loginCallback = null
-//			Log.w(AccountControllerImpl.TAG, "signInResult:failed code=${e.statusCode}")
-//			view.showSignedOffLayout()
 		}
 	}
 
-	private fun firebaseAuthWithGoogle(acct: GoogleSignInAccount) {
-		Log.d(TAG, "firebaseAuthWithGoogle:" + acct.id!!)
-
-		val credential = GoogleAuthProvider.getCredential(acct.idToken, null)
+	private fun firebaseLoginWithGoogle(account: GoogleSignInAccount) {
+		val credential = GoogleAuthProvider.getCredential(account.idToken, null)
 		firebaseAuth.signInWithCredential(credential)
-				.addOnCompleteListener { task ->
-					if (task.isSuccessful) {
-						FirebaseUserMapper.from(task.result?.user)?.let { user ->
-							Log.d(TAG, "signInWithCredential:success")
-							loginCallback?.onSuccess(user)
-						} ?: run {
-							Log.w(TAG, "signInWithCredential:failure", task.exception)
-							loginCallback?.onFailure(LoginException())
-						}
-					} else {
-						Log.w(TAG, "signInWithCredential:failure", task.exception)
-						loginCallback?.onFailure(task.exception!!)
-					}
-					loginCallback = null
-				}
+				.addOnCompleteListener { handleFirebaseLogin(it) }
+	}
+
+	private fun handleFirebaseLogin(task: Task<AuthResult>) {
+		if (task.isSuccessful) {
+			val user = FirebaseUserMapper.from(task.result?.user)
+			user?.let { user ->
+				Log.d(TAG, "Successful login with Google credentials")
+				loginCallback?.onSuccess(user)
+			} ?: run {
+				Log.w(TAG, "Failed to login with Google credentials", task.exception)
+				loginCallback?.onFailure(LoginException())
+			}
+		} else {
+			Log.w(TAG, "Failed to login with Google credentials", task.exception)
+			loginCallback?.onFailure(task.exception
+					?: Exception("Failed to login with Google credentials"))
+		}
+		loginCallback = null
 	}
 
 	companion object {
-		val instance = GroupMatchAuth()
+		lateinit var instance: GroupMatchAuth
 		private val TAG = GroupMatchAuth::class.java.simpleName
+
+		fun init(applicationContext: Context) {
+			instance = GroupMatchAuth(applicationContext)
+		}
 
 		fun setActivity(activity: Context) {
 			instance.activityReference = WeakReference(activity)
 		}
 	}
 
-	class LoginException: Exception("Failed to obtain user")
-
+	class LoginException : Exception("Failed to obtain user")
+	class GoogleAuthenticationException : Exception("Failed to obtain Google account")
 	class InitializationException : Exception(
 			"GroupMatchAuth was not initialized properly. You must call configure() passing an Activity before using this class methods"
 	)

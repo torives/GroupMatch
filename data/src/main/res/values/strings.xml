@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">data</string>
     <string name="database_name">groupmatch-db</string>
+    <string name="server_client_id">248519334188-b1dj36u4ei6en068qf7egk71trhval0a.apps.googleusercontent.com</string>
 </resources>

@@ -2,6 +2,7 @@ package br.com.yves.groupmatch.presentation
 
 import android.app.Application
 import br.com.yves.groupmatch.BuildConfig
+import br.com.yves.groupmatch.data.auth.GroupMatchAuth
 import br.com.yves.groupmatch.data.db.RoomDB
 import com.crashlytics.android.Crashlytics
 import com.crashlytics.android.core.CrashlyticsCore
@@ -17,6 +18,7 @@ class GroupMatchApplication : Application() {
 
 		AndroidThreeTen.init(this)
 		RoomDB.init(this)
+		GroupMatchAuth.init(this)
 
 		configureCrashlytics()
 	}
