@@ -24,7 +24,6 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
 
-        android:hint="Name"
         android:enabled="false"
 
         app:layout_constraintBottom_toTopOf="@id/account_signedin_email"
@@ -37,20 +36,19 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
 
-        android:hint="Email"
         android:enabled="false"
 
-        app:layout_constraintBottom_toTopOf="@id/account_signedin_signoffButton"
+        app:layout_constraintBottom_toTopOf="@id/account_signedin_signoutButton"
         app:layout_constraintEnd_toEndOf="@id/account_signedin_name"
         app:layout_constraintStart_toStartOf="@id/account_signedin_name"
         app:layout_constraintTop_toBottomOf="@id/account_signedin_name" />
 
     <Button
-        android:id="@+id/account_signedin_signoffButton"
+        android:id="@+id/account_signedin_signoutButton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
 
-        android:text="Sign Off"
+        android:text="@string/account_signedin_signoutButtonText"
 
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

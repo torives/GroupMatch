@@ -12,12 +12,11 @@ class AccountControllerImpl(
 	//region AccountController
 	override fun onViewCreated() {
 		view.hideProgressBar()
+
 		authService.getUser()?.let {
 			val userViewModel = UserMapper.from(it)
 			view.showSignedInLayout(userViewModel)
-		} ?: run {
-			view.showSignedOffLayout()
-		}
+		} ?: view.showSignedOutLayout()
 	}
 
 	override fun onLoginAttempt() {
@@ -29,7 +28,7 @@ class AccountControllerImpl(
 
 			override fun onFailure(exception: Exception) {
 				//TODO: handle error
-				view.showSignedOffLayout()
+				view.showSignedOutLayout()
 			}
 
 			override fun onCanceld() {
@@ -40,7 +39,7 @@ class AccountControllerImpl(
 
 	override fun onLogoutAttempt() {
 		authService.logoff()
-		view.showSignedOffLayout()
+		view.showSignedOutLayout()
 	}
 	//endregion
 

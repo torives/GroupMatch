@@ -29,4 +29,8 @@
     <string name="lost_connection_to_client">Lost connection to client</string>
     <string name="bluetooth_server_fragment_match_button_title">Match</string>
     <!--endregion-->
+
+    <!--region Account SignIn Layout-->
+    <string name="account_signedin_signoutButtonText">Sign Out</string>
+    <!--endregion-->
 </resources>

@@ -8,7 +8,6 @@ import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
-import android.widget.TextView
 import androidx.annotation.LayoutRes
 import androidx.navigation.fragment.NavHostFragment
 import br.com.yves.groupmatch.R
@@ -47,21 +46,14 @@ class AccountFragment : NavHostFragment(), AccountView {
 	override fun showSignedInLayout(user: UserViewModel) {
 		account_content.removeAllViews()
 		inflateLayout(R.layout.layout_account_signedin)
-
-		val nameEditText: EditText? = view?.findViewById(R.id.account_signedin_name)
-		val emailEditText: EditText? = view?.findViewById(R.id.account_signedin_email)
-
-		user.apply {
-			nameEditText?.setText(name)
-			emailEditText?.setText(email)
-		}
-		configureLogoutButton()
+		populateSignInLayout(user)
+		setLogoutButtonOnClickListener()
 	}
 
-	override fun showSignedOffLayout() {
+	override fun showSignedOutLayout() {
 		account_content.removeAllViews()
 		inflateLayout(R.layout.layout_account_signedout)
-		configureLoginButton()
+		setLoginButtonOnClickListener()
 	}
 	//endregion
 
@@ -72,15 +64,25 @@ class AccountFragment : NavHostFragment(), AccountView {
 		}
 	}
 
-	private fun configureLoginButton() {
+	private fun populateSignInLayout(user: UserViewModel) {
+		val nameEditText: EditText? = view?.findViewById(R.id.account_signedin_name)
+		val emailEditText: EditText? = view?.findViewById(R.id.account_signedin_email)
+
+		user.apply {
+			nameEditText?.setText(name)
+			emailEditText?.setText(email)
+		}
+	}
+
+	private fun setLoginButtonOnClickListener() {
 		val signInButton = view?.findViewById<SignInButton>(R.id.account_signInButton)
 		signInButton?.setOnClickListener {
 			accountController.onLoginAttempt()
 		}
 	}
 
-	private fun configureLogoutButton() {
-		val signOffButton = view?.findViewById<Button>(R.id.account_signedin_signoffButton)
+	private fun setLogoutButtonOnClickListener() {
+		val signOffButton = view?.findViewById<Button>(R.id.account_signedin_signoutButton)
 		signOffButton?.setOnClickListener {
 			accountController.onLogoutAttempt()
 		}
