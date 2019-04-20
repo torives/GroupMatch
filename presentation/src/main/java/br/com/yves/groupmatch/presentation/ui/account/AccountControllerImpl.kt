@@ -4,7 +4,6 @@ import br.com.yves.groupmatch.domain.account.AuthenticationService
 import br.com.yves.groupmatch.domain.account.LoginCallback
 import br.com.yves.groupmatch.domain.models.account.User
 
-
 class AccountControllerImpl(
 		private val view: AccountView,
 		private val authService: AuthenticationService
@@ -14,7 +13,8 @@ class AccountControllerImpl(
 	override fun onViewCreated() {
 		view.hideProgressBar()
 		authService.getUser()?.let {
-			view.showSignedInLayout(UserViewModel(("")))
+			val userViewModel = UserMapper.from(it)
+			view.showSignedInLayout(userViewModel)
 		} ?: run {
 			view.showSignedOffLayout()
 		}
@@ -23,7 +23,8 @@ class AccountControllerImpl(
 	override fun onLoginAttempt() {
 		authService.login(object : LoginCallback {
 			override fun onSuccess(user: User) {
-				view.showSignedInLayout(UserViewModel(user.name))
+				val userViewModel = UserMapper.from(user)
+				view.showSignedInLayout(userViewModel)
 			}
 
 			override fun onFailure(exception: Exception) {

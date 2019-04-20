@@ -14,6 +14,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import java.lang.ref.WeakReference
 
+
 class GroupMatchAuth private constructor() : AuthenticationService {
 	private val firebaseAuth = FirebaseAuth.getInstance()
 	private lateinit var activityReference: WeakReference<Context>
@@ -45,11 +46,7 @@ class GroupMatchAuth private constructor() : AuthenticationService {
 	}
 
 	override fun getUser(): User? {
-		return firebaseAuth.currentUser?.let {
-			User(it.displayName!!)
-		} ?: run {
-			null
-		}
+		return FirebaseUserMapper.from(firebaseAuth.currentUser)
 	}
 	//endregion
 
@@ -76,10 +73,13 @@ class GroupMatchAuth private constructor() : AuthenticationService {
 		firebaseAuth.signInWithCredential(credential)
 				.addOnCompleteListener { task ->
 					if (task.isSuccessful) {
-						Log.d(TAG, "signInWithCredential:success")
-						val user = firebaseAuth.currentUser
-						//view.showSignedInLayout(UserViewModel(""))
-						loginCallback?.onSuccess(User(user!!.displayName!!))
+						FirebaseUserMapper.from(task.result?.user)?.let { user ->
+							Log.d(TAG, "signInWithCredential:success")
+							loginCallback?.onSuccess(user)
+						} ?: run {
+							Log.w(TAG, "signInWithCredential:failure", task.exception)
+							loginCallback?.onFailure(LoginException())
+						}
 					} else {
 						Log.w(TAG, "signInWithCredential:failure", task.exception)
 						loginCallback?.onFailure(task.exception!!)
@@ -96,6 +96,8 @@ class GroupMatchAuth private constructor() : AuthenticationService {
 			instance.activityReference = WeakReference(activity)
 		}
 	}
+
+	class LoginException: Exception("Failed to obtain user")
 
 	class InitializationException : Exception(
 			"GroupMatchAuth was not initialized properly. You must call configure() passing an Activity before using this class methods"

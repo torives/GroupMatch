@@ -7,6 +7,8 @@ import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.EditText
+import android.widget.TextView
 import androidx.annotation.LayoutRes
 import androidx.navigation.fragment.NavHostFragment
 import br.com.yves.groupmatch.R
@@ -45,6 +47,14 @@ class AccountFragment : NavHostFragment(), AccountView {
 	override fun showSignedInLayout(user: UserViewModel) {
 		account_content.removeAllViews()
 		inflateLayout(R.layout.layout_account_signedin)
+
+		val nameEditText: EditText? = view?.findViewById(R.id.account_signedin_name)
+		val emailEditText: EditText? = view?.findViewById(R.id.account_signedin_email)
+
+		user.apply {
+			nameEditText?.setText(name)
+			emailEditText?.setText(email)
+		}
 		configureLogoutButton()
 	}
 
