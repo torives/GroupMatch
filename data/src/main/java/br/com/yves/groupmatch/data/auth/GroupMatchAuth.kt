@@ -9,8 +9,8 @@ import br.com.yves.groupmatch.domain.account.LoginCallback
 import br.com.yves.groupmatch.domain.models.account.User
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
+import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
-import com.google.android.gms.common.Scopes
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.common.api.Scope
 import com.google.android.gms.tasks.Task
@@ -22,25 +22,27 @@ import java.lang.ref.WeakReference
 
 class GroupMatchAuth private constructor(applicationContext: Context) : AuthenticationService {
 	private val firebaseAuth = FirebaseAuth.getInstance()
+	private var googleAuth: GoogleSignInClient
 	private lateinit var activityReference: WeakReference<Context>
 	private var loginCallback: LoginCallback? = null
-
-	private var googleSignInOptions = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-			.requestScopes(Scope("https://www.googleapis.com/auth/calendar.events"))
-			.requestIdToken(applicationContext.getString(R.string.server_client_id))
-			.requestEmail()
-			.build()
 
 	private val activityContext: Context
 		get() = activityReference.get() ?: throw InitializationException()
 
+	init {
+		val options = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+				.requestScopes(Scope("https://www.googleapis.com/auth/calendar.events"))
+				.requestIdToken(applicationContext.getString(R.string.server_client_id))
+				.requestEmail()
+				.build()
+		googleAuth = GoogleSignIn.getClient(activityContext, options)
+	}
 
 	//region AuthenticationService
 	override fun login(callback: LoginCallback) {
 		this.loginCallback = callback
 
-		val signInClient = GoogleSignIn.getClient(activityContext, googleSignInOptions)
-		val authIntent = signInClient.signInIntent
+		val authIntent = googleAuth.signInIntent
 		val intent = GoogleAuthenticationProxyActivity.newIntent(activityContext, authIntent)
 
 		activityContext.startActivity(intent)
@@ -48,6 +50,7 @@ class GroupMatchAuth private constructor(applicationContext: Context) : Authenti
 
 	override fun logoff() {
 		firebaseAuth.signOut()
+		googleAuth.signOut()
 	}
 
 	override fun getUser(): User? {
