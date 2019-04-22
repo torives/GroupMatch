@@ -2,4 +2,5 @@
     <string name="app_name">data</string>
     <string name="database_name">groupmatch-db</string>
     <string name="server_client_id">248519334188-b1dj36u4ei6en068qf7egk71trhval0a.apps.googleusercontent.com</string>
+    <string name="groupmatch_api_baseURL">http://192.168.1.6:5000/api/v1/</string>
 </resources>
