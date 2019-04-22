@@ -78,6 +78,9 @@ class GroupMatchAuth private constructor(applicationContext: Context) : Authenti
 
 	private fun firebaseLoginWithGoogle(account: GoogleSignInAccount) {
 		//TODO: send auth code to server
+
+		GroupMatchApiClient(activityContext).registerAuthorizationToken(account.serverAuthCode!!)
+
 		val credential = GoogleAuthProvider.getCredential(account.idToken, null)
 		firebaseAuth.signInWithCredential(credential)
 				.addOnCompleteListener { handleFirebaseLogin(it) }
