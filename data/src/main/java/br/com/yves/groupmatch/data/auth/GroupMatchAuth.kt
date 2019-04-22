@@ -32,10 +32,11 @@ class GroupMatchAuth private constructor(applicationContext: Context) : Authenti
 	init {
 		val options = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
 				.requestScopes(Scope("https://www.googleapis.com/auth/calendar.events"))
+				.requestServerAuthCode(applicationContext.getString(R.string.server_client_id))
 				.requestIdToken(applicationContext.getString(R.string.server_client_id))
 				.requestEmail()
 				.build()
-		googleAuth = GoogleSignIn.getClient(activityContext, options)
+		googleAuth = GoogleSignIn.getClient(applicationContext, options)
 	}
 
 	//region AuthenticationService
