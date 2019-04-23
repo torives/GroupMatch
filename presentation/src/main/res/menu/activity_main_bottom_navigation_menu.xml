@@ -5,14 +5,14 @@
 
     <group android:checkableBehavior="single">
         <item
+            android:id="@id/groupsFragment"
+            android:icon="@drawable/ic_group"
+            android:title="@string/bottom_navigation_menu_groups_item" />
+        <item
             android:id="@id/calendarFragment"
             android:checked="true"
             android:icon="@drawable/ic_calendar"
             android:title="@string/bottom_navigation_menu_calendar_item" />
-        <item
-            android:id="@id/nav_search"
-            android:icon="@drawable/ic_search"
-            android:title="@string/bottom_navigation_menu_search_item" />
         <item
             android:id="@id/accountFragment"
             android:icon="@drawable/ic_account"

@@ -6,6 +6,7 @@
     <!--endregion-->
 
     <!--region BottomNavigationMenut UI Elements-->
+    <string name="bottom_navigation_menu_groups_item">Grupos</string>
     <string name="bottom_navigation_menu_calendar_item">Agenda</string>
     <string name="bottom_navigation_menu_search_item">Buscar</string>
     <string name="bottom_navigation_menu_account_item">Conta</string>

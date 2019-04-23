@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_main"
-    app:startDestination="@id/calendarFragment">
+    app:startDestination="@id/groupsFragment">
 
     <fragment
         android:id="@+id/accountFragment"
@@ -70,4 +70,9 @@
             android:label="fragment_matchresult_list"
             tools:layout="@layout/fragment_matchresult_list" />
     </navigation>
+    <fragment
+        android:id="@+id/groupsFragment"
+        android:name="br.com.yves.groupmatch.debug.GroupsFragment"
+        android:label="Groups Fragment"
+        tools:layout="@layout/fragment_groups" />
 </navigation>
