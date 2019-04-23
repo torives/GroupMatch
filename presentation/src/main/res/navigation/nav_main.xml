@@ -72,7 +72,7 @@
     </navigation>
     <fragment
         android:id="@+id/groupsFragment"
-        android:name="br.com.yves.groupmatch.debug.GroupsFragment"
+        android:name="br.com.yves.groupmatch.presentation.ui.groups.GroupsFragment"
         android:label="Groups Fragment"
         tools:layout="@layout/fragment_groups" />
 </navigation>
