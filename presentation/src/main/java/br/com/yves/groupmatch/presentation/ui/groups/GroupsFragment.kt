@@ -1,4 +1,4 @@
-package br.com.yves.groupmatch.debug
+package br.com.yves.groupmatch.presentation.ui.groups
 
 
 import android.os.Bundle
