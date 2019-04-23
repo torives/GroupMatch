@@ -7,8 +7,8 @@
     <!--endregion-->
 
     <!--region BottomNavigationMenut UI Elements-->
+    <string name="bottom_navigation_menu_groups_item">Groups</string>
     <string name="bottom_navigation_menu_calendar_item">Calendar</string>
-    <string name="bottom_navigation_menu_search_item">Search</string>
     <string name="bottom_navigation_menu_settings_item">Settings</string>
     <!--endregion-->
 
