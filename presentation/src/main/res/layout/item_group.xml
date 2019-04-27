@@ -32,6 +32,7 @@
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/item_group_members"
+        style="@style/GroupMembersTextAppearance"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
@@ -47,6 +48,7 @@
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/item_group_lastInteractionDate"
+        style="@style/GroupInteractionDateTextAppearance"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
 
@@ -57,6 +59,7 @@
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/item_group_name"
+        style="@style/GroupTitleTextAppearance"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
