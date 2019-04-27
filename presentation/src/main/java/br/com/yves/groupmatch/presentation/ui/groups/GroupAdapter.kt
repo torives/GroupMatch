@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import br.com.yves.groupmatch.R
 import com.bumptech.glide.RequestManager
 import com.bumptech.glide.request.RequestOptions
+import kotlinx.android.synthetic.main.item_group.view.*
 
 class GroupAdapter(
 		private val groups: List<GroupViewModel>,

@@ -36,5 +36,8 @@ class GroupsFragment : Fragment() {
 		recyclerview_groups_list.layoutManager = LinearLayoutManager(context)
 		recyclerview_groups_list.setHasFixedSize(true)
 		recyclerview_groups_list.adapter = groupAdapter
+		recyclerview_groups_list.addItemDecoration(
+				DividerItemDecoration(context, DividerItemDecoration.VERTICAL)
+		)
 	}
 }
