@@ -6,10 +6,41 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import br.com.yves.groupmatch.R
+import br.com.yves.groupmatch.domain.compareCalendars.User
 import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.fragment_groups.*
+import org.threeten.bp.LocalDateTime
+
+//interface GroupsView {
+//
+//}
+//
+//interface Group {
+//	val name: String
+//	val thumbnailURL: String
+//	val lastInteractionDate: LocalDateTime
+//	val members: List<User>
+//	val admin: User
+//}
+//
+//interface GroupRepository {
+//	fun getAllGroups(userId: String): List<Group>
+//}
+//
+//class GroupsController(
+//		private val view: GroupsView,
+//		private val groupRepository: GroupRepository,
+//		private val currentUser: User
+//) {
+//
+//	fun onViewCreated() {
+//		//FIXME: should use userId
+//		val groups = groupRepository.getAllGroups(currentUser.name)
+//	}
+//}
 
 class GroupsFragment : Fragment() {
 
