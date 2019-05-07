@@ -10,10 +10,11 @@ import com.bumptech.glide.request.RequestOptions
 import kotlinx.android.synthetic.main.item_group.view.*
 
 class GroupAdapter(
-		private val groups: List<GroupViewModel>,
+		private var groups: List<GroupViewModel>? = null,
 		private val glide: RequestManager
 ) : RecyclerView.Adapter<GroupAdapter.GroupViewHolder>() {
 
+	//region RecyclerView.Adapter
 	override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GroupViewHolder {
 		val view = LayoutInflater.from(parent.context).inflate(
 				R.layout.item_group,
@@ -23,16 +24,22 @@ class GroupAdapter(
 		return GroupViewHolder(view)
 	}
 
-	override fun getItemCount() = groups.size
+	override fun getItemCount() = groups?.size ?: 0
 
 	override fun onBindViewHolder(holder: GroupViewHolder, position: Int) {
 		groupAt(position)?.let {
 			holder.bind(it)
 		}
 	}
+	//endregion
+
+	fun updateGroups(groups: List<GroupViewModel>) {
+		this.groups = groups
+		notifyDataSetChanged()
+	}
 
 	private fun groupAt(position: Int): GroupViewModel? {
-		return groups.getOrNull(position)
+		return groups?.getOrNull(position)
 	}
 
 	inner class GroupViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
