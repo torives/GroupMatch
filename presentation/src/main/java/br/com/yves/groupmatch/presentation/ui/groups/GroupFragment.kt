@@ -96,7 +96,7 @@ class GroupController(
 	fun onGroupCreationAttempt() {}
 }
 
-class GroupsFragment : Fragment(), GroupsView {
+class GroupFragment : Fragment(), GroupsView {
 
 	private val controller = GroupController(
 			this,
