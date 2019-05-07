@@ -28,6 +28,14 @@ class GroupFragment : Fragment(), GroupsView {
 	override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 		super.onViewCreated(view, savedInstanceState)
 
+		setupRecyclerView()
+
+		runOnBackground {
+			controller.onViewCreated()
+		}
+	}
+
+	private fun setupRecyclerView() {
 		groupAdapter = GroupAdapter(null, Glide.with(this))
 		recyclerview_groups_list.adapter = groupAdapter
 		recyclerview_groups_list.layoutManager = LinearLayoutManager(context)
@@ -35,10 +43,6 @@ class GroupFragment : Fragment(), GroupsView {
 		recyclerview_groups_list.addItemDecoration(
 				DividerItemDecoration(context, DividerItemDecoration.VERTICAL)
 		)
-
-		runOnBackground {
-			controller.onViewCreated()
-		}
 	}
 
 	//region GroupsView
