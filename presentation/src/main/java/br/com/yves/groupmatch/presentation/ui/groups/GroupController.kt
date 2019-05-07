@@ -4,7 +4,7 @@ import br.com.yves.groupmatch.domain.account.AuthenticationService
 import br.com.yves.groupmatch.domain.group.GroupRepository
 
 class GroupController(
-		private val view: GroupsView,
+		private val view: GroupView,
 		private val presenter: GroupPresenter,
 		private val groupRepository: GroupRepository,
 		private val authenticationService: AuthenticationService

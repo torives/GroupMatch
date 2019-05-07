@@ -15,7 +15,7 @@ import br.com.yves.groupmatch.presentation.runOnUiThread
 import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.fragment_groups.*
 
-class GroupFragment : Fragment(), GroupsView {
+class GroupFragment : Fragment(), GroupView {
 
 	private val controller = GroupInjection().make(this)
 	private lateinit var groupAdapter: GroupAdapter
@@ -45,7 +45,7 @@ class GroupFragment : Fragment(), GroupsView {
 		)
 	}
 
-	//region GroupsView
+	//region GroupView
 	override fun displayGroups(groups: List<GroupViewModel>) = runOnUiThread {
 		groupAdapter.updateGroups(groups)
 	}
