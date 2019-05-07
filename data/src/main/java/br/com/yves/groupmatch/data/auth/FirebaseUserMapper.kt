@@ -7,6 +7,7 @@ object FirebaseUserMapper {
 	fun from(user: FirebaseUser?): User? {
 		return if (user?.displayName != null && user.email != null) {
 			User(
+					user.uid,
 					user.displayName!!,
 					user.email!!,
 					user.photoUrl?.toString()

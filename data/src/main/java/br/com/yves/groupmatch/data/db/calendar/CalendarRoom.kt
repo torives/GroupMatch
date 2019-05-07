@@ -15,7 +15,7 @@ import org.threeten.bp.LocalDateTime
 data class CalendarRoom(
 		@PrimaryKey(autoGenerate = true)
 		@ColumnInfo(name = COLUMN_ID) var id: Long = 0,
-		@ColumnInfo(name = COLUMN_OWNER) val owner: String,
+		@ColumnInfo(name = COLUMN_OWNER) val owner: String?,
 		@ColumnInfo(name = COLUMN_INITIAL_DATE) val initialDate: LocalDateTime,
 		@ColumnInfo(name = COLUMN_FINAL_DATE) val finalDate: LocalDateTime,
 
