@@ -6,7 +6,7 @@ import br.com.yves.groupmatch.domain.models.slots.CalendarTimeSlot
 
 
 class CalendarFactory(private val dateRepository: DateRepository) {
-	fun create(owner: String, week: Week, source: Calendar.Source): Calendar {
+	fun create(owner: String? = null, week: Week, source: Calendar.Source): Calendar {
 		val timeSlots = timeSlotsFor(week)
 		return Calendar(
 				owner = owner,

@@ -8,7 +8,7 @@
     <!--region BottomNavigationMenut UI Elements-->
     <string name="bottom_navigation_menu_calendar_item">Agenda</string>
     <string name="bottom_navigation_menu_search_item">Buscar</string>
-    <string name="bottom_navigation_menu_settings_item">Configurações</string>
+    <string name="bottom_navigation_menu_account_item">Conta</string>
     <string name="actions">Ações</string>
     <string name="restart">Reiniciar</string>
     <!--endregion-->
@@ -24,5 +24,9 @@
     <string name="lost_connection_to_client">A conexão com o cliente foi perdida</string>
     <string name="failed_to_connect_to_client">Não foi possível estabelecer uma conexão com o cliente</string>
     <string name="bluetooth_server_fragment_match_button_title">Match</string>
+    <!--endregion-->
+
+    <!--region Account SignIn Layout-->
+    <string name="account_signedin_signoutButtonText">Sair</string>
     <!--endregion-->
 </resources>

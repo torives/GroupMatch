@@ -14,8 +14,8 @@
             android:icon="@drawable/ic_search"
             android:title="@string/bottom_navigation_menu_search_item" />
         <item
-            android:id="@id/settingsFragment"
-            android:icon="@drawable/ic_settings"
-            android:title="@string/bottom_navigation_menu_settings_item" />
+            android:id="@id/accountFragment"
+            android:icon="@drawable/ic_account"
+            android:title="@string/bottom_navigation_menu_account_item" />
     </group>
 </menu>

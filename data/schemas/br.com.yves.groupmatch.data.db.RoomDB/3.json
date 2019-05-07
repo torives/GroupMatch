@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 3,
-    "identityHash": "f960a44793def6a0ab42960d61dd69d1",
+    "identityHash": "867a93057fa2d344adfc8d606fdf7e7b",
     "entities": [
       {
         "tableName": "time_slot",
@@ -76,7 +76,7 @@
       },
       {
         "tableName": "calendar",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`calendarId` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `owner` TEXT NOT NULL, `initial_date` TEXT NOT NULL, `final_date` TEXT NOT NULL, `source` INTEGER NOT NULL)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`calendarId` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `owner` TEXT, `initial_date` TEXT NOT NULL, `final_date` TEXT NOT NULL, `source` INTEGER NOT NULL)",
         "fields": [
           {
             "fieldPath": "id",
@@ -88,7 +88,7 @@
             "fieldPath": "owner",
             "columnName": "owner",
             "affinity": "TEXT",
-            "notNull": true
+            "notNull": false
           },
           {
             "fieldPath": "initialDate",
@@ -132,7 +132,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"f960a44793def6a0ab42960d61dd69d1\")"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"867a93057fa2d344adfc8d606fdf7e7b\")"
     ]
   }
 }

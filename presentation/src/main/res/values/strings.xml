@@ -9,7 +9,7 @@
     <!--region BottomNavigationMenut UI Elements-->
     <string name="bottom_navigation_menu_calendar_item">Calendar</string>
     <string name="bottom_navigation_menu_search_item">Search</string>
-    <string name="bottom_navigation_menu_settings_item">Settings</string>
+    <string name="bottom_navigation_menu_account_item">Account</string>
     <!--endregion-->
 
     <!--region Server -->
@@ -28,5 +28,9 @@
     <string name="failed_to_connect_to_client">Unable to establish connection to client</string>
     <string name="lost_connection_to_client">Lost connection to client</string>
     <string name="bluetooth_server_fragment_match_button_title">Match</string>
+    <!--endregion-->
+
+    <!--region Account SignIn Layout-->
+    <string name="account_signedin_signoutButtonText">Sign Out</string>
     <!--endregion-->
 </resources>
