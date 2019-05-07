@@ -9,8 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import br.com.yves.groupmatch.R
-import br.com.yves.groupmatch.data.auth.GroupMatchAuth
-import br.com.yves.groupmatch.data.group.GroupMockRepository
+import br.com.yves.groupmatch.presentation.injection.GroupInjection
 import br.com.yves.groupmatch.presentation.runOnBackground
 import br.com.yves.groupmatch.presentation.runOnUiThread
 import com.bumptech.glide.Glide
@@ -18,12 +17,7 @@ import kotlinx.android.synthetic.main.fragment_groups.*
 
 class GroupFragment : Fragment(), GroupsView {
 
-	private val controller = GroupController(
-			this,
-			GroupPresenterImpl(),
-			GroupMockRepository(),
-			GroupMatchAuth.instance
-	)
+	private val controller = GroupInjection().make(this)
 	private lateinit var groupAdapter: GroupAdapter
 
 	override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
