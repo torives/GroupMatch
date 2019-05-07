@@ -41,9 +41,14 @@ import org.threeten.bp.LocalDateTime
 //		val groups = groupRepository.getAllGroups(currentUser.name)
 //	}
 //}
+interface GroupsView {
+	fun displayGroups(groups: List<GroupViewModel>)
+	fun displayLoggedOutLayout()
+}
 
-class GroupsFragment : Fragment() {
 
+class GroupsFragment : Fragment(), GroupsView {
+	
 	override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
 	                          savedInstanceState: Bundle?): View? {
 		return inflater.inflate(R.layout.fragment_groups, container, false)
@@ -71,4 +76,14 @@ class GroupsFragment : Fragment() {
 				DividerItemDecoration(context, DividerItemDecoration.VERTICAL)
 		)
 	}
+
+	//region GroupsView
+	override fun displayGroups(groups: List<GroupViewModel>) {
+		TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+	}
+
+	override fun displayLoggedOutLayout() {
+		TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+	}
+	//endregion
 }
