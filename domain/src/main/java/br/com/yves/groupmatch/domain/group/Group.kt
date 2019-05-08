@@ -4,6 +4,7 @@ import br.com.yves.groupmatch.domain.models.account.User
 import org.threeten.bp.LocalDateTime
 
 data class Group(
+		val id: String,
 		val name: String,
 		val thumbnailURL: String,
 		val members: List<User>,
