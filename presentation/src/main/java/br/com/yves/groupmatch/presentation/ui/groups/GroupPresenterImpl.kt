@@ -12,7 +12,14 @@ class GroupPresenterImpl : GroupPresenter {
 					"$acc, $s"
 				}
 			}
-			GroupViewModel(group.name, members, group.thumbnailURL, false, "")
+			GroupViewModel(
+					group.id,
+					group.name,
+					members,
+					group.thumbnailURL,
+					false,
+					""
+			)
 		}
 	}
 }

@@ -65,8 +65,7 @@ class GroupFragment : Fragment(),
 
 	//region GroupAdapter.SelectionListener
 	override fun onGroupSelected(group: GroupViewModel) = runOnBackground {
-		//TODO: pass group id
-		controller.onGroupSelected(group.name)
+		controller.onGroupSelected(group.id)
 	}
 	//endregion
 }
