@@ -26,7 +26,7 @@
     </fragment>
     <fragment
         android:id="@+id/groupDetailFragment"
-        android:name="br.com.yves.groupmatch.debug.GroupDetailFragment"
+        android:name="br.com.yves.groupmatch.presentation.ui.groups.GroupDetailFragment"
         android:label="fragment_group_detail"
         tools:layout="@layout/fragment_group_detail">
         <argument
