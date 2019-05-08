@@ -13,6 +13,8 @@ import androidx.annotation.LayoutRes
 import androidx.navigation.fragment.NavHostFragment
 import br.com.yves.groupmatch.R
 import br.com.yves.groupmatch.presentation.factory.account.AccountControllerFactory
+import br.com.yves.groupmatch.presentation.runOnBackground
+import br.com.yves.groupmatch.presentation.runOnUiThread
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.google.android.gms.common.SignInButton
@@ -34,26 +36,29 @@ class AccountFragment : NavHostFragment(), AccountView {
 		super.onViewCreated(view, savedInstanceState)
 
 		accountController = AccountControllerFactory.create(this)
-		accountController.onViewCreated()
+
+		runOnBackground {
+			accountController.onViewCreated()
+		}
 	}
 
 	//region AccountView
-	override fun showProgressBar() {
+	override fun showProgressBar() = runOnUiThread {
 		account_progressBar.visibility = VISIBLE
 	}
 
-	override fun hideProgressBar() {
+	override fun hideProgressBar() = runOnUiThread {
 		account_progressBar.visibility = GONE
 	}
 
-	override fun showSignedInLayout(user: UserViewModel) {
+	override fun showSignedInLayout(user: UserViewModel) = runOnUiThread {
 		account_content.removeAllViews()
 		inflateLayout(R.layout.layout_account_signedin)
 		populateSignInLayout(user)
 		setLogoutButtonOnClickListener()
 	}
 
-	override fun showSignedOutLayout() {
+	override fun showSignedOutLayout() = runOnUiThread {
 		account_content.removeAllViews()
 		inflateLayout(R.layout.layout_account_signedout)
 		setLoginButtonOnClickListener()
@@ -88,14 +93,18 @@ class AccountFragment : NavHostFragment(), AccountView {
 	private fun setLoginButtonOnClickListener() {
 		val signInButton = view?.findViewById<SignInButton>(R.id.account_signInButton)
 		signInButton?.setOnClickListener {
-			accountController.onLoginAttempt()
+			runOnBackground {
+				accountController.onLoginAttempt()
+			}
 		}
 	}
 
 	private fun setLogoutButtonOnClickListener() {
 		val signOffButton = view?.findViewById<Button>(R.id.account_signedin_signoutButton)
 		signOffButton?.setOnClickListener {
-			accountController.onLogoutAttempt()
+			runOnBackground {
+				accountController.onLogoutAttempt()
+			}
 		}
 	}
 
