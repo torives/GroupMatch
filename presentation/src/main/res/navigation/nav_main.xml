@@ -15,13 +15,31 @@
         android:name="br.com.yves.groupmatch.presentation.ui.calendar.CalendarFragment"
         android:label="CalendarFragment"
         tools:layout="@layout/fragment_calendar" />
+    <fragment
+        android:id="@+id/groupsFragment"
+        android:name="br.com.yves.groupmatch.presentation.ui.groups.GroupFragment"
+        android:label="Groups Fragment"
+        tools:layout="@layout/fragment_groups">
+        <action
+            android:id="@+id/action_groupsFragment_to_groupDetailFragment"
+            app:destination="@id/groupDetailFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/groupDetailFragment"
+        android:name="br.com.yves.groupmatch.debug.GroupDetailFragment"
+        android:label="fragment_group_detail"
+        tools:layout="@layout/fragment_group_detail">
+        <argument
+            android:name="groupId"
+            app:argType="string" />
+    </fragment>
     <navigation
         android:id="@+id/nav_search"
         app:startDestination="@id/connectionRoleFragment">
         <fragment
             android:id="@+id/bluetoothServer"
             android:name="br.com.yves.groupmatch.presentation.ui.bluetooth.server.BluetoothServerFragment"
-            android:label="fragment_bluetooth_server" >
+            android:label="fragment_bluetooth_server">
             <action
                 android:id="@+id/action_bluetoothServer_to_matchResultFragment"
                 app:destination="@id/matchResultFragment"
@@ -55,7 +73,7 @@
             android:id="@+id/bluetoothClient"
             android:name="br.com.yves.groupmatch.presentation.ui.bluetooth.client.BluetoothClientFragment"
             android:label="fragment_bluetooth_client"
-            tools:layout="@layout/fragment_bluetooth_client" >
+            tools:layout="@layout/fragment_bluetooth_client">
             <action
                 android:id="@+id/action_bluetoothClient_to_matchResultFragment"
                 app:destination="@id/matchResultFragment"
@@ -70,9 +88,4 @@
             android:label="fragment_matchresult_list"
             tools:layout="@layout/fragment_matchresult_list" />
     </navigation>
-    <fragment
-        android:id="@+id/groupsFragment"
-        android:name="br.com.yves.groupmatch.presentation.ui.groups.GroupFragment"
-        android:label="Groups Fragment"
-        tools:layout="@layout/fragment_groups" />
 </navigation>
