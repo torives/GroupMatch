@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -16,9 +15,10 @@ import br.com.yves.groupmatch.presentation.runOnBackground
 import br.com.yves.groupmatch.presentation.runOnUiThread
 import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.fragment_groups.*
-import kotlinx.android.synthetic.main.main_activity.*
 
-class GroupFragment : Fragment(), GroupView {
+class GroupFragment : Fragment(),
+		GroupView,
+		GroupAdapter.SelectionListener {
 
 	private val controller = GroupInjection().make(this)
 	private lateinit var groupAdapter: GroupAdapter
@@ -39,7 +39,7 @@ class GroupFragment : Fragment(), GroupView {
 	}
 
 	private fun setupRecyclerView() {
-		groupAdapter = GroupAdapter(null, Glide.with(this))
+		groupAdapter = GroupAdapter(null, Glide.with(this), this)
 		recyclerview_groups_list.adapter = groupAdapter
 		recyclerview_groups_list.layoutManager = LinearLayoutManager(context)
 		recyclerview_groups_list.setHasFixedSize(true)
@@ -57,9 +57,16 @@ class GroupFragment : Fragment(), GroupView {
 		TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
 	}
 
-	override fun navigateToGroupDetails(groupId: String) {
+	override fun navigateToGroupDetails(groupId: String) = runOnUiThread {
 		val action = GroupFragmentDirections.actionGroupsFragmentToGroupDetailFragment(groupId)
 		findNavController().navigate(action)
+	}
+	//endregion
+
+	//region GroupAdapter.SelectionListener
+	override fun onGroupSelected(group: GroupViewModel) = runOnBackground {
+		//TODO: pass group id
+		controller.onGroupSelected(group.name)
 	}
 	//endregion
 }

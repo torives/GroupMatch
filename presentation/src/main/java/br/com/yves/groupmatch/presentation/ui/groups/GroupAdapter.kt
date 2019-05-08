@@ -8,11 +8,15 @@ import br.com.yves.groupmatch.R
 import com.bumptech.glide.RequestManager
 import com.bumptech.glide.request.RequestOptions
 import kotlinx.android.synthetic.main.item_group.view.*
+import java.lang.ref.WeakReference
 
 class GroupAdapter(
 		private var groups: List<GroupViewModel>? = null,
-		private val glide: RequestManager
+		private val glide: RequestManager,
+		listener: SelectionListener? = null
 ) : RecyclerView.Adapter<GroupAdapter.GroupViewHolder>() {
+
+	private val listener = WeakReference(listener)
 
 	//region RecyclerView.Adapter
 	override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GroupViewHolder {
@@ -54,6 +58,12 @@ class GroupAdapter(
 			glide.load(viewModel.imageURL)
 					.apply(RequestOptions.circleCropTransform())
 					.into(itemView.item_group_image)
+
+			itemView.setOnClickListener { listener.get()?.onGroupSelected(viewModel) }
 		}
+	}
+
+	interface SelectionListener {
+		fun onGroupSelected(group: GroupViewModel)
 	}
 }
