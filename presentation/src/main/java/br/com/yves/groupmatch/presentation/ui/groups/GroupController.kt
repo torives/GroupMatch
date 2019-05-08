@@ -19,7 +19,9 @@ class GroupController(
 		} ?: view.displayLoggedOutLayout()
 	}
 
-	fun onGroupSelected() {}
+	fun onGroupSelected(groupId: String) {
+		view.navigateToGroupDetails(groupId)
+	}
 
 	fun onGroupCreationAttempt() {}
 }
