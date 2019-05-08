@@ -6,9 +6,13 @@
     <!--endregion-->
 
     <!--region BottomNavigationMenut UI Elements-->
-    <string name="bottom_navigation_menu_groups_item">Grupos</string>
-    <string name="bottom_navigation_menu_calendar_item">Agenda</string>
-    <string name="bottom_navigation_menu_account_item">Conta</string>
+    <string name="navigation_graph_labels_groupsFragment">Grupos</string>
+    <string name="navigation_graph_labels_calendarFragment">Agenda</string>
+    <string name="navigation_graph_labels_accountFragment">Conta</string>
+    <string name="navigation_graph_labels_groupDetailFragment">Detalhes do Grupo</string>
+    <!--endregion-->
+
+    <!--region Server -->
     <string name="actions">Ações</string>
     <string name="restart">Reiniciar</string>
     <!--endregion-->
