@@ -34,4 +34,8 @@
     <!--region Account SignIn Layout-->
     <string name="account_signedin_signoutButtonText">Sign Out</string>
     <!--endregion-->
+
+    <!--region Group Fragment-->
+    <string name="fragment_group_loggedOutText">Log in to be able to see your groups</string>
+    <!--endregion-->
 </resources>

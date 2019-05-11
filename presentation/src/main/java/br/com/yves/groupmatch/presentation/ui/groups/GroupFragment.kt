@@ -4,6 +4,8 @@ package br.com.yves.groupmatch.presentation.ui.groups
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.GONE
+import android.view.View.VISIBLE
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
@@ -50,11 +52,15 @@ class GroupFragment : Fragment(),
 
 	//region GroupView
 	override fun displayGroups(groups: List<GroupViewModel>) = runOnUiThread {
+		fragment_group_loggedOutLayout.visibility = GONE
+		recyclerview_groups_list.visibility = VISIBLE
+
 		groupAdapter.updateGroups(groups)
 	}
 
 	override fun displayLoggedOutLayout() = runOnUiThread {
-		TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+		fragment_group_loggedOutLayout.visibility = VISIBLE
+		recyclerview_groups_list.visibility = GONE
 	}
 
 	override fun navigateToGroupDetails(groupId: String) = runOnUiThread {
