@@ -30,4 +30,8 @@
     <!--region Account SignIn Layout-->
     <string name="account_signedin_signoutButtonText">Sair</string>
     <!--endregion-->
+
+    <!--region Group Fragment-->
+    <string name="fragment_group_loggedOutText">Faça login para visualizar seus grupos</string>
+    <!--endregion-->
 </resources>
