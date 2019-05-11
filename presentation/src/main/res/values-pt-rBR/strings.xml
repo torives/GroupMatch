@@ -38,4 +38,8 @@
     <!--region Group Fragment-->
     <string name="fragment_group_loggedOutText">Faça login para visualizar seus grupos</string>
     <!--endregion-->
+
+    <!--region Group Details-->
+    <string name="group_details_membersTitle">Membros</string>
+    <!--endregion-->
 </resources>
