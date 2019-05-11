@@ -33,7 +33,4 @@ class MainActivity : AppCompatActivity() {
 		toolbar.setupWithNavController(navController, appBarConfiguration)
 		bottomNavigationView.setupWithNavController(navController)
 	}
-
-	override fun onSupportNavigateUp() =
-			navHost.findNavController().navigateUp()
 }
