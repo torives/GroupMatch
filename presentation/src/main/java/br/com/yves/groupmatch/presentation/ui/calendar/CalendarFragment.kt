@@ -4,7 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.navigation.fragment.NavHostFragment
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import br.com.yves.groupmatch.R
 import br.com.yves.groupmatch.presentation.factory.showCalendar.CalendarPresenterFactory
@@ -12,7 +12,7 @@ import br.com.yves.groupmatch.presentation.runOnBackground
 import kotlinx.android.synthetic.main.fragment_calendar.*
 
 
-class CalendarFragment : NavHostFragment(), CalendarView, TimeSlotAdapter.OnItemClickListener {
+class CalendarFragment : Fragment(), CalendarView, TimeSlotAdapter.OnItemClickListener {
 
 	private var presenter: CalendarPresenter = CalendarPresenterFactory.create(this)
 
