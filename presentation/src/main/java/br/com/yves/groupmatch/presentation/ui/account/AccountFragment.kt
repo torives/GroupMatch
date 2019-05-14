@@ -10,7 +10,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
 import androidx.annotation.LayoutRes
-import androidx.navigation.fragment.NavHostFragment
+import androidx.fragment.app.Fragment
 import br.com.yves.groupmatch.R
 import br.com.yves.groupmatch.presentation.factory.account.AccountControllerFactory
 import br.com.yves.groupmatch.presentation.runOnBackground
@@ -20,7 +20,7 @@ import com.bumptech.glide.request.RequestOptions
 import com.google.android.gms.common.SignInButton
 import kotlinx.android.synthetic.main.fragment_account.*
 
-class AccountFragment : NavHostFragment(), AccountView {
+class AccountFragment : Fragment(), AccountView {
 
 	private lateinit var accountController: AccountController
 
