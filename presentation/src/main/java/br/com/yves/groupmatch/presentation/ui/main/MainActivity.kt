@@ -15,14 +15,12 @@ class MainActivity : AppCompatActivity() {
 		super.onCreate(savedInstanceState)
 		setContentView(R.layout.main_activity)
 
-		setSupportActionBar(findViewById(R.id.toolbar))
 		setupNavigation()
 		GroupMatchAuth.setActivity(this)
 	}
 
 	private fun setupNavigation() {
 		val navController = navHost.findNavController()
-
 		val appBarConfiguration = AppBarConfiguration(
 				setOf(
 						R.id.groupsFragment,
