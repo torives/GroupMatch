@@ -2,15 +2,20 @@ package br.com.yves.groupmatch.presentation.ui.groups
 
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.navArgs
 import br.com.yves.groupmatch.R
-import kotlinx.android.synthetic.main.fragment_group_detail.*
 
-class GroupDetailFragment : Fragment() {
+interface GroupDetailView {
+
+}
+
+class GroupDetailFragment : Fragment(), GroupDetailView {
+
+	private val args: GroupDetailFragmentArgs by navArgs()
 
 	override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
 	                          savedInstanceState: Bundle?): View? {
@@ -21,6 +26,4 @@ class GroupDetailFragment : Fragment() {
 		super.onViewCreated(view, savedInstanceState)
 
 	}
-
-
 }
