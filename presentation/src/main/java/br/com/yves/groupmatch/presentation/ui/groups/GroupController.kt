@@ -2,7 +2,6 @@ package br.com.yves.groupmatch.presentation.ui.groups
 
 import br.com.yves.groupmatch.domain.account.AuthenticationService
 import br.com.yves.groupmatch.domain.group.GroupRepository
-import br.com.yves.groupmatch.presentation.ui.groups.details.GroupDetailView
 import java.lang.ref.WeakReference
 
 class GroupController(
@@ -29,7 +28,7 @@ class GroupController(
 		group?.let {
 			val details = presenter.format(it)
 			view?.navigateToGroupDetails(details)
-		} ?: throw IllegalStateException("Group with id: $groupId does not exist")
+		} ?: throw InvalidGroupException(groupId)
 	}
 
 	fun onGroupCreationAttempt() {}
