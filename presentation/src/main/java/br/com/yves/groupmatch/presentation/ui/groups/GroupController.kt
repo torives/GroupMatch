@@ -20,7 +20,11 @@ class GroupController(
 	}
 
 	fun onGroupSelected(groupId: String) {
-		view.navigateToGroupDetails(groupId)
+		val group = groupRepository.getGroup(groupId)
+		group?.let {
+			val details = presenter.format(it)
+			view.navigateToGroupDetails(details)
+		} ?: throw IllegalStateException("Group with id: $groupId does not exist")
 	}
 
 	fun onGroupCreationAttempt() {}
