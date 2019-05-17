@@ -12,10 +12,12 @@ import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import br.com.yves.groupmatch.R
+import br.com.yves.groupmatch.domain.group.GroupRepository
 import br.com.yves.groupmatch.presentation.runOnUiThread
 import br.com.yves.groupmatch.presentation.ui.account.UserViewModel
 import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.fragment_group_detail.*
+import java.lang.ref.WeakReference
 
 interface GroupDetailView {
 	fun displayMatchButton()
@@ -23,10 +25,33 @@ interface GroupDetailView {
 	fun displayGroupMembers(members: List<UserViewModel>)
 }
 
+class GroupDetailController(
+		view: GroupDetailView,
+		private val repository: GroupRepository
+) {
+
+	private val viewWeakReference = WeakReference(view)
+	private val view: GroupDetailView?
+		get() = viewWeakReference.get()
+
+	fun onViewCreated() {
+		TODO()
+	}
+
+	fun onMatchSelected() {
+		TODO()
+	}
+
+	fun onLeaveGroupAttempt(){
+		TODO()
+	}
+}
+
 class GroupDetailFragment : Fragment(), GroupDetailView {
 
-	private lateinit var groupMemberAdapter: GroupMemberAdapter
 	private val args: GroupDetailFragmentArgs by navArgs()
+	private lateinit var groupMemberAdapter: GroupMemberAdapter
+	private lateinit var controller: GroupDetailController
 
 	//region Lifecycle
 	override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
