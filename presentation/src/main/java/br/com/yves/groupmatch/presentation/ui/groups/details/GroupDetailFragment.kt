@@ -9,9 +9,12 @@ import android.view.View.VISIBLE
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.navArgs
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.LinearLayoutManager
 import br.com.yves.groupmatch.R
 import br.com.yves.groupmatch.presentation.runOnUiThread
 import br.com.yves.groupmatch.presentation.ui.account.UserViewModel
+import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.fragment_group_detail.*
 
 interface GroupDetailView {
@@ -22,6 +25,7 @@ interface GroupDetailView {
 
 class GroupDetailFragment : Fragment(), GroupDetailView {
 
+	private lateinit var groupMemberAdapter: GroupMemberAdapter
 	private val args: GroupDetailFragmentArgs by navArgs()
 
 	//region Lifecycle
@@ -33,8 +37,19 @@ class GroupDetailFragment : Fragment(), GroupDetailView {
 	override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 		super.onViewCreated(view, savedInstanceState)
 
+		setupRecyclerView()
 	}
 	//endregion
+
+	private fun setupRecyclerView() {
+		groupMemberAdapter = GroupMemberAdapter(null, Glide.with(this))
+		group_details_recyclerview.adapter = groupMemberAdapter
+		group_details_recyclerview.layoutManager = LinearLayoutManager(context)
+		group_details_recyclerview.setHasFixedSize(true)
+		group_details_recyclerview.addItemDecoration(
+				DividerItemDecoration(context, DividerItemDecoration.VERTICAL)
+		)
+	}
 
 	//region GroupDetailView
 	override fun displayMatchButton() = runOnUiThread {
