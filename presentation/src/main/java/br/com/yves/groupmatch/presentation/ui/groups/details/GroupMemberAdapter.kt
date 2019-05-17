@@ -1,8 +1,10 @@
 package br.com.yves.groupmatch.presentation.ui.groups.details
 
+import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import br.com.yves.groupmatch.R
 import br.com.yves.groupmatch.presentation.ui.account.UserViewModel
 import com.bumptech.glide.RequestManager
 import kotlinx.android.extensions.LayoutContainer
@@ -14,17 +16,26 @@ class GroupMemberAdapter(
 
 	//region RecyclerView.Adapter
 	override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GroupMemberViewHolder {
-		TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+		val view = LayoutInflater.from(parent.context).inflate(
+				R.layout.group_details_member_item,
+				parent,
+				false
+		)
+		return GroupMemberViewHolder(view)
 	}
 
-	override fun getItemCount(): Int {
-		TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-	}
+	override fun getItemCount(): Int = members?.size ?: 0
 
 	override fun onBindViewHolder(holder: GroupMemberViewHolder, position: Int) {
-		TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+		getMemberAt(position)?.let { member ->
+			holder.bind(member)
+		}
 	}
 	//endregion
+
+	private fun getMemberAt(position: Int): UserViewModel? {
+		return members?.getOrNull(position)
+	}
 
 	inner class GroupMemberViewHolder(view: View): RecyclerView.ViewHolder(view), LayoutContainer {
 		override val containerView: View?
