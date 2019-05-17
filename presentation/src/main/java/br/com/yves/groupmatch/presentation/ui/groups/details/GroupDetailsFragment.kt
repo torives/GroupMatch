@@ -18,9 +18,9 @@ import br.com.yves.groupmatch.presentation.ui.account.UserViewModel
 import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.fragment_group_detail.*
 
-class GroupDetailFragment : Fragment(), GroupDetailView {
+class GroupDetailsFragment : Fragment(), GroupDetailView {
 
-	private val args: GroupDetailFragmentArgs by navArgs()
+	private val args: GroupDetailsFragmentArgs by navArgs()
 	private lateinit var groupMemberAdapter: GroupMemberAdapter
 	private lateinit var controller: GroupDetailController
 
