@@ -22,7 +22,7 @@ class GroupDetailsFragment : Fragment(), GroupDetailView {
 
 	private val args: GroupDetailsFragmentArgs by navArgs()
 	private lateinit var groupMemberAdapter: GroupMemberAdapter
-	private lateinit var controller: GroupDetailController
+	private lateinit var controller: GroupDetailsController
 
 	//region Lifecycle
 	override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -34,6 +34,7 @@ class GroupDetailsFragment : Fragment(), GroupDetailView {
 		super.onViewCreated(view, savedInstanceState)
 
 		setupRecyclerView()
+
 
 		runOnBackground {
 			controller.onViewCreated()
