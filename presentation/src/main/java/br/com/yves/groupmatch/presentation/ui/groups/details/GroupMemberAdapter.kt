@@ -8,6 +8,7 @@ import br.com.yves.groupmatch.R
 import br.com.yves.groupmatch.presentation.ui.account.UserViewModel
 import com.bumptech.glide.RequestManager
 import kotlinx.android.extensions.LayoutContainer
+import kotlinx.android.synthetic.main.group_details_member_item.*
 
 class GroupMemberAdapter(
 		private var members: List<UserViewModel>? = null,
@@ -42,7 +43,7 @@ class GroupMemberAdapter(
 			get() = itemView
 
 		fun bind(member: UserViewModel) {
-
+			TODO()
 		}
 	}
 
