@@ -4,7 +4,7 @@ import br.com.yves.groupmatch.domain.group.GroupRepository
 import br.com.yves.groupmatch.presentation.ui.groups.InvalidGroupException
 import java.lang.ref.WeakReference
 
-class GroupDetailController(
+class GroupDetailsController(
 		private val groupId: String,
 		view: GroupDetailView,
 		private val presenter: GroupDetailsPresenter,
