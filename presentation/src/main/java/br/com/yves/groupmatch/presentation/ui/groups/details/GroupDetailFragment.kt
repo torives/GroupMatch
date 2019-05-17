@@ -86,7 +86,7 @@ class GroupDetailFragment : Fragment(), GroupDetailView {
 	}
 
 	override fun displayGroupMembers(members: List<UserViewModel>) {
-		TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+		groupMemberAdapter.updateMembers(members)
 	}
 	//endregion
 
