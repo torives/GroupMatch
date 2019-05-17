@@ -13,8 +13,11 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import br.com.yves.groupmatch.R
 import br.com.yves.groupmatch.domain.group.GroupRepository
+import br.com.yves.groupmatch.domain.models.account.User
+import br.com.yves.groupmatch.presentation.runOnBackground
 import br.com.yves.groupmatch.presentation.runOnUiThread
 import br.com.yves.groupmatch.presentation.ui.account.UserViewModel
+import br.com.yves.groupmatch.presentation.ui.groups.InvalidGroupException
 import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.fragment_group_detail.*
 import java.lang.ref.WeakReference
@@ -25,8 +28,14 @@ interface GroupDetailView {
 	fun displayGroupMembers(members: List<UserViewModel>)
 }
 
+interface GroupDetailPresenter {
+	fun format(users: List<User>): List<UserViewModel>
+}
+
 class GroupDetailController(
+		private val groupId: String,
 		view: GroupDetailView,
+		private val presenter: GroupDetailPresenter,
 		private val repository: GroupRepository
 ) {
 
@@ -35,7 +44,10 @@ class GroupDetailController(
 		get() = viewWeakReference.get()
 
 	fun onViewCreated() {
-		TODO()
+		repository.getGroup(groupId)?.let { group ->
+			val members = presenter.format(group.members)
+			view?.displayGroupMembers(members)
+		} ?: throw InvalidGroupException(groupId)
 	}
 
 	fun onMatchSelected() {
@@ -63,6 +75,10 @@ class GroupDetailFragment : Fragment(), GroupDetailView {
 		super.onViewCreated(view, savedInstanceState)
 
 		setupRecyclerView()
+
+		runOnBackground {
+			controller.onViewCreated()
+		}
 	}
 	//endregion
 
