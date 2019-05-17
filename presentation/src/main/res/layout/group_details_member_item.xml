@@ -6,7 +6,7 @@
     android:layout_height="@dimen/group_detail_singleCardHeight">
 
     <ImageView
-        android:id="@+id/memberItem_profileImage"
+        android:id="@+id/group_details_memberItem_profileImage"
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:layout_marginTop="8dp"
@@ -17,7 +17,7 @@
         tools:src="@tools:sample/avatars" />
 
     <TextView
-        android:id="@+id/memberItem_name"
+        android:id="@+id/group_details_memberItem_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -28,7 +28,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toEndOf="@id/memberItem_profileImage"
+        app:layout_constraintStart_toEndOf="@id/group_details_memberItem_profileImage"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="@tools:sample/full_names" />
 </androidx.constraintlayout.widget.ConstraintLayout>
