@@ -28,14 +28,21 @@ interface GroupDetailView {
 	fun displayGroupMembers(members: List<UserViewModel>)
 }
 
-interface GroupDetailPresenter {
+interface GroupDetailsPresenter {
 	fun format(users: List<User>): List<UserViewModel>
+}
+
+class GroupDetailsPresenterImpl: GroupDetailsPresenter {
+	override fun format(users: List<User>): List<UserViewModel> {
+		return users.map { UserViewModel(it.name, it.email, it.profileImageURL) }
+	}
+
 }
 
 class GroupDetailController(
 		private val groupId: String,
 		view: GroupDetailView,
-		private val presenter: GroupDetailPresenter,
+		private val presenter: GroupDetailsPresenter,
 		private val repository: GroupRepository
 ) {
 
