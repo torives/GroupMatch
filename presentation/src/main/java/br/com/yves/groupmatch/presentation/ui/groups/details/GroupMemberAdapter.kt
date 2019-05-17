@@ -34,6 +34,11 @@ class GroupMemberAdapter(
 	}
 	//endregion
 
+	fun updateMembers(members: List<UserViewModel>) {
+		this.members = members
+		notifyDataSetChanged()
+	}
+
 	private fun getMemberAt(position: Int): UserViewModel? {
 		return members?.getOrNull(position)
 	}
