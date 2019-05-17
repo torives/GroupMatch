@@ -12,59 +12,11 @@ import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import br.com.yves.groupmatch.R
-import br.com.yves.groupmatch.domain.group.GroupRepository
-import br.com.yves.groupmatch.domain.models.account.User
 import br.com.yves.groupmatch.presentation.runOnBackground
 import br.com.yves.groupmatch.presentation.runOnUiThread
 import br.com.yves.groupmatch.presentation.ui.account.UserViewModel
-import br.com.yves.groupmatch.presentation.ui.groups.InvalidGroupException
 import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.fragment_group_detail.*
-import java.lang.ref.WeakReference
-
-interface GroupDetailView {
-	fun displayMatchButton()
-	fun hideMatchButton()
-	fun displayGroupMembers(members: List<UserViewModel>)
-}
-
-interface GroupDetailsPresenter {
-	fun format(users: List<User>): List<UserViewModel>
-}
-
-class GroupDetailsPresenterImpl: GroupDetailsPresenter {
-	override fun format(users: List<User>): List<UserViewModel> {
-		return users.map { UserViewModel(it.name, it.email, it.profileImageURL) }
-	}
-
-}
-
-class GroupDetailController(
-		private val groupId: String,
-		view: GroupDetailView,
-		private val presenter: GroupDetailsPresenter,
-		private val repository: GroupRepository
-) {
-
-	private val viewWeakReference = WeakReference(view)
-	private val view: GroupDetailView?
-		get() = viewWeakReference.get()
-
-	fun onViewCreated() {
-		repository.getGroup(groupId)?.let { group ->
-			val members = presenter.format(group.members)
-			view?.displayGroupMembers(members)
-		} ?: throw InvalidGroupException(groupId)
-	}
-
-	fun onMatchSelected() {
-		TODO()
-	}
-
-	fun onLeaveGroupAttempt(){
-		TODO()
-	}
-}
 
 class GroupDetailFragment : Fragment(), GroupDetailView {
 
