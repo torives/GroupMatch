@@ -12,6 +12,7 @@ import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import br.com.yves.groupmatch.R
+import br.com.yves.groupmatch.data.group.GroupMockRepository
 import br.com.yves.groupmatch.presentation.runOnBackground
 import br.com.yves.groupmatch.presentation.runOnUiThread
 import br.com.yves.groupmatch.presentation.ui.account.UserViewModel
@@ -34,7 +35,12 @@ class GroupDetailsFragment : Fragment(), GroupDetailView {
 		super.onViewCreated(view, savedInstanceState)
 
 		setupRecyclerView()
-
+		controller = GroupDetailsController(
+				args.groupDetails.id,
+				this,
+				GroupDetailsPresenterImpl(),
+				GroupMockRepository()
+		)
 
 		runOnBackground {
 			controller.onViewCreated()
