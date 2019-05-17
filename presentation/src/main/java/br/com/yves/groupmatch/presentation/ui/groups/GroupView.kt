@@ -1,7 +1,9 @@
 package br.com.yves.groupmatch.presentation.ui.groups
 
+import br.com.yves.groupmatch.presentation.ui.groups.details.GroupDetailsViewModel
+
 interface GroupView {
 	fun displayGroups(groups: List<GroupViewModel>)
 	fun displayLoggedOutLayout()
-	fun navigateToGroupDetails(groupId: String)
+	fun navigateToGroupDetails(details: GroupDetailsViewModel)
 }

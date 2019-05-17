@@ -26,12 +26,12 @@
     </fragment>
     <fragment
         android:id="@+id/groupDetailFragment"
-        android:name="br.com.yves.groupmatch.presentation.ui.groups.GroupDetailFragment"
+        android:name="br.com.yves.groupmatch.presentation.ui.groups.details.GroupDetailFragment"
         android:label="@string/navigation_graph_labels_groupDetailFragment"
         tools:layout="@layout/fragment_group_detail">
         <argument
-            android:name="groupId"
-            app:argType="string" />
+            android:name="groupDetails"
+            app:argType="br.com.yves.groupmatch.presentation.ui.groups.details.GroupDetailsViewModel" />
     </fragment>
     <navigation
         android:id="@+id/nav_search"
