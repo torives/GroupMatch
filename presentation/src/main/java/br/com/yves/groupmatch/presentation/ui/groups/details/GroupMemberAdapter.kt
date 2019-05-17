@@ -3,12 +3,13 @@ package br.com.yves.groupmatch.presentation.ui.groups.details
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import br.com.yves.groupmatch.R
 import br.com.yves.groupmatch.presentation.ui.account.UserViewModel
 import com.bumptech.glide.RequestManager
-import kotlinx.android.extensions.LayoutContainer
-import kotlinx.android.synthetic.main.group_details_member_item.*
+import com.bumptech.glide.request.RequestOptions
 
 class GroupMemberAdapter(
 		private var members: List<UserViewModel>? = null,
@@ -43,14 +44,16 @@ class GroupMemberAdapter(
 		return members?.getOrNull(position)
 	}
 
-	inner class GroupMemberViewHolder(view: View): RecyclerView.ViewHolder(view), LayoutContainer {
-		override val containerView: View?
-			get() = itemView
+	inner class GroupMemberViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+
+		private val memberName by lazy { itemView.findViewById<TextView>(R.id.group_details_memberItem_name) }
+		private val memberProfileImage by lazy { itemView.findViewById<ImageView>(R.id.group_details_memberItem_profileImage) }
 
 		fun bind(member: UserViewModel) {
-			TODO()
+			memberName.text = member.name
+			glide.load(member.profileImageURL)
+					.apply(RequestOptions.circleCropTransform())
+					.into(memberProfileImage)
 		}
 	}
-
-
 }
