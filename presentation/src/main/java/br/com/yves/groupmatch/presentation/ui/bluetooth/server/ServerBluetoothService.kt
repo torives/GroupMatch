@@ -184,8 +184,6 @@ class ServerBluetoothService
 	 * @see ConnectedThread.write
 	 */
 	fun write(out: ByteArray) {
-		// Create temporary object
-		val r: ConnectedThread
 		// Synchronize a copy of the ConnectedThread
 		synchronized(this) {
 			if (mState != STATE_CONNECTED) return
