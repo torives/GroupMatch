@@ -15,6 +15,7 @@ import br.com.yves.groupmatch.R
 import br.com.yves.groupmatch.presentation.injection.GroupInjection
 import br.com.yves.groupmatch.presentation.runOnBackground
 import br.com.yves.groupmatch.presentation.runOnUiThread
+import br.com.yves.groupmatch.presentation.ui.groups.details.GroupDetailsViewModel
 import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.fragment_groups.*
 
@@ -63,8 +64,8 @@ class GroupFragment : Fragment(),
 		recyclerview_groups_list.visibility = GONE
 	}
 
-	override fun navigateToGroupDetails(groupId: String) = runOnUiThread {
-		val action = GroupFragmentDirections.actionGroupsFragmentToGroupDetailFragment(groupId)
+	override fun navigateToGroupDetails(details: GroupDetailsViewModel) = runOnUiThread {
+		val action = GroupFragmentDirections.actionGroupsFragmentToGroupDetailFragment(details)
 		findNavController().navigate(action)
 	}
 	//endregion
