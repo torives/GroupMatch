@@ -15,6 +15,7 @@ class MainActivity : AppCompatActivity() {
 		super.onCreate(savedInstanceState)
 		setContentView(R.layout.main_activity)
 
+		setSupportActionBar(toolbar)
 		setupNavigation()
 		GroupMatchAuth.setActivity(this)
 	}
