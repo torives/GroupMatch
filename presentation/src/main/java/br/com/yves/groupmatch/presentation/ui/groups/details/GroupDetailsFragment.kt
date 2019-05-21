@@ -40,6 +40,7 @@ class GroupDetailsFragment : Fragment(), GroupDetailView {
 		super.onViewCreated(view, savedInstanceState)
 
 		setupNavigation()
+		setupToolbar()
 		setupRecyclerView()
 
 		controller = GroupDetailsController(
@@ -52,6 +53,13 @@ class GroupDetailsFragment : Fragment(), GroupDetailView {
 		runOnBackground {
 			controller.onViewCreated()
 		}
+	}
+
+	private fun setupToolbar() {
+		group_details_collapsingToolbar.title = args.groupDetails.name
+		Glide.with(this)
+				.load(args.groupDetails.imageURL)
+				.into(group_details_groupImage)
 	}
 
 	override fun onDestroyView() {
