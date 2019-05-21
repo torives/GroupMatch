@@ -1,6 +1,7 @@
 package br.com.yves.groupmatch.presentation.ui.groups.details
 
 
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -20,6 +21,12 @@ import br.com.yves.groupmatch.presentation.runOnBackground
 import br.com.yves.groupmatch.presentation.runOnUiThread
 import br.com.yves.groupmatch.presentation.ui.account.UserViewModel
 import com.bumptech.glide.Glide
+import com.bumptech.glide.request.Request
+import com.bumptech.glide.request.RequestOptions
+import com.bumptech.glide.request.target.CustomTarget
+import com.bumptech.glide.request.target.SizeReadyCallback
+import com.bumptech.glide.request.target.Target
+import com.bumptech.glide.request.transition.Transition
 import kotlinx.android.synthetic.main.fragment_group_detail.*
 import kotlinx.android.synthetic.main.group_detail_content.*
 
@@ -57,9 +64,21 @@ class GroupDetailsFragment : Fragment(), GroupDetailView {
 
 	private fun setupToolbar() {
 		group_details_collapsingToolbar.title = args.groupDetails.name
-		Glide.with(this)
+
+		val request = Glide.with(this)
+				.asDrawable()
 				.load(args.groupDetails.imageURL)
-				.into(group_details_groupImage)
+
+		request.into(group_details_groupImage)
+		request.apply(RequestOptions.circleCropTransform())
+				.override(150)
+				.into(object : CustomTarget<Drawable>(){
+			override fun onLoadCleared(placeholder: Drawable?) {}
+
+			override fun onResourceReady(resource: Drawable, transition: Transition<in Drawable>?) {
+				group_details_toolbar.logo = resource
+			}
+		})
 	}
 
 	override fun onDestroyView() {
