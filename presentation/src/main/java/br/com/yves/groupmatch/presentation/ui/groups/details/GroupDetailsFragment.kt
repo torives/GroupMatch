@@ -11,7 +11,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import androidx.navigation.ui.NavigationUI
+import androidx.navigation.ui.setupWithNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import br.com.yves.groupmatch.R
@@ -21,6 +21,7 @@ import br.com.yves.groupmatch.presentation.runOnUiThread
 import br.com.yves.groupmatch.presentation.ui.account.UserViewModel
 import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.fragment_group_detail.*
+import kotlinx.android.synthetic.main.group_detail_content.*
 
 
 class GroupDetailsFragment : Fragment(), GroupDetailView {
@@ -63,7 +64,7 @@ class GroupDetailsFragment : Fragment(), GroupDetailView {
 		(activity as AppCompatActivity).supportActionBar?.hide()
 
 		val navController = findNavController()
-		NavigationUI.setupWithNavController(group_details_toolbar, navController)
+		group_details_collapsingToolbar.setupWithNavController(group_details_toolbar, navController)
 	}
 
 	private fun setupRecyclerView() {
