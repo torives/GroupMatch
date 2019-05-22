@@ -42,12 +42,13 @@ dependencies {
     implementation baseDependencies.kotlin
     implementation baseDependencies.app_compat
     implementation baseDependencies.room
+    kapt baseDependencies.room_compiler
     implementation baseDependencies.gson
     implementation baseDependencies.play_services_auth
     implementation baseDependencies.firebase_auth
     implementation baseDependencies.retrofit
     implementation baseDependencies.retrofit_gsonConverter
-    kapt baseDependencies.room_compiler
+    implementation baseDependencies.firebase_firestore
 
     testImplementation testDependencies.junit
     testImplementation testDependencies.kotlinJUnit
