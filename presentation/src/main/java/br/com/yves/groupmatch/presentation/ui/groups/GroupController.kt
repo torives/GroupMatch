@@ -1,5 +1,6 @@
 package br.com.yves.groupmatch.presentation.ui.groups
 
+import br.com.yves.groupmatch.data.group.GroupFirestoreRepository
 import br.com.yves.groupmatch.domain.account.AuthenticationService
 import br.com.yves.groupmatch.domain.group.GroupRepository
 import java.lang.ref.WeakReference
@@ -24,6 +25,10 @@ class GroupController(
 	}
 
 	fun onGroupSelected(groupId: String) {
+
+		val repo = GroupFirestoreRepository()
+		val a = repo.getGroup("j6I1aIfMFw4I6rDhn3Yp")
+
 		val group = groupRepository.getGroup(groupId)
 		group?.let {
 			val details = presenter.format(it)

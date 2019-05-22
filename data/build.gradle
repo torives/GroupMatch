@@ -49,6 +49,8 @@ dependencies {
     implementation baseDependencies.retrofit
     implementation baseDependencies.retrofit_gsonConverter
     implementation baseDependencies.firebase_firestore
+    implementation baseDependencies.coroutines
+    implementation baseDependencies.coroutines_core
 
     testImplementation testDependencies.junit
     testImplementation testDependencies.kotlinJUnit
