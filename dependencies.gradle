@@ -47,7 +47,7 @@ ext {
             coroutines              : "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutinesVersion",
             coroutines_core         : "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion",
             firebase                : 'com.google.firebase:firebase-core:16.0.8',
-            firebase_firestore      : "com.google.firebase:firebase-firestore:19.0.0",
+            firebase_firestore      : "com.google.firebase:firebase-firestore-ktx:19.0.0",
             crashlytics             : 'com.crashlytics.sdk.android:crashlytics:2.9.9',
             glide                   : "com.github.bumptech.glide:glide:4.9.0",
             glide_compiler          : "com.github.bumptech.glide:compiler:4.9.0",
