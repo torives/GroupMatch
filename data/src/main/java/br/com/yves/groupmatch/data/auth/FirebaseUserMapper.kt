@@ -1,6 +1,6 @@
 package br.com.yves.groupmatch.data.auth
 
-import br.com.yves.groupmatch.domain.models.account.User
+import br.com.yves.groupmatch.domain.user.User
 import com.google.firebase.auth.FirebaseUser
 
 object FirebaseUserMapper {

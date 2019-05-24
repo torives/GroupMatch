@@ -1,4 +1,4 @@
-package br.com.yves.groupmatch.domain.models.account
+package br.com.yves.groupmatch.domain.user
 
 data class User(
 		val uid: String,
