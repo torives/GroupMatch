@@ -1,7 +1,7 @@
 package br.com.yves.groupmatch.presentation.ui.groups.details
 
+import br.com.yves.groupmatch.domain.group.Group
 import br.com.yves.groupmatch.domain.group.GroupRepository
-import br.com.yves.groupmatch.presentation.ui.groups.InvalidGroupException
 import java.lang.ref.WeakReference
 
 class GroupDetailsController(
@@ -16,17 +16,24 @@ class GroupDetailsController(
 		get() = viewWeakReference.get()
 
 	fun onViewCreated() {
-		repository.getGroup(groupId)?.let { group ->
-			val members = presenter.format(group.members)
-			view?.displayGroupMembers(members)
-		} ?: throw InvalidGroupException(groupId)
+		repository.getGroup(groupId, object : GroupRepository.GetGroupCallback {
+
+			override fun onSuccess(group: Group) {
+				val members = presenter.format(group.members)
+				view?.displayGroupMembers(members)
+			}
+
+			override fun onFailure() {
+				TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+			}
+		})
 	}
 
 	fun onMatchSelected() {
 		TODO()
 	}
 
-	fun onLeaveGroupAttempt(){
+	fun onLeaveGroupAttempt() {
 		TODO()
 	}
 }

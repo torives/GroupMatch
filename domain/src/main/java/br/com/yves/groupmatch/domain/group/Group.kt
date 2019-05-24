@@ -1,6 +1,6 @@
 package br.com.yves.groupmatch.domain.group
 
-import br.com.yves.groupmatch.domain.models.account.User
+import br.com.yves.groupmatch.domain.user.User
 import org.threeten.bp.LocalDateTime
 
 data class Group(

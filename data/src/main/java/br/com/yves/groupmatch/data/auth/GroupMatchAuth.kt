@@ -5,8 +5,7 @@ import android.content.Intent
 import android.util.Log
 import br.com.yves.groupmatch.data.R
 import br.com.yves.groupmatch.domain.account.AuthenticationService
-import br.com.yves.groupmatch.domain.account.LoginCallback
-import br.com.yves.groupmatch.domain.models.account.User
+import br.com.yves.groupmatch.domain.user.User
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
@@ -24,7 +23,7 @@ class GroupMatchAuth private constructor(applicationContext: Context) : Authenti
 	private val firebaseAuth = FirebaseAuth.getInstance()
 	private var googleAuth: GoogleSignInClient
 	private lateinit var activityReference: WeakReference<Context>
-	private var loginCallback: LoginCallback? = null
+	private var loginCallback: AuthenticationService.LoginCallback? = null
 
 	private val activityContext: Context
 		get() = activityReference.get() ?: throw InitializationException()
@@ -40,7 +39,7 @@ class GroupMatchAuth private constructor(applicationContext: Context) : Authenti
 	}
 
 	//region AuthenticationService
-	override fun login(callback: LoginCallback) {
+	override fun login(callback: AuthenticationService.LoginCallback) {
 		this.loginCallback = callback
 
 		val authIntent = googleAuth.signInIntent
@@ -54,7 +53,7 @@ class GroupMatchAuth private constructor(applicationContext: Context) : Authenti
 		googleAuth.signOut()
 	}
 
-	override fun getUser(): User? {
+	override fun getLoggedUser(): User? {
 		return FirebaseUserMapper.from(firebaseAuth.currentUser)
 	}
 	//endregion

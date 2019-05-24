@@ -14,10 +14,16 @@ class GroupFirebaseRepository {
 		get() = FirebaseFirestore.getInstance()
 
 	//region GroupRepository
-	fun getGroup(groupId: String): FirebaseGroup? = runBlocking {
-		return@runBlocking withContext(Dispatchers.IO) {
-			getGroupSynchronous(groupId)
-		}
+	suspend fun getGroup(groupId: String): FirebaseGroup? = suspendCoroutine { cont ->
+		db.collection(COLLECTION_GROUPS).document(groupId).get()
+				.addOnSuccessListener {
+					val group = it.toObject(FirebaseGroup::class.java)
+					cont.resume(group)
+				}
+				.addOnFailureListener {
+					Log.d(TAG, "Failed to retrieve group with id: $groupId")
+					cont.resume(null)
+				}
 	}
 
 	fun getAllGroups(userId: String): List<FirebaseGroup> {
