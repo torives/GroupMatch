@@ -8,10 +8,11 @@
     <!--endregion-->
 
     <!--region BottomNavigationMenut UI Elements-->
-    <string name="bottom_navigation_menu_groups_item">Groups</string>
-    <string name="bottom_navigation_menu_calendar_item">Calendar</string>
-    <string name="bottom_navigation_menu_search_item">Search</string>
-    <string name="bottom_navigation_menu_account_item">Account</string>
+    <string name="navigation_graph_labels_groupsFragment">Groups</string>
+    <string name="navigation_graph_labels_calendarFragment">Calendar</string>
+    <string name="navigation_graph_labels_accountFragment">Account</string>
+ 	<string name="navigation_graph_labels_searchFragment">Search</string>
+    <string name="navigation_graph_labels_groupDetailFragment">Group Details</string>
     <!--endregion-->
 
     <!--region Server -->
@@ -38,5 +39,9 @@
 
     <!--region Group Fragment-->
     <string name="fragment_group_loggedOutText">Log in to be able to see your groups</string>
+    <!--endregion-->
+
+    <!--region Group Details-->
+    <string name="group_details_membersTitle">Members</string>
     <!--endregion-->
 </resources>
