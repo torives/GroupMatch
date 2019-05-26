@@ -1,8 +1,7 @@
-import br.com.yves.groupmatch.domain.compareCalendars.CompareCalendars
-import br.com.yves.groupmatch.domain.createCalendar.CreateCalendarFactory
-import br.com.yves.groupmatch.domain.sendCalendar.CalendarFactory
-import br.com.yves.groupmatch.domain.loadCalendar.Calendar
 import br.com.yves.groupmatch.data.loadCalendar.DateRepositoryFactory
+import br.com.yves.groupmatch.domain.compareCalendars.CompareCalendars
+import br.com.yves.groupmatch.domain.models.calendar.Calendar
+import br.com.yves.groupmatch.domain.models.calendar.CalendarFactory
 import org.junit.Before
 import org.junit.Test
 

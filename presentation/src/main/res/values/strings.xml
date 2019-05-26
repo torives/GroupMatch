@@ -7,6 +7,7 @@
     <!--endregion-->
 
     <!--region BottomNavigationMenut UI Elements-->
+    <string name="bottom_navigation_menu_groups_item">Groups</string>
     <string name="bottom_navigation_menu_calendar_item">Calendar</string>
     <string name="bottom_navigation_menu_search_item">Search</string>
     <string name="bottom_navigation_menu_account_item">Account</string>
@@ -32,5 +33,9 @@
 
     <!--region Account SignIn Layout-->
     <string name="account_signedin_signoutButtonText">Sign Out</string>
+    <!--endregion-->
+
+    <!--region Group Fragment-->
+    <string name="fragment_group_loggedOutText">Log in to be able to see your groups</string>
     <!--endregion-->
 </resources>

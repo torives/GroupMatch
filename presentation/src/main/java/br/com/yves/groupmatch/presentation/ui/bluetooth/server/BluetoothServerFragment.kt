@@ -12,7 +12,6 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import br.com.yves.groupmatch.R
-import br.com.yves.groupmatch.domain.compareCalendars.CalendarMatch
 import br.com.yves.groupmatch.presentation.runOnBackground
 import br.com.yves.groupmatch.presentation.runOnUiThread
 import br.com.yves.groupmatch.presentation.ui.bluetooth.client.BluetoothClient
@@ -49,13 +48,13 @@ class BluetoothServerFragment : Fragment(), ServerView {
 		}
 	}
 
-	override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
+	override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
 		super.onCreateOptionsMenu(menu, inflater)
 		requireActivity().menuInflater.inflate(R.menu.bluetooth_fragment_toolbar_menu, menu)
 	}
 
-	override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-		when (item!!.itemId) {
+	override fun onOptionsItemSelected(item: MenuItem): Boolean {
+		when (item.itemId) {
 			R.id.discoverabilityButton -> runOnBackground {
 				presenter.onDiscoverabilityButtonPressed()
 			}
