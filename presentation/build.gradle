@@ -80,6 +80,7 @@ dependencies {
     implementation dependencies.coroutines
     implementation dependencies.coroutines_core
     implementation dependencies.firebase
+    implementation dependencies.firebase_messaging
     implementation dependencies.crashlytics
     implementation dependencies.glide
     kapt dependencies.glide_compiler

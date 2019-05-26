@@ -25,6 +25,7 @@
     <string name="lost_connection_to_client">A conexão com o cliente foi perdida</string>
     <string name="failed_to_connect_to_client">Não foi possível estabelecer uma conexão com o cliente</string>
     <string name="bluetooth_server_fragment_match_button_title">Match</string>
+    <string name="notifications_default_channel_name">Padrão</string>
     <!--endregion-->
 
     <!--region Account SignIn Layout-->

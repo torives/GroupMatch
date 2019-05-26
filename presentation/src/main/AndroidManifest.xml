@@ -13,6 +13,10 @@
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
 
+        <!--region Metadata-->
+        <!--endregion-->
+
+        <!--region Activities-->
         <activity
             android:name=".presentation.ui.main.MainActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"
@@ -22,5 +26,16 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <!--endregion-->
+
+        <!--region Services-->
+        <service
+            android:name=".presentation.ui.notifications.NotificationsService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+        <!--endregion-->
     </application>
 </manifest>
