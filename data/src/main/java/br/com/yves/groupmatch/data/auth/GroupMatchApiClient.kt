@@ -4,8 +4,6 @@ import android.content.Context
 import android.util.Log
 import br.com.yves.groupmatch.data.R
 import br.com.yves.groupmatch.data.ServiceGenerator
-import okhttp3.MediaType
-import okhttp3.RequestBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -20,7 +18,7 @@ class GroupMatchApiClient(applicationContext: Context) {
 	}
 
 	fun registerAuthorizationToken(uid: String, token: String) {
-		val body= mapOf("token" to token, "uid" to uid)
+		val body = mapOf("token" to token, "uid" to uid)
 		service.registerAuthorizationToken(body).enqueue(object : Callback<AuthTokenResponse> {
 			override fun onResponse(call: Call<AuthTokenResponse>, response: Response<AuthTokenResponse>) {
 				Log.d(TAG, "Response is successful: ${response.isSuccessful}")
@@ -30,6 +28,10 @@ class GroupMatchApiClient(applicationContext: Context) {
 				Log.e(TAG, "Failed to register authentication token", t)
 			}
 		})
+	}
+
+	fun updateDeviceToken(deviceToken: String, userId: String) {
+
 	}
 
 	companion object {
