@@ -19,9 +19,9 @@ class GroupMatchApiClient(applicationContext: Context) {
 		)
 	}
 
-	fun registerAuthorizationToken(token: String) {
-		val token= mapOf("token" to token)
-		service.registerAuthorizationToken(token).enqueue(object : Callback<AuthTokenResponse> {
+	fun registerAuthorizationToken(uid: String, token: String) {
+		val body= mapOf("token" to token, "uid" to uid)
+		service.registerAuthorizationToken(body).enqueue(object : Callback<AuthTokenResponse> {
 			override fun onResponse(call: Call<AuthTokenResponse>, response: Response<AuthTokenResponse>) {
 				Log.d(TAG, "Response is successful: ${response.isSuccessful}")
 			}
