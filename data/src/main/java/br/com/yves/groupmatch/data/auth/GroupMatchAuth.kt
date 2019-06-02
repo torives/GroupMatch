@@ -19,7 +19,8 @@ import com.google.firebase.auth.GoogleAuthProvider
 import java.lang.ref.WeakReference
 
 
-class GroupMatchAuth private constructor(applicationContext: Context) : AuthenticationService {
+class GroupMatchAuth private constructor(applicationContext: Context) : AuthenticationService, GoogleAuthenticationProxyActivity.GoogleAuthenticationProxyActivityListener {
+
 	private val firebaseAuth = FirebaseAuth.getInstance()
 	private var googleAuth: GoogleSignInClient
 	private lateinit var activityReference: WeakReference<Context>
@@ -44,6 +45,7 @@ class GroupMatchAuth private constructor(applicationContext: Context) : Authenti
 
 		val authIntent = googleAuth.signInIntent
 		val intent = GoogleAuthenticationProxyActivity.newIntent(activityContext, authIntent)
+		GoogleAuthenticationProxyActivity.addListener(this)
 
 		activityContext.startActivity(intent)
 	}
@@ -58,7 +60,8 @@ class GroupMatchAuth private constructor(applicationContext: Context) : Authenti
 	}
 	//endregion
 
-	internal fun onGoogleAuthenticationResult(data: Intent) {
+	//region GoogleAuthenticationProxyActivityListener
+	override fun onSuccessfulActivityRequest(requestCode: Int, data: Intent?) {
 		val task = GoogleSignIn.getSignedInAccountFromIntent(data)
 		try {
 			task.getResult(ApiException::class.java)?.let { account ->
@@ -74,6 +77,12 @@ class GroupMatchAuth private constructor(applicationContext: Context) : Authenti
 			loginCallback = null
 		}
 	}
+
+	override fun onFailedActivityRequest(requestCode: Int) {
+		loginCallback?.onCanceled()
+		loginCallback = null
+	}
+	//endregion
 
 	private fun firebaseLoginWithGoogle(account: GoogleSignInAccount) {
 		val credential = GoogleAuthProvider.getCredential(account.idToken, null)
