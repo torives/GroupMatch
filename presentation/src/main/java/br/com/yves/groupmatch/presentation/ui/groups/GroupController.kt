@@ -17,7 +17,7 @@ class GroupController(
 		get() = viewWeakReference.get()
 
 	fun onViewCreated() {
-		userRepository.getLoggedUser()?.id?.let {
+		userRepository.getLoggedInUser()?.id?.let {
 			groupRepository.getAllGroups(it, object : GroupRepository.GetGroupCallback {
 				override fun onSuccess(groups: List<Group>) {
 					val viewModels = presenter.format(groups)

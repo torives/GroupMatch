@@ -4,5 +4,5 @@ interface AccountView {
 	fun showProgressBar()
 	fun hideProgressBar()
 	fun showSignedInLayout(user: UserViewModel)
-	fun showSignedOutLayout()
+	fun showLoggedOutLayout()
 }

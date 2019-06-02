@@ -17,9 +17,9 @@ class AccountControllerImpl(
 	override fun onViewCreated() {
 		view.hideProgressBar()
 
-		authService.getLoggedUser()?.let {
+		authService.getLoggedInUser()?.let {
 			displaySignedInLayout(it)
-		} ?: view.showSignedOutLayout()
+		} ?: view.showLoggedOutLayout()
 	}
 
 	override fun onLoginAttempt() {
@@ -27,7 +27,7 @@ class AccountControllerImpl(
 	}
 
 	override fun onLogoutAttempt() {
-		logoff()
+		logout()
 	}
 	//endregion
 
@@ -36,9 +36,9 @@ class AccountControllerImpl(
 		view.showSignedInLayout(userViewModel)
 	}
 
-	private fun logoff() {
-		authService.logoff()
-		view.showSignedOutLayout()
+	private fun logout() {
+		authService.logout()
+		view.showLoggedOutLayout()
 	}
 
 
@@ -50,12 +50,12 @@ class AccountControllerImpl(
 
 		//TODO: handle login failure
 		override fun onFailure(exception: Exception) {
-			view.showSignedOutLayout()
+			view.showLoggedOutLayout()
 		}
 
 		//TODO: handle login cancellation
 		override fun onCanceled() {
-			view.showSignedOutLayout()
+			view.showLoggedOutLayout()
 		}
 	}
 
@@ -69,8 +69,8 @@ class AccountControllerImpl(
 		}
 
 		override fun onFailure(error: Error) {
-			authService.logoff()
-			view.showSignedOutLayout()
+			authService.logout()
+			view.showLoggedOutLayout()
 		}
 	}
 
@@ -81,8 +81,8 @@ class AccountControllerImpl(
 
 		//TODO: Log failure
 		override fun onFailure(error: Error) {
-			authService.logoff()
-			view.showSignedOutLayout()
+			authService.logout()
+			view.showLoggedOutLayout()
 		}
 	}
 

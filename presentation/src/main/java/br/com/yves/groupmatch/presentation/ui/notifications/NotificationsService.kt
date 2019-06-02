@@ -65,7 +65,7 @@ class NotificationsService : FirebaseMessagingService() {
 
 	//TODO: Registrar o token no servidor
 	private fun sendRegistrationToServer(token: String) {
-//		authService.getLoggedUser()?.let { user -> }
+//		authService.getLoggedInUser()?.let { user -> }
 	}
 
 	companion object {

@@ -58,7 +58,7 @@ class AccountFragment : Fragment(), AccountView {
 		setLogoutButtonOnClickListener()
 	}
 
-	override fun showSignedOutLayout() = runOnUiThread {
+	override fun showLoggedOutLayout() = runOnUiThread {
 		account_content.removeAllViews()
 		inflateLayout(R.layout.layout_account_signedout)
 		setLoginButtonOnClickListener()

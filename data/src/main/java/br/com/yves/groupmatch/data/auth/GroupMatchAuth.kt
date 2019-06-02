@@ -52,12 +52,12 @@ class GroupMatchAuth private constructor(
 		activityContext.startActivity(intent)
 	}
 
-	override fun logoff() {
+	override fun logout() {
 		firebaseAuth.signOut()
 		googleAuth.signOut()
 	}
 
-	override fun getLoggedUser(): User? {
+	override fun getLoggedInUser(): User? {
 		return FirebaseUserMapper.from(firebaseAuth.currentUser)
 	}
 	//endregion
