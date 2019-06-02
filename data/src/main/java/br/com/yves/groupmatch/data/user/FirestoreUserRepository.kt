@@ -17,8 +17,8 @@ class FirestoreUserRepository : UserRepository {
 					callback.onFailure(APIError(
 							500,
 							"Failed to create user",
-							it)
-					)
+							it
+					))
 				}
 	}
 
@@ -27,7 +27,9 @@ class FirestoreUserRepository : UserRepository {
 	}
 
 	override fun userExists(userId: String, callback: UserRepository.UserExistsCallback) {
-		TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+		firestore.collection(USERS_COLLECTION).document(userId).get()
+				.addOnSuccessListener { callback.onUserExists() }
+				.addOnFailureListener { callback.onUserDoesNotExists() }
 	}
 
 	companion object {
