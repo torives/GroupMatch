@@ -2,11 +2,15 @@ package br.com.yves.groupmatch.domain.user
 
 interface UserRepository {
 	fun getUser(uid: String, callback: GetUserCallback)
-	fun getUsers(uids: List<String>, callback: GetUserCallback)
+	fun updateUser(user: User, callback: UpdateUserCallback)
 
 	interface GetUserCallback {
-		fun onSuccess(user: User){}
-		fun onSuccess(users: List<User>){}
-		fun onFailure()
+		fun onSuccess(user: User)
+		fun onFailure(error: Error)
+	}
+
+	interface UpdateUserCallback {
+		fun onSuccess()
+		fun onFailure(error: Error)
 	}
 }
