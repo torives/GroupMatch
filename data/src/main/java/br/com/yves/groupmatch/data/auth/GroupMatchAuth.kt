@@ -65,11 +65,11 @@ class GroupMatchAuth private constructor(applicationContext: Context) : Authenti
 				firebaseLoginWithGoogle(account)
 			} ?: run {
 				val exception = GoogleAuthenticationException()
-				Log.w(TAG, "Failed to authenticate with Google. ${exception.message}")
+				Log.e(TAG, "Failed to authenticate with Google. ${exception.message}")
 				loginCallback?.onFailure(exception)
 			}
 		} catch (exception: ApiException) {
-			Log.w(TAG, "Failed to authenticate with Google. Error code=${exception.statusCode}")
+			Log.e(TAG, "Failed to authenticate with Google. Error code=${exception.statusCode}")
 			loginCallback?.onFailure(exception)
 			loginCallback = null
 		}
