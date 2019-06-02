@@ -3,20 +3,24 @@ package br.com.yves.groupmatch.domain.user
 import java.lang.Exception
 
 interface UserRepository {
-	fun getUser(uid: String, callback: GetUserCallback)
+	fun createUser(user: User, callback: CreateUserCallback)
 	fun updateUser(user: User, callback: UpdateUserCallback)
+	fun userExists(userId: String, callback: UserExistsCallback)
 
-	interface GetUserCallback {
+	interface CreateUserCallback {
 		fun onSuccess(user: User)
 		fun onFailure(error: Error)
 	}
 
 	interface UpdateUserCallback {
-		fun onSuccess()
+		fun onSuccess(user: User)
 		fun onFailure(error: Error)
 	}
 
-
+	interface UserExistsCallback {
+		fun onUserExists()
+		fun onUserDoesNotExists()
+	}
 }
 
 open class GroupMatchError(

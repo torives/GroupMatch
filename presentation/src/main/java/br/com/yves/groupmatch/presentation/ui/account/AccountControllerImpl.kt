@@ -1,10 +1,8 @@
 package br.com.yves.groupmatch.presentation.ui.account
 
 import br.com.yves.groupmatch.domain.account.AuthenticationService
-import br.com.yves.groupmatch.domain.user.APIError
 import br.com.yves.groupmatch.domain.user.User
 import br.com.yves.groupmatch.domain.user.UserRepository
-import br.com.yves.groupmatch.domain.user.UserRepositoryError
 
 class AccountControllerImpl(
 		private val view: AccountView,
@@ -12,7 +10,7 @@ class AccountControllerImpl(
 		private val userRepository: UserRepository
 ) : AccountController {
 
-	private val userCallback = GetUserCallback()
+	private val createUserCallback = CreateUserCallback()
 	private val loginCallback = LoginCallback()
 
 	//region AccountController
@@ -20,8 +18,7 @@ class AccountControllerImpl(
 		view.hideProgressBar()
 
 		authService.getLoggedUser()?.let {
-			val userViewModel = UserMapper.from(it)
-			view.showSignedInLayout(userViewModel)
+			displaySignedInLayout(it)
 		} ?: view.showSignedOutLayout()
 	}
 
@@ -35,32 +32,46 @@ class AccountControllerImpl(
 	}
 	//endregion
 
-	inner class LoginCallback: AuthenticationService.LoginCallback {
+	private fun displaySignedInLayout(user: User) {
+		val userViewModel = UserMapper.from(user)
+		view.showSignedInLayout(userViewModel)
+	}
+
+
+	inner class LoginCallback : AuthenticationService.LoginCallback {
+
 		override fun onSuccess(loggedUser: User) {
-			userRepository.getUser(loggedUser.id, userCallback)
+			userRepository.userExists(loggedUser.id, object : UserRepository.UserExistsCallback {
+				override fun onUserExists() {
+					displaySignedInLayout(loggedUser)
+				}
+
+				override fun onUserDoesNotExists() {
+					userRepository.createUser(loggedUser, createUserCallback)
+				}
+			})
 		}
 
+		//TODO: handle login failure
 		override fun onFailure(exception: Exception) {
-			//TODO: handle error
 			view.showSignedOutLayout()
 		}
 
+		//TODO: handle login cancellation
 		override fun onCanceled() {
-			//TODO: log
+			view.showSignedOutLayout()
 		}
 	}
 
-	inner class GetUserCallback: UserRepository.GetUserCallback {
+	inner class CreateUserCallback : UserRepository.CreateUserCallback {
 		override fun onSuccess(user: User) {
-			val userViewModel = UserMapper.from(user)
-			view.showSignedInLayout(userViewModel)
+			displaySignedInLayout(user)
 		}
 
+		//TODO: Log failure
 		override fun onFailure(error: Error) {
-			when(error) {
-				is APIError -> {}
-				is UserRepositoryError.InexistentUser -> {}
-			}
+			authService.logoff()
+			view.showSignedOutLayout()
 		}
 	}
 
