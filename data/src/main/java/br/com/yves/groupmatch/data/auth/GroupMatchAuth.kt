@@ -86,7 +86,7 @@ class GroupMatchAuth private constructor(applicationContext: Context) : Authenti
 			val user = FirebaseUserMapper.from(task.result?.user)
 			user?.let { user ->
 
-				GroupMatchApiClient(activityContext).registerAuthorizationToken(user.uid, serverAuthCode)
+				GroupMatchApiClient(activityContext).registerAuthorizationToken(user.id, serverAuthCode)
 
 				Log.d(TAG, "Successful login with Google credentials")
 				loginCallback?.onSuccess(user)

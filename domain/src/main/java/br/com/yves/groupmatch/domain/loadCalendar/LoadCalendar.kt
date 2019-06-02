@@ -20,7 +20,7 @@ class LoadCalendar(
 		var calendar = calendarRepository.getCalendar(currentWeek)
 
 		if (calendar == null) {
-			val owner = authenticationService.getLoggedUser()?.uid
+			val owner = authenticationService.getLoggedUser()?.id
 			calendar = CalendarFactory(dateRepository).
 					create(
 					owner,
