@@ -6,7 +6,7 @@ import android.content.Intent
 import android.os.Bundle
 import java.lang.ref.WeakReference
 
-internal class GoogleAuthenticationProxyActivity : Activity() {
+internal class GoogleAuthProxyActivity : Activity() {
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
 
@@ -42,7 +42,7 @@ internal class GoogleAuthenticationProxyActivity : Activity() {
 		private var listenerRef: WeakReference<GoogleAuthenticationProxyActivityListener>? = null
 
 		fun newIntent(context: Context, authIntent: Intent): Intent {
-			return Intent(context, GoogleAuthenticationProxyActivity::class.java).apply {
+			return Intent(context, GoogleAuthProxyActivity::class.java).apply {
 				putExtra(AUTH_INTENT, authIntent)
 			}
 		}

@@ -19,7 +19,7 @@ import com.google.firebase.auth.GoogleAuthProvider
 import java.lang.ref.WeakReference
 
 
-class GroupMatchAuth private constructor(applicationContext: Context) : AuthenticationService, GoogleAuthenticationProxyActivity.GoogleAuthenticationProxyActivityListener {
+class GroupMatchAuth private constructor(applicationContext: Context) : AuthenticationService, GoogleAuthProxyActivity.GoogleAuthenticationProxyActivityListener {
 
 	private val firebaseAuth = FirebaseAuth.getInstance()
 	private var googleAuth: GoogleSignInClient
@@ -44,8 +44,8 @@ class GroupMatchAuth private constructor(applicationContext: Context) : Authenti
 		this.loginCallback = callback
 
 		val authIntent = googleAuth.signInIntent
-		val intent = GoogleAuthenticationProxyActivity.newIntent(activityContext, authIntent)
-		GoogleAuthenticationProxyActivity.addListener(this)
+		val intent = GoogleAuthProxyActivity.newIntent(activityContext, authIntent)
+		GoogleAuthProxyActivity.addListener(this)
 
 		activityContext.startActivity(intent)
 	}
