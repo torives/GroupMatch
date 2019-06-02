@@ -8,7 +8,7 @@ interface AuthenticationService {
 	fun getLoggedUser(): User?
 
 	interface LoginCallback {
-		fun onSuccess(user: User)
+		fun onSuccess(loggedUser: User)
 		fun onFailure(exception: Exception)
 		fun onCanceled()
 	}
