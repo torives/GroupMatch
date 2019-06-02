@@ -30,7 +30,7 @@ internal class GoogleAuthProxyActivity : Activity() {
 		}
 	}
 
-	interface GoogleAuthenticationProxyActivityListener {
+	interface Listener {
 		fun onSuccessfulActivityRequest(requestCode: Int, data: Intent?)
 		fun onFailedActivityRequest(requestCode: Int)
 	}
@@ -39,7 +39,7 @@ internal class GoogleAuthProxyActivity : Activity() {
 		private const val AUTH_REQUEST = 100
 		private const val AUTH_INTENT = "br.com.yves.groupmatch.authIntent"
 
-		private var listenerRef: WeakReference<GoogleAuthenticationProxyActivityListener>? = null
+		private var listenerRef: WeakReference<Listener>? = null
 
 		fun newIntent(context: Context, authIntent: Intent): Intent {
 			return Intent(context, GoogleAuthProxyActivity::class.java).apply {
@@ -47,7 +47,7 @@ internal class GoogleAuthProxyActivity : Activity() {
 			}
 		}
 
-		fun addListener(listener: GoogleAuthenticationProxyActivityListener) {
+		fun addListener(listener: Listener) {
 			listenerRef = WeakReference(listener)
 		}
 	}

@@ -19,7 +19,9 @@ import com.google.firebase.auth.GoogleAuthProvider
 import java.lang.ref.WeakReference
 
 
-class GroupMatchAuth private constructor(applicationContext: Context) : AuthenticationService, GoogleAuthProxyActivity.GoogleAuthenticationProxyActivityListener {
+class GroupMatchAuth private constructor(
+		applicationContext: Context
+) : AuthenticationService, GoogleAuthProxyActivity.Listener {
 
 	private val firebaseAuth = FirebaseAuth.getInstance()
 	private var googleAuth: GoogleSignInClient
@@ -60,7 +62,7 @@ class GroupMatchAuth private constructor(applicationContext: Context) : Authenti
 	}
 	//endregion
 
-	//region GoogleAuthenticationProxyActivityListener
+	//region Listener
 	override fun onSuccessfulActivityRequest(requestCode: Int, data: Intent?) {
 		val task = GoogleSignIn.getSignedInAccountFromIntent(data)
 		try {
