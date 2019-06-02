@@ -8,7 +8,6 @@ import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import br.com.yves.groupmatch.R
-import br.com.yves.groupmatch.data.auth.GroupMatchApiClient
 import br.com.yves.groupmatch.domain.account.AuthenticationService
 import br.com.yves.groupmatch.presentation.GroupMatchApplication
 import com.google.firebase.messaging.FirebaseMessagingService
@@ -16,7 +15,6 @@ import com.google.firebase.messaging.RemoteMessage
 
 class NotificationsService : FirebaseMessagingService() {
 
-	private lateinit var groupMatchService : GroupMatchApiClient
 	private lateinit var authService: AuthenticationService
 
 	override fun onNewToken(p0: String?) {
@@ -67,9 +65,7 @@ class NotificationsService : FirebaseMessagingService() {
 
 	//TODO: Registrar o token no servidor
 	private fun sendRegistrationToServer(token: String) {
-		authService.getLoggedUser()?.let { user ->
-			groupMatchService.updateDeviceToken(token, user.id)
-		}
+//		authService.getLoggedUser()?.let { user -> }
 	}
 
 	companion object {
