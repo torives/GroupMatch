@@ -12,7 +12,7 @@ object FirebaseUserMapper {
 					user.displayName!!,
 					user.email!!,
 					user.photoUrl?.toString(),
-					authToken?.let { mapOf(Tokens.AUTH to authToken) }
+					authToken?.let { mapOf(Tokens.auth to authToken) }
 			)
 		} else {
 			null

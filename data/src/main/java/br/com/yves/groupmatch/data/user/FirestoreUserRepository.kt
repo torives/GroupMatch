@@ -41,7 +41,7 @@ object FirestoreUserMapper {
 				"name" to user.name,
 				"email" to user.email,
 				"profileImage" to user.profileImageURL,
-				"tokens" to user.tokens
+				"tokens" to user.tokens?.mapKeys { it.key.name }
 		)
 	}
 }

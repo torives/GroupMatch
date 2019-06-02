@@ -9,5 +9,5 @@ data class User(
 )
 
 enum class Tokens {
-	AUTH, ACCESS, REFRESH, DEVICE
+	auth, access, refresh, device
 }
