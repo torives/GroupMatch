@@ -10,8 +10,8 @@ class AccountControllerImpl(
 		private val userRepository: UserRepository
 ) : AccountController {
 
-	private val createUserCallback = CreateUserCallback()
 	private val loginCallback = LoginCallback()
+	private val createUserCallback = CreateUserCallback()
 
 	//region AccountController
 	override fun onViewCreated() {
@@ -27,8 +27,7 @@ class AccountControllerImpl(
 	}
 
 	override fun onLogoutAttempt() {
-		authService.logoff()
-		view.showSignedOutLayout()
+		logoff()
 	}
 	//endregion
 
@@ -37,19 +36,16 @@ class AccountControllerImpl(
 		view.showSignedInLayout(userViewModel)
 	}
 
+	private fun logoff() {
+		authService.logoff()
+		view.showSignedOutLayout()
+	}
+
 
 	inner class LoginCallback : AuthenticationService.LoginCallback {
 
 		override fun onSuccess(loggedUser: User) {
-			userRepository.userExists(loggedUser.id, object : UserRepository.UserExistsCallback {
-				override fun onUserExists() {
-					displaySignedInLayout(loggedUser)
-				}
-
-				override fun onUserDoesNotExists() {
-					userRepository.createUser(loggedUser, createUserCallback)
-				}
-			})
+			userRepository.userExists(loggedUser.id, UserExistsCallback(loggedUser))
 		}
 
 		//TODO: handle login failure
@@ -59,6 +55,21 @@ class AccountControllerImpl(
 
 		//TODO: handle login cancellation
 		override fun onCanceled() {
+			view.showSignedOutLayout()
+		}
+	}
+
+	inner class UserExistsCallback(private val user: User): UserRepository.UserExistsCallback {
+		override fun onUserExists() {
+			displaySignedInLayout(user)
+		}
+
+		override fun onUserDoesNotExists() {
+			userRepository.createUser(user, createUserCallback)
+		}
+
+		override fun onFailure(error: Error) {
+			authService.logoff()
 			view.showSignedOutLayout()
 		}
 	}

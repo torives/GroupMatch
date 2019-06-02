@@ -20,6 +20,7 @@ interface UserRepository {
 	interface UserExistsCallback {
 		fun onUserExists()
 		fun onUserDoesNotExists()
+		fun onFailure(error: Error)
 	}
 }
 
