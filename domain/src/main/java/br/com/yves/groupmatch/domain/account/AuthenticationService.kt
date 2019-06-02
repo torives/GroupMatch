@@ -9,7 +9,7 @@ interface AuthenticationService {
 
 	interface LoginCallback {
 		fun onSuccess(loggedUser: User)
-		fun onFailure(exception: Exception)
+		fun onFailure(error: Error)
 		fun onCanceled()
 	}
 }

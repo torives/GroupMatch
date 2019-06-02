@@ -1,13 +1,31 @@
 package br.com.yves.groupmatch.presentation.ui.account
 
+import br.com.yves.groupmatch.domain.GroupMatchError
 import br.com.yves.groupmatch.domain.account.AuthenticationService
 import br.com.yves.groupmatch.domain.user.User
 import br.com.yves.groupmatch.domain.user.UserRepository
+import br.com.yves.groupmatch.presentation.ui.ErrorViewModel
+
+
+interface AccountPresenter {
+	fun format(error: Error): ErrorViewModel
+}
+
+class AccountPresenterImpl : AccountPresenter {
+	override fun format(error: Error): ErrorViewModel {
+		val gmError = error as GroupMatchError
+		return ErrorViewModel(
+				gmError.code,
+				gmError.message
+		)
+	}
+}
 
 class AccountControllerImpl(
 		private val view: AccountView,
 		private val authService: AuthenticationService,
-		private val userRepository: UserRepository
+		private val userRepository: UserRepository,
+		private val presenter: AccountPresenter
 ) : AccountController {
 
 	private val loginCallback = LoginCallback()
@@ -41,6 +59,11 @@ class AccountControllerImpl(
 		view.showLoggedOutLayout()
 	}
 
+	private fun displayError(error: Error) {
+		val errorViewModel = presenter.format(error)
+		view.showError(errorViewModel)
+	}
+
 
 	inner class LoginCallback : AuthenticationService.LoginCallback {
 
@@ -48,18 +71,16 @@ class AccountControllerImpl(
 			userRepository.userExists(loggedUser.id, UserExistsCallback(loggedUser))
 		}
 
-		//TODO: handle login failure
-		override fun onFailure(exception: Exception) {
+		override fun onFailure(error: Error) {
 			view.showLoggedOutLayout()
 		}
 
-		//TODO: handle login cancellation
 		override fun onCanceled() {
 			view.showLoggedOutLayout()
 		}
 	}
 
-	inner class UserExistsCallback(private val user: User): UserRepository.UserExistsCallback {
+	inner class UserExistsCallback(private val user: User) : UserRepository.UserExistsCallback {
 		override fun onUserExists() {
 			displaySignedInLayout(user)
 		}
@@ -69,8 +90,7 @@ class AccountControllerImpl(
 		}
 
 		override fun onFailure(error: Error) {
-			authService.logout()
-			view.showLoggedOutLayout()
+			logout()
 		}
 	}
 
@@ -81,8 +101,7 @@ class AccountControllerImpl(
 
 		//TODO: Log failure
 		override fun onFailure(error: Error) {
-			authService.logout()
-			view.showLoggedOutLayout()
+			logout()
 		}
 	}
 

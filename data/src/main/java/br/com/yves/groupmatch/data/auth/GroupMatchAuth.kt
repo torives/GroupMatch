@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.util.Log
 import br.com.yves.groupmatch.data.R
+import br.com.yves.groupmatch.domain.GroupMatchError
 import br.com.yves.groupmatch.domain.account.AuthenticationService
 import br.com.yves.groupmatch.domain.user.User
 import com.google.android.gms.auth.api.signin.GoogleSignIn
@@ -69,14 +70,17 @@ class GroupMatchAuth private constructor(
 			task.getResult(ApiException::class.java)?.let { account ->
 				firebaseLoginWithGoogle(account)
 			} ?: run {
-				val exception = GoogleAuthenticationException()
-				Log.e(TAG, "Failed to authenticate with Google. ${exception.message}")
-				loginCallback?.onFailure(exception)
+				val error = GroupMatchAuthError.GoogleAuthenticationFailed()
+
+				loginCallback?.onFailure(error)
+				Log.e(TAG, error.message)
 			}
 		} catch (exception: ApiException) {
-			Log.e(TAG, "Failed to authenticate with Google. Error code=${exception.statusCode}")
-			loginCallback?.onFailure(exception)
+			val error = GroupMatchAuthError.GoogleAuthenticationFailed(exception)
+
+			loginCallback?.onFailure(error)
 			loginCallback = null
+			Log.e(TAG, error.message, error.exception)
 		}
 	}
 
@@ -96,16 +100,14 @@ class GroupMatchAuth private constructor(
 		if (task.isSuccessful) {
 			val user = FirebaseUserMapper.from(task.result?.user, authToken)
 			user?.let { user ->
-				Log.d(TAG, "Successful login with Google credentials")
+				Log.i(TAG, "Successful login with Google credentials")
 				loginCallback?.onSuccess(user)
-			} ?: run {
-				Log.w(TAG, "Failed to login with Google credentials", task.exception)
-				loginCallback?.onFailure(LoginException())
 			}
 		} else {
-			Log.w(TAG, "Failed to login with Google credentials", task.exception)
-			loginCallback?.onFailure(task.exception
-					?: Exception("Failed to login with Google credentials"))
+			val error = GroupMatchAuthError.FirebaseLoginFailed(task.exception)
+
+			loginCallback?.onFailure(error)
+			Log.e(TAG, error.message, task.exception)
 		}
 		loginCallback = null
 	}
@@ -123,9 +125,13 @@ class GroupMatchAuth private constructor(
 		}
 	}
 
-	class LoginException : Exception("Failed to obtain user")
-	class GoogleAuthenticationException : Exception("Failed to obtain Google account")
 	class InitializationException : Exception(
 			"GroupMatchAuth was not initialized properly. You must call configure() passing an Activity before using this class methods"
 	)
+}
+
+
+sealed class GroupMatchAuthError {
+	class GoogleAuthenticationFailed(exception: Exception? = null) : GroupMatchError(1, "Failed to authenticate with Google", exception)
+	class FirebaseLoginFailed(exception: Exception? = null): GroupMatchError(1, "Failed to authenticate with Google", exception)
 }
