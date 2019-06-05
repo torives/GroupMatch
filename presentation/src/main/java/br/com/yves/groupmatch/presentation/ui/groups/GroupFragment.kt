@@ -45,6 +45,13 @@ class GroupFragment : Fragment(),
 		inflater.inflate(R.menu.group_menu, menu)
 		super.onCreateOptionsMenu(menu, inflater)
 	}
+
+	override fun onOptionsItemSelected(item: MenuItem): Boolean {
+		when(item.itemId) {
+			R.id.group_menu_newGroup_action -> runOnBackground { controller.onGroupCreationAttempt() }
+		}
+		return super.onOptionsItemSelected(item)
+	}
 	//endregion
 
 	private fun setupRecyclerView() {
