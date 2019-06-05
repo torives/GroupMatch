@@ -7,10 +7,7 @@ import br.com.yves.groupmatch.data.R
 import br.com.yves.groupmatch.domain.GroupMatchError
 import br.com.yves.groupmatch.domain.account.AuthenticationService
 import br.com.yves.groupmatch.domain.user.User
-import com.google.android.gms.auth.api.signin.GoogleSignIn
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount
-import com.google.android.gms.auth.api.signin.GoogleSignInClient
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.android.gms.auth.api.signin.*
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.common.api.Scope
 import com.google.android.gms.tasks.Task
@@ -76,17 +73,17 @@ class GroupMatchAuth private constructor(
 				Log.e(TAG, error.message)
 			}
 		} catch (exception: ApiException) {
-			val error = GroupMatchAuthError.GoogleAuthenticationFailed(exception)
-
-			loginCallback?.onFailure(error)
-			loginCallback = null
-			Log.e(TAG, error.message, error.exception)
+			if (exception.statusCode == GoogleSignInStatusCodes.SIGN_IN_CANCELLED) {
+				loginCallback?.onCanceled()
+				loginCallback = null
+				Log.i(TAG, "Google SignIn cancelled")
+			} else {
+				val error = GroupMatchAuthError.GoogleAuthenticationFailed(exception)
+				loginCallback?.onFailure(error)
+				loginCallback = null
+				Log.e(TAG, error.message, error.exception)
+			}
 		}
-	}
-
-	override fun onFailedActivityRequest(requestCode: Int) {
-		loginCallback?.onCanceled()
-		loginCallback = null
 	}
 	//endregion
 
@@ -133,5 +130,5 @@ class GroupMatchAuth private constructor(
 
 sealed class GroupMatchAuthError {
 	class GoogleAuthenticationFailed(exception: Exception? = null) : GroupMatchError(1, "Failed to authenticate with Google", exception)
-	class FirebaseLoginFailed(exception: Exception? = null): GroupMatchError(1, "Failed to authenticate with Google", exception)
+	class FirebaseLoginFailed(exception: Exception? = null) : GroupMatchError(2, "Failed to authenticate with Google", exception)
 }

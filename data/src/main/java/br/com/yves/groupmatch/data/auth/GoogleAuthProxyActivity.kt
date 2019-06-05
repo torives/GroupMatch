@@ -17,22 +17,15 @@ internal class GoogleAuthProxyActivity : Activity() {
 	override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
 		super.onActivityResult(requestCode, resultCode, data)
 
-		if (requestCode == AUTH_REQUEST && resultCode == RESULT_OK) {
-			data?.let {
-				listenerRef?.get()?.onSuccessfulActivityRequest(requestCode, data)
-			} ?: listenerRef?.get()?.onFailedActivityRequest(requestCode)
-			listenerRef = null
-			finish()
-		} else if (resultCode == RESULT_CANCELED) {
-			listenerRef?.get()?.onFailedActivityRequest(requestCode)
-			listenerRef = null
-			finish()
+		if (requestCode == AUTH_REQUEST) {
+			listenerRef?.get()?.onSuccessfulActivityRequest(requestCode, data)
 		}
+		listenerRef = null
+		finish()
 	}
 
 	interface Listener {
 		fun onSuccessfulActivityRequest(requestCode: Int, data: Intent?)
-		fun onFailedActivityRequest(requestCode: Int)
 	}
 
 	companion object {
