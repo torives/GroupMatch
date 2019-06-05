@@ -7,6 +7,10 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="AppTheme.ActionBar" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
+        <item name="android:background">?attr/colorPrimary</item>
+    </style>
+
     <style name="GroupTitleTextAppearance">
         <item name="android:textColor">@android:color/black</item>
         <item name="android:textSize">16sp</item>
