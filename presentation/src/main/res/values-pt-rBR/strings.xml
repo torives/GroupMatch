@@ -42,5 +42,6 @@
 
     <!--region Group Details-->
     <string name="group_details_membersTitle">Membros</string>
+    <string name="group_menu_newGroup">Novo grupo</string>
     <!--endregion-->
 </resources>

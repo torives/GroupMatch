@@ -39,6 +39,7 @@
 
     <!--region Group Fragment-->
     <string name="fragment_group_loggedOutText">Log in to be able to see your groups</string>
+    <string name="group_menu_newGroup">New group</string>
     <!--endregion-->
 
     <!--region Group Details-->

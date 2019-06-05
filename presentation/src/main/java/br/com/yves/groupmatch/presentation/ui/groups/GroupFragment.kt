@@ -2,11 +2,9 @@ package br.com.yves.groupmatch.presentation.ui.groups
 
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
+import android.view.*
 import android.view.View.GONE
 import android.view.View.VISIBLE
-import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -26,8 +24,10 @@ class GroupFragment : Fragment(),
 	private val controller = GroupInjection().make(this)
 	private lateinit var groupAdapter: GroupAdapter
 
+	//region Lifecycle
 	override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
 	                          savedInstanceState: Bundle?): View? {
+		setHasOptionsMenu(true)
 		return inflater.inflate(R.layout.fragment_groups, container, false)
 	}
 
@@ -40,6 +40,12 @@ class GroupFragment : Fragment(),
 			controller.onViewCreated()
 		}
 	}
+
+	override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+		inflater.inflate(R.menu.group_menu, menu)
+		super.onCreateOptionsMenu(menu, inflater)
+	}
+	//endregion
 
 	private fun setupRecyclerView() {
 		groupAdapter = GroupAdapter(null, Glide.with(this), this)
