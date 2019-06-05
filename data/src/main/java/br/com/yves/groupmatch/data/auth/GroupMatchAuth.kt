@@ -56,7 +56,7 @@ class GroupMatchAuth private constructor(
 	}
 
 	override fun getLoggedInUser(): User? {
-		return FirebaseUserMapper.from(firebaseAuth.currentUser)
+		return firebaseAuth.currentUser?.let { FirebaseUserMapper.from(it) }
 	}
 	//endregion
 
@@ -94,8 +94,8 @@ class GroupMatchAuth private constructor(
 	}
 
 	private fun handleFirebaseLogin(task: Task<AuthResult>, authToken: String) {
-		if (task.isSuccessful) {
-			val user = FirebaseUserMapper.from(task.result?.user, authToken)
+		if (task.isSuccessful && task.result?.user != null) {
+			val user = FirebaseUserMapper.from(task.result!!.user, authToken)
 			user?.let { user ->
 				Log.i(TAG, "Successful login with Google credentials")
 				loginCallback?.onSuccess(user)

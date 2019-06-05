@@ -5,7 +5,7 @@ data class User(
 		val name: String,
 		val email: String,
 		val profileImageURL: String? = null,
-		val tokens: Map<Tokens, String>? = null
+		val tokens: MutableMap<Tokens, String> = mutableMapOf()
 )
 
 enum class Tokens {

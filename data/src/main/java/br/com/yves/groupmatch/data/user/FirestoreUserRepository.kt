@@ -4,6 +4,7 @@ import br.com.yves.groupmatch.domain.user.User
 import br.com.yves.groupmatch.domain.user.UserRepository
 import br.com.yves.groupmatch.domain.user.UserRepositoryError
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.SetOptions
 
 class FirestoreUserRepository : UserRepository {
 	private val firestore get() = FirebaseFirestore.getInstance()
@@ -18,8 +19,8 @@ class FirestoreUserRepository : UserRepository {
 				}
 	}
 
-	override fun updateUser(user: User, callback: UserRepository.UpdateUserCallback) {
-		firestore.collection(USERS_COLLECTION).document(user.id).set(user)
+	override fun updateUser(user: User) {
+		firestore.collection(USERS_COLLECTION).document(user.id).set(user, SetOptions.merge())
 	}
 
 	override fun userExists(userId: String, callback: UserRepository.UserExistsCallback) {

@@ -5,14 +5,14 @@ import br.com.yves.groupmatch.domain.user.User
 import com.google.firebase.auth.FirebaseUser
 
 object FirebaseUserMapper {
-	fun from(user: FirebaseUser?, authToken: String? = null): User? {
-		return if (user?.displayName != null && user.email != null) {
+	fun from(user: FirebaseUser, authToken: String? = null): User? {
+		return if (user.displayName != null && user.email != null) {
 			User(
 					user.uid,
 					user.displayName!!,
 					user.email!!,
 					user.photoUrl?.toString(),
-					authToken?.let { mapOf(Tokens.auth to authToken) }
+					authToken?.let { mutableMapOf(Tokens.auth to authToken) } ?: mutableMapOf()
 			)
 		} else {
 			null

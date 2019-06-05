@@ -2,9 +2,11 @@ package br.com.yves.groupmatch.presentation.ui.account
 
 import br.com.yves.groupmatch.domain.GroupMatchError
 import br.com.yves.groupmatch.domain.account.AuthenticationService
+import br.com.yves.groupmatch.domain.user.Tokens
 import br.com.yves.groupmatch.domain.user.User
 import br.com.yves.groupmatch.domain.user.UserRepository
 import br.com.yves.groupmatch.presentation.ui.ErrorViewModel
+import com.google.firebase.iid.FirebaseInstanceId
 
 
 interface AccountPresenter {
@@ -86,7 +88,12 @@ class AccountControllerImpl(
 		}
 
 		override fun onUserDoesNotExists() {
-			userRepository.createUser(user, createUserCallback)
+			FirebaseInstanceId.getInstance().instanceId.addOnSuccessListener {
+				user.tokens[Tokens.device] = it.token
+				userRepository.createUser(user, createUserCallback)
+			}.addOnFailureListener {
+				logout()
+			}
 		}
 
 		override fun onFailure(error: Error) {
