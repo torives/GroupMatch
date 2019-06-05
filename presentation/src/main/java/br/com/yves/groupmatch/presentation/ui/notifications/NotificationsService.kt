@@ -8,11 +8,19 @@ import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import br.com.yves.groupmatch.R
+import br.com.yves.groupmatch.data.auth.GroupMatchAuth
+import br.com.yves.groupmatch.data.user.FirestoreUserRepository
+import br.com.yves.groupmatch.domain.account.AuthenticationService
+import br.com.yves.groupmatch.domain.user.Tokens
+import br.com.yves.groupmatch.domain.user.UserRepository
 import br.com.yves.groupmatch.presentation.GroupMatchApplication
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 
 class NotificationsService : FirebaseMessagingService() {
+
+	private val authService: AuthenticationService = GroupMatchAuth.instance
+	private val userRepository: UserRepository = FirestoreUserRepository()
 
 	override fun onNewToken(p0: String?) {
 		super.onNewToken(p0)
@@ -60,9 +68,11 @@ class NotificationsService : FirebaseMessagingService() {
 		}
 	}
 
-	//TODO: Registrar o token no servidor
 	private fun sendRegistrationToServer(token: String) {
-
+		authService.getLoggedInUser()?.let { user ->
+			user.tokens[Tokens.device] = token
+			userRepository.updateUser(user)
+		}
 	}
 
 	companion object {

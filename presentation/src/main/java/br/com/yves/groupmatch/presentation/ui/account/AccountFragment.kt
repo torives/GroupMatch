@@ -9,12 +9,14 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
+import android.widget.Toast
 import androidx.annotation.LayoutRes
 import androidx.fragment.app.Fragment
 import br.com.yves.groupmatch.R
 import br.com.yves.groupmatch.presentation.factory.account.AccountControllerFactory
 import br.com.yves.groupmatch.presentation.runOnBackground
 import br.com.yves.groupmatch.presentation.runOnUiThread
+import br.com.yves.groupmatch.presentation.ui.ErrorViewModel
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.google.android.gms.common.SignInButton
@@ -58,10 +60,14 @@ class AccountFragment : Fragment(), AccountView {
 		setLogoutButtonOnClickListener()
 	}
 
-	override fun showSignedOutLayout() = runOnUiThread {
+	override fun showLoggedOutLayout() = runOnUiThread {
 		account_content.removeAllViews()
 		inflateLayout(R.layout.layout_account_signedout)
 		setLoginButtonOnClickListener()
+	}
+
+	override fun showError(error: ErrorViewModel) = runOnUiThread {
+		Toast.makeText(context, error.message, Toast.LENGTH_SHORT).show()
 	}
 	//endregion
 
