@@ -90,5 +90,5 @@
             tools:layout="@layout/fragment_matchresult_list" />
     </navigation>
     <fragment android:id="@+id/newGroupFragment" android:name="br.com.yves.groupmatch.debug.NewGroupFragment"
-              android:label="fragment_new_group" tools:layout="@layout/fragment_new_group"/>
+              android:label="@string/navigation_graph_labels_newGroupFragment" tools:layout="@layout/fragment_new_group"/>
 </navigation>
