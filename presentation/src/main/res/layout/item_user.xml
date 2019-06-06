@@ -18,7 +18,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/item_group_members"
+        android:id="@+id/item_user_email"
         style="@style/GroupMembersTextAppearance"
         android:layout_width="0dp"
         android:layout_height="wrap_content"

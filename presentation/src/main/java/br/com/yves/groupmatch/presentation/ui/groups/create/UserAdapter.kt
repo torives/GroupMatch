@@ -2,12 +2,17 @@ package br.com.yves.groupmatch.presentation.ui.groups.create
 
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.GONE
+import android.view.View.VISIBLE
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import br.com.yves.groupmatch.R
+import com.bumptech.glide.RequestManager
 import kotlinx.android.extensions.LayoutContainer
+import kotlinx.android.synthetic.main.item_user.view.*
 
 class UserAdapter(
+		private val glide: RequestManager,
 		private var items: List<UserViewModel> = listOf()
 ) : RecyclerView.Adapter<UserAdapter.UserViewHolder>() {
 
@@ -37,7 +42,10 @@ class UserAdapter(
 			get() = itemView
 
 		fun bind(item: UserViewModel) {
-
+			itemView.item_user_name.text = item.name
+			itemView.item_user_email.text = item.email
+			glide.load(item.profileImageURL).into(itemView.item_user_image)
+			itemView.item_user_check.visibility = if(item.isSelected) VISIBLE else GONE
 		}
 	}
 }
