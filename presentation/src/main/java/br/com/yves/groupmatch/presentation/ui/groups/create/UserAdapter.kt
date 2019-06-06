@@ -1,73 +1,43 @@
 package br.com.yves.groupmatch.presentation.ui.groups.create
 
+import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import br.com.yves.groupmatch.R
 import kotlinx.android.extensions.LayoutContainer
 
 class UserAdapter(
-		private var items: List<UserViewModel> = listOf(),
-		private val listener: Listener
-) : RecyclerView.Adapter<UserAdapter.UserListViewHolder>() {
-
-	private var selectedUsers = mutableListOf<UserListItem.User>()
-	private var users = mutableListOf<UserListItem.User>()
+		private var items: List<UserViewModel> = listOf()
+) : RecyclerView.Adapter<UserAdapter.UserViewHolder>() {
 
 	//region RecyclerView.Adapter
-	override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UserListViewHolder {
-		TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-	}
-
-	override fun getItemViewType(position: Int): Int {
-		return if(position == 0) {
-			if(selectedUsers.isEmpty()) {
-
-			}
-			UserListItem.Header.type
-		} else {
-			return 0
-		}
+	override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UserViewHolder {
+		val view = LayoutInflater.from(parent.context).inflate(R.layout.item_user, parent, false)
+		return UserViewHolder(view)
 	}
 
 	override fun getItemCount(): Int {
-		return if(selectedUsers.isEmpty()) {
-			users.size + 1
-		} else {
-			selectedUsers.size + users.size + 2
-		}
+		return items.size
 	}
 
-	override fun onBindViewHolder(holder: UserListViewHolder, position: Int) {
-		TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+	override fun onBindViewHolder(holder: UserViewHolder, position: Int) {
+		getUserAt(position)?.let {
+			holder.bind(it)
+		}
 	}
 	//endregion
 
-	interface Listener {
-		fun onItemSelected(item: UserListItem)
+	private fun getUserAt(position: Int): UserViewModel? {
+		return items.getOrNull(position)
 	}
 
-	abstract inner class UserListViewHolder(view: View) : RecyclerView.ViewHolder(view), LayoutContainer {
+	inner class UserViewHolder(view: View) : RecyclerView.ViewHolder(view), LayoutContainer {
 		override val containerView: View?
 			get() = itemView
 
-		abstract fun bind(item: UserListItem)
-	}
-}
+		fun bind(item: UserViewModel) {
 
-
-sealed class UserListItem(val type: Int) {
-	data class Header(val title: String) : UserListItem(type) {
-		companion object {
-			const val type = 1
-		}
-	}
-
-	data class User(
-			val viewModel: UserViewModel,
-			var isSelected: Boolean
-	) : UserListItem(type) {
-		companion object {
-			const val type = 2
 		}
 	}
 }
