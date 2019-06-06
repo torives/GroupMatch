@@ -8,13 +8,18 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import br.com.yves.groupmatch.R
+import br.com.yves.groupmatch.data.user.FirestoreUserRepository
 import br.com.yves.groupmatch.domain.user.User
 import br.com.yves.groupmatch.domain.user.UserRepository
+import br.com.yves.groupmatch.presentation.runOnBackground
+import br.com.yves.groupmatch.presentation.runOnUiThread
 import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.fragment_new_group.*
 import java.lang.ref.WeakReference
 
-interface NewGroupView
+interface NewGroupView {
+	fun displayUsers(users: List<UserViewModel>)
+}
 
 class NewGroupController(
 		view: NewGroupView,
@@ -30,7 +35,7 @@ class NewGroupController(
 	fun onUserSelected(user: UserViewModel) {}
 }
 
-class NewGroupFragment : Fragment(), UserAdapter.Listener {
+class NewGroupFragment : Fragment(), NewGroupView, UserAdapter.Listener {
 
 	private lateinit var adapter: UserAdapter
 	private lateinit var controller: NewGroupController
@@ -46,31 +51,25 @@ class NewGroupFragment : Fragment(), UserAdapter.Listener {
 		super.onViewCreated(view, savedInstanceState)
 
 
-		controller = NewGroupController()
+		controller = NewGroupController(this, FirestoreUserRepository())
 
-		val viewModels = listOf(
-				UserViewModel("Fulaninho de Tal", "fulaninho@gmail.com", false, "https://i.redd.it/4fz0ct0l7mo11.jpg"),
-				UserViewModel("Fulaninho de Tal", "fulaninho@gmail.com", false, "https://i.redd.it/4fz0ct0l7mo11.jpg"),
-				UserViewModel("Fulaninho de Tal", "fulaninho@gmail.com", false, "https://i.redd.it/4fz0ct0l7mo11.jpg"),
-				UserViewModel("Fulaninho de Tal", "fulaninho@gmail.com", false, "https://i.redd.it/4fz0ct0l7mo11.jpg"),
-				UserViewModel("Fulaninho de Tal", "fulaninho@gmail.com", false, "https://i.redd.it/4fz0ct0l7mo11.jpg"),
-				UserViewModel("Fulaninho de Tal", "fulaninho@gmail.com", false, "https://i.redd.it/4fz0ct0l7mo11.jpg"),
-				UserViewModel("Fulaninho de Tal", "fulaninho@gmail.com", false, "https://i.redd.it/4fz0ct0l7mo11.jpg"),
-				UserViewModel("Fulaninho de Tal", "fulaninho@gmail.com", false, "https://i.redd.it/4fz0ct0l7mo11.jpg"),
-				UserViewModel("Fulaninho de Tal", "fulaninho@gmail.com", false, "https://i.redd.it/4fz0ct0l7mo11.jpg"),
-				UserViewModel("Fulaninho de Tal", "fulaninho@gmail.com", false, "https://i.redd.it/4fz0ct0l7mo11.jpg")
-		)
-
-		adapter = UserAdapter(Glide.with(this), viewModels, this)
+		adapter = UserAdapter(Glide.with(this), listener = this)
 		new_group_userRecyclerView.layoutManager = LinearLayoutManager(context)
 		new_group_userRecyclerView.adapter = adapter
 	}
 	//endregion
 
+	//region NewGroupView
+	override fun displayUsers(users: List<UserViewModel>) = runOnUiThread {
+		adapter.update(users)
+	}
+	//endregion
+
 	//region UserAdapter.Listener
 	override fun onUserSelected(user: UserViewModel) {
-		user.isSelected = !user.isSelected
-		adapter.notifyDataSetChanged()
+		runOnBackground {
+			controller.onUserSelected(user)
+		}
 	}
 	//endregion
 

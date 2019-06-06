@@ -39,6 +39,11 @@ class UserAdapter(
 		return items.getOrNull(position)
 	}
 
+	fun update(users: List<UserViewModel>) {
+		items = users
+		notifyDataSetChanged()
+	}
+
 	interface Listener {
 		fun onUserSelected(user: UserViewModel)
 	}
