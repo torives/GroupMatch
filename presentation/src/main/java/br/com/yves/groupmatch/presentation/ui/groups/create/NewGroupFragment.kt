@@ -9,85 +9,10 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import br.com.yves.groupmatch.R
 import br.com.yves.groupmatch.data.user.FirestoreUserRepository
-import br.com.yves.groupmatch.domain.user.User
-import br.com.yves.groupmatch.domain.user.UserRepository
 import br.com.yves.groupmatch.presentation.runOnBackground
 import br.com.yves.groupmatch.presentation.runOnUiThread
 import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.fragment_new_group.*
-import java.lang.ref.WeakReference
-
-interface NewGroupView {
-	fun displayUsers(users: List<UserViewModel>)
-	fun displayNextButton()
-	fun hideNextButton()
-}
-
-interface UserPresenter {
-	fun format(user: User): UserViewModel
-}
-
-class UserPresenterImpl : UserPresenter {
-	override fun format(user: User) = UserViewModel(
-			user.name,
-			user.email,
-			false,
-			user.profileImageURL
-	)
-}
-
-class NewGroupController(
-		view: NewGroupView,
-		private val repository: UserRepository,
-		private val presenter: UserPresenter
-) : UserRepository.GetAllUsersCallback {
-
-	private val selectedUsers = mutableSetOf<UserViewModel>()
-	private lateinit var users: List<UserViewModel>
-	private val viewRef = WeakReference(view)
-	private val view: NewGroupView?
-		get() = viewRef.get()
-
-	fun onViewCreated() {
-		repository.getAllUsers(this)
-	}
-
-	fun onUserSelected(user: UserViewModel) {
-		if (user.isSelected) {
-			select(user)
-		} else {
-			deselect(user)
-		}
-		view?.displayUsers(this.users)
-	}
-
-	private fun select(user: UserViewModel) {
-		user.isSelected = true
-
-		selectedUsers.add(user)
-		view?.displayNextButton()
-	}
-
-	private fun deselect(user: UserViewModel) {
-		user.isSelected = false
-		selectedUsers.remove(user)
-
-		if (selectedUsers.isEmpty()) {
-			view?.hideNextButton()
-		}
-	}
-
-	//region GetAllUsersCallback
-	override fun onSuccess(users: List<User>) {
-		this.users = users.map { presenter.format(it) }
-		view?.displayUsers(this.users)
-	}
-
-	override fun onFailure(error: Error) {
-		TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-	}
-	//endregion
-}
 
 class NewGroupFragment : Fragment(), NewGroupView, UserAdapter.Listener {
 

@@ -20,6 +20,7 @@ class FirestoreUserRepository : UserRepository {
 
 					callback.onSuccess(users)
 				}.addOnFailureListener {
+					//TODO: Corrigir tipo de erro
 					callback.onFailure(UserRepositoryError.UserCreationFailed(it))
 				}
 	}
