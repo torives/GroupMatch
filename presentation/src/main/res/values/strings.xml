@@ -11,7 +11,7 @@
     <string name="navigation_graph_labels_groupsFragment">Groups</string>
     <string name="navigation_graph_labels_calendarFragment">Calendar</string>
     <string name="navigation_graph_labels_accountFragment">Account</string>
- 	<string name="navigation_graph_labels_searchFragment">Search</string>
+    <string name="navigation_graph_labels_searchFragment">Search</string>
     <string name="navigation_graph_labels_groupDetailFragment">Group Details</string>
     <!--endregion-->
 

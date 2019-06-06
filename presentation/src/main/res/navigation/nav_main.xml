@@ -23,6 +23,7 @@
         <action
             android:id="@+id/action_groupsFragment_to_groupDetailFragment"
             app:destination="@id/groupDetailFragment" />
+        <action android:id="@+id/action_groupsFragment_to_newGroupFragment" app:destination="@id/newGroupFragment"/>
     </fragment>
     <fragment
         android:id="@+id/groupDetailFragment"
@@ -88,4 +89,6 @@
             android:label="fragment_matchresult_list"
             tools:layout="@layout/fragment_matchresult_list" />
     </navigation>
+    <fragment android:id="@+id/newGroupFragment" android:name="br.com.yves.groupmatch.debug.NewGroupFragment"
+              android:label="fragment_new_group" tools:layout="@layout/fragment_new_group"/>
 </navigation>
