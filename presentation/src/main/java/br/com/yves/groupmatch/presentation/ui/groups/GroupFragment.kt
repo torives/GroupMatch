@@ -81,6 +81,10 @@ class GroupFragment : Fragment(),
 		val action = GroupFragmentDirections.actionGroupsFragmentToGroupDetailFragment(details)
 		findNavController().navigate(action)
 	}
+
+	override fun navigateToNewGroup() = runOnUiThread {
+		findNavController().navigate(R.id.newGroupFragment)
+	}
 	//endregion
 
 	//region GroupAdapter.SelectionListener
