@@ -22,12 +22,14 @@
         style="@style/GroupMembersTextAppearance"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginRight="8dp"
+        android:layout_marginEnd="8dp"
 
         android:ellipsize="end"
         android:maxLines="1"
 
         app:layout_constraintBottom_toBottomOf="@id/item_user_image"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/item_user_check"
         app:layout_constraintStart_toStartOf="@id/item_user_name"
         app:layout_constraintTop_toBottomOf="@id/item_user_name"
         tools:text="fulanodetal@gmail.com" />
@@ -38,13 +40,26 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginEnd="8dp"
 
         android:ellipsize="end"
         android:maxLines="1"
 
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/item_user_check"
         app:layout_constraintStart_toEndOf="@id/item_user_image"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="Fulano de Tal" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/item_user_check"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+
+        android:src="@drawable/ic_check_circle"
+
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout >
