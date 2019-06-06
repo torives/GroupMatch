@@ -14,7 +14,8 @@ import kotlinx.android.synthetic.main.item_user.view.*
 
 class UserAdapter(
 		private val glide: RequestManager,
-		private var items: List<UserViewModel> = listOf()
+		private var items: List<UserViewModel> = listOf(),
+		private val listener: Listener
 ) : RecyclerView.Adapter<UserAdapter.UserViewHolder>() {
 
 	//region RecyclerView.Adapter
@@ -38,11 +39,8 @@ class UserAdapter(
 		return items.getOrNull(position)
 	}
 
-	private fun onUserSelected(user: UserViewModel) {
-		user.isSelected = !user.isSelected
-
-		val index = items.indexOf(user)
-		notifyItemChanged(index)
+	interface Listener {
+		fun onUserSelected(user: UserViewModel)
 	}
 
 	inner class UserViewHolder(view: View) : RecyclerView.ViewHolder(view), LayoutContainer {
@@ -57,7 +55,7 @@ class UserAdapter(
 					.into(itemView.item_user_image)
 			itemView.item_user_check.visibility = if (item.isSelected) VISIBLE else GONE
 
-			itemView.setOnClickListener { onUserSelected(item) }
+			itemView.setOnClickListener { listener.onUserSelected(item) }
 		}
 	}
 }
