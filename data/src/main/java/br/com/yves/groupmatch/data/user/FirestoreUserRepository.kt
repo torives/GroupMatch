@@ -9,6 +9,18 @@ import com.google.firebase.firestore.SetOptions
 class FirestoreUserRepository : UserRepository {
 	private val firestore get() = FirebaseFirestore.getInstance()
 
+	override fun getAllUsers(callback: UserRepository.GetAllUsersCallback) {
+		firestore.collection(USERS_COLLECTION).orderBy("name").get()
+				.addOnSuccessListener { query ->
+					val userDocs = query.documents
+					val users = userDocs.mapNotNull { it.toObject(User::class.java) }
+
+					callback.onSuccess(users)
+				}.addOnFailureListener {
+					callback.onFailure(UserRepositoryError.UserCreationFailed(it))
+				}
+	}
+
 	override fun createUser(user: User, callback: UserRepository.CreateUserCallback) {
 		val userData = FirestoreUserMapper.from(user)
 		firestore.collection(USERS_COLLECTION).document(user.id).set(userData)
