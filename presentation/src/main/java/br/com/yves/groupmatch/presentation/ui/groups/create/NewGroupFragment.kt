@@ -60,6 +60,7 @@ class NewGroupController(
 
 	private fun select(user: UserViewModel) {
 		user.isSelected = true
+
 		selectedUsers.add(user)
 		view?.displayNextButton()
 	}
