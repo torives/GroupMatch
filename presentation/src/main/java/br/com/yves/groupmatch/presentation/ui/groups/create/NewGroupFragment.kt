@@ -27,11 +27,13 @@ interface UserPresenter {
 	fun format(user: User): UserViewModel
 }
 
-class UserPresenterImpl: UserPresenter {
-	override fun format(user: User): UserViewModel {
-		TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-	}
-
+class UserPresenterImpl : UserPresenter {
+	override fun format(user: User) = UserViewModel(
+			user.name,
+			user.email,
+			false,
+			user.profileImageURL
+	)
 }
 
 class NewGroupController(
@@ -49,8 +51,9 @@ class NewGroupController(
 	fun onViewCreated() {
 		repository.getAllUsers(this)
 	}
+
 	fun onUserSelected(user: UserViewModel) {
-		if(user.isSelected) {
+		if (user.isSelected) {
 			select(user)
 		} else {
 			deselect(user)
@@ -69,7 +72,7 @@ class NewGroupController(
 		user.isSelected = false
 		selectedUsers.remove(user)
 
-		if(selectedUsers.isEmpty()) {
+		if (selectedUsers.isEmpty()) {
 			view?.hideNextButton()
 		}
 	}
@@ -94,7 +97,6 @@ class NewGroupFragment : Fragment(), NewGroupView, UserAdapter.Listener {
 	//region Lifecycle
 	override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
 	                          savedInstanceState: Bundle?): View? {
-		// Inflate the layout for this fragment
 		return inflater.inflate(R.layout.fragment_new_group, container, false)
 	}
 
@@ -107,6 +109,10 @@ class NewGroupFragment : Fragment(), NewGroupView, UserAdapter.Listener {
 		adapter = UserAdapter(Glide.with(this), listener = this)
 		new_group_userRecyclerView.layoutManager = LinearLayoutManager(context)
 		new_group_userRecyclerView.adapter = adapter
+
+		runOnBackground {
+			controller.onViewCreated()
+		}
 	}
 	//endregion
 
@@ -115,12 +121,12 @@ class NewGroupFragment : Fragment(), NewGroupView, UserAdapter.Listener {
 		adapter.update(users)
 	}
 
-	override fun displayNextButton() {
-		TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+	override fun displayNextButton() = runOnUiThread {
+		new_group_nextButton.show()
 	}
 
-	override fun hideNextButton() {
-		TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+	override fun hideNextButton() = runOnUiThread {
+		new_group_nextButton.hide()
 	}
 	//endregion
 

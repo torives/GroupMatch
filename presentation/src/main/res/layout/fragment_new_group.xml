@@ -19,7 +19,7 @@
         tools:listitem="@layout/item_user" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/item_user_nextButton"
+        android:id="@+id/new_group_nextButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
