@@ -23,7 +23,20 @@ class NewGroupFragment : Fragment() {
 	override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 		super.onViewCreated(view, savedInstanceState)
 
-		val adapter = UserAdapter(Glide.with(this))
+		val viewModels = listOf(
+				UserViewModel("Fulaninho de Tal", "fulaninho@gmail.com", false, "https://i.redd.it/4fz0ct0l7mo11.jpg"),
+				UserViewModel("Fulaninho de Tal", "fulaninho@gmail.com", false, "https://i.redd.it/4fz0ct0l7mo11.jpg"),
+				UserViewModel("Fulaninho de Tal", "fulaninho@gmail.com", false, "https://i.redd.it/4fz0ct0l7mo11.jpg"),
+				UserViewModel("Fulaninho de Tal", "fulaninho@gmail.com", false, "https://i.redd.it/4fz0ct0l7mo11.jpg"),
+				UserViewModel("Fulaninho de Tal", "fulaninho@gmail.com", false, "https://i.redd.it/4fz0ct0l7mo11.jpg"),
+				UserViewModel("Fulaninho de Tal", "fulaninho@gmail.com", false, "https://i.redd.it/4fz0ct0l7mo11.jpg"),
+				UserViewModel("Fulaninho de Tal", "fulaninho@gmail.com", false, "https://i.redd.it/4fz0ct0l7mo11.jpg"),
+				UserViewModel("Fulaninho de Tal", "fulaninho@gmail.com", false, "https://i.redd.it/4fz0ct0l7mo11.jpg"),
+				UserViewModel("Fulaninho de Tal", "fulaninho@gmail.com", false, "https://i.redd.it/4fz0ct0l7mo11.jpg"),
+				UserViewModel("Fulaninho de Tal", "fulaninho@gmail.com", false, "https://i.redd.it/4fz0ct0l7mo11.jpg")
+		)
+
+		val adapter = UserAdapter(Glide.with(this), viewModels)
 		new_group_userRecyclerView.layoutManager = LinearLayoutManager(context)
 		new_group_userRecyclerView.adapter = adapter
 	}

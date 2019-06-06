@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import br.com.yves.groupmatch.R
 import com.bumptech.glide.RequestManager
+import com.bumptech.glide.request.RequestOptions
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.item_user.view.*
 
@@ -44,7 +45,9 @@ class UserAdapter(
 		fun bind(item: UserViewModel) {
 			itemView.item_user_name.text = item.name
 			itemView.item_user_email.text = item.email
-			glide.load(item.profileImageURL).into(itemView.item_user_image)
+			glide.load(item.profileImageURL)
+					.apply(RequestOptions.circleCropTransform())
+					.into(itemView.item_user_image)
 			itemView.item_user_check.visibility = if(item.isSelected) VISIBLE else GONE
 		}
 	}
