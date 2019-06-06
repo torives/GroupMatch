@@ -38,6 +38,13 @@ class UserAdapter(
 		return items.getOrNull(position)
 	}
 
+	private fun onUserSelected(user: UserViewModel) {
+		user.isSelected = !user.isSelected
+
+		val index = items.indexOf(user)
+		notifyItemChanged(index)
+	}
+
 	inner class UserViewHolder(view: View) : RecyclerView.ViewHolder(view), LayoutContainer {
 		override val containerView: View?
 			get() = itemView
@@ -48,7 +55,9 @@ class UserAdapter(
 			glide.load(item.profileImageURL)
 					.apply(RequestOptions.circleCropTransform())
 					.into(itemView.item_user_image)
-			itemView.item_user_check.visibility = if(item.isSelected) VISIBLE else GONE
+			itemView.item_user_check.visibility = if (item.isSelected) VISIBLE else GONE
+
+			itemView.setOnClickListener { onUserSelected(item) }
 		}
 	}
 }
