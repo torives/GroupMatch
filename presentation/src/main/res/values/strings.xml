@@ -55,5 +55,7 @@
     <!--region NewGroupDetails-->
     <string name="new_group_details_toolbarSubtitle">Add name</string>
     <string name="new_group_details_memberCount">Members: %1$d</string>
+    <string name="new_group_details_headerHint">Provide a name and optionally an image for the group</string>
+    <string name="new_group_details_nameHint">Group name</string>
     <!--endregion-->
 </resources>
