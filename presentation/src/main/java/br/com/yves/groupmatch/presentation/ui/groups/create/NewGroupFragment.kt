@@ -28,12 +28,17 @@ class NewGroupFragment : Fragment(), NewGroupView, UserAdapter.Listener {
 	override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 		super.onViewCreated(view, savedInstanceState)
 
-
 		controller = NewGroupController(this, FirestoreUserRepository(), UserPresenterImpl())
 
 		adapter = UserAdapter(Glide.with(this), listener = this)
 		new_group_userRecyclerView.layoutManager = LinearLayoutManager(context)
 		new_group_userRecyclerView.adapter = adapter
+
+		new_group_nextButton.setOnClickListener {
+			runOnBackground {
+				controller.onNextButtonClick()
+			}
+		}
 
 		runOnBackground {
 			controller.onViewCreated()
@@ -52,6 +57,10 @@ class NewGroupFragment : Fragment(), NewGroupView, UserAdapter.Listener {
 
 	override fun hideNextButton() = runOnUiThread {
 		new_group_nextButton.hide()
+	}
+
+	override fun navigateToNewGroupDetails() = runOnUiThread {
+		TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
 	}
 	//endregion
 

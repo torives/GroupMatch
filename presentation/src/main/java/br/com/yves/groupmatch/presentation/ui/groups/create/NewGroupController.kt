@@ -29,6 +29,10 @@ class NewGroupController(
 		view?.displayUsers(this.users)
 	}
 
+	fun onNextButtonClick() {
+		view?.navigateToNewGroupDetails()
+	}
+
 	private fun select(user: UserViewModel) {
 		user.isSelected = true
 
