@@ -45,4 +45,8 @@
     <string name="group_details_membersTitle">Membros</string>
     <string name="group_menu_newGroup">Novo grupo</string>
     <!--endregion-->
+
+    <!--region NewGroup-->
+    <string name="new_group_toolbarSubtitle">Adicionar participantes</string>
+    <!--endregion-->
 </resources>
