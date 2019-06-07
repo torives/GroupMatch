@@ -85,12 +85,13 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/new_group_details_membersRecyclerView"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:layout_marginTop="16dp"
 
-                android:numColumns="auto_fit"
-                android:orientation="horizontal"
+                android:numColumns="3"
+                android:orientation="vertical"
                 app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
 
                 app:layout_constraintBottom_toBottomOf="parent"
