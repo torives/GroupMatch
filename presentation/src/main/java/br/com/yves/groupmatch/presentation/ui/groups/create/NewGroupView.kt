@@ -4,5 +4,5 @@ interface NewGroupView {
 	fun displayUsers(users: List<UserViewModel>)
 	fun displayNextButton()
 	fun hideNextButton()
-	fun navigateToNewGroupDetails(groupMembers: List<UserViewModel>)
+	fun navigateToNewGroupDetails(viewModel: NewGroupDetailsViewModel)
 }

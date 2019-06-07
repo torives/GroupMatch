@@ -22,8 +22,18 @@
         tools:layout="@layout/fragment_groups">
         <action
             android:id="@+id/action_groupsFragment_to_groupDetailFragment"
-            app:destination="@id/groupDetailFragment" />
-        <action android:id="@+id/action_groupsFragment_to_newGroupFragment" app:destination="@id/newGroupFragment"/>
+            app:destination="@id/groupDetailFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+        <action
+            android:id="@+id/action_groupsFragment_to_newGroupFragment"
+            app:destination="@id/newGroupFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
     </fragment>
     <fragment
         android:id="@+id/groupDetailFragment"
@@ -89,6 +99,25 @@
             android:label="fragment_matchresult_list"
             tools:layout="@layout/fragment_matchresult_list" />
     </navigation>
-    <fragment android:id="@+id/newGroupFragment" android:name="br.com.yves.groupmatch.presentation.ui.groups.create.NewGroupFragment"
-              android:label="@string/navigation_graph_labels_newGroupFragment" tools:layout="@layout/fragment_new_group"/>
+    <fragment
+        android:id="@+id/newGroupFragment"
+        android:name="br.com.yves.groupmatch.presentation.ui.groups.create.NewGroupFragment"
+        android:label="@string/navigation_graph_labels_newGroupFragment"
+        tools:layout="@layout/fragment_new_group">
+        <action
+            android:id="@+id/action_newGroupFragment_to_newGroupDetails"
+            app:destination="@id/newGroupDetails"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+    </fragment>
+    <fragment
+        android:id="@+id/newGroupDetails"
+        android:name="br.com.yves.groupmatch.debug.NewGroupDetails"
+        android:label="@string/navigation_graph_labels_newGroupDetailsFragment"
+        tools:layout="@layout/fragment_new_group_details">
+        <argument android:name="members"
+            app:argType="br.com.yves.groupmatch.presentation.ui.groups.create.NewGroupDetailsViewModel" />
+    </fragment>
 </navigation>

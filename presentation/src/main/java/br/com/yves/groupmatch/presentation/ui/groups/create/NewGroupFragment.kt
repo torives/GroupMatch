@@ -13,6 +13,9 @@ import br.com.yves.groupmatch.presentation.runOnBackground
 import br.com.yves.groupmatch.presentation.runOnUiThread
 import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.fragment_new_group.*
+import androidx.appcompat.app.AppCompatActivity
+import androidx.navigation.fragment.findNavController
+
 
 class NewGroupFragment : Fragment(), NewGroupView, UserAdapter.Listener {
 
@@ -28,6 +31,7 @@ class NewGroupFragment : Fragment(), NewGroupView, UserAdapter.Listener {
 	override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 		super.onViewCreated(view, savedInstanceState)
 
+		(activity as AppCompatActivity).supportActionBar?.subtitle = "Adicionar participantes"
 		controller = NewGroupController(this, FirestoreUserRepository(), UserPresenterImpl())
 
 		adapter = UserAdapter(Glide.with(this), listener = this)
@@ -59,8 +63,9 @@ class NewGroupFragment : Fragment(), NewGroupView, UserAdapter.Listener {
 		new_group_nextButton.hide()
 	}
 
-	override fun navigateToNewGroupDetails(groupMembers: List<UserViewModel>) {
-		TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+	override fun navigateToNewGroupDetails(viewModel: NewGroupDetailsViewModel) = runOnUiThread {
+		val action = NewGroupFragmentDirections.actionNewGroupFragmentToNewGroupDetails(viewModel)
+		findNavController().navigate(action)
 	}
 	//endregion
 

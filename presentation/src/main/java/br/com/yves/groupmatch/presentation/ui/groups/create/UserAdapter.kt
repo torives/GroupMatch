@@ -11,6 +11,7 @@ import com.bumptech.glide.RequestManager
 import com.bumptech.glide.request.RequestOptions
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.item_user.view.*
+import java.io.Serializable
 
 class UserAdapter(
 		private val glide: RequestManager,
@@ -65,9 +66,11 @@ class UserAdapter(
 	}
 }
 
-class UserViewModel(
+data class NewGroupDetailsViewModel(val members: List<UserViewModel>): Serializable
+
+data class UserViewModel(
 		val name: String,
 		val email: String,
 		var isSelected: Boolean,
 		val profileImageURL: String? = null
-)
+): Serializable

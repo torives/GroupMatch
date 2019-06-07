@@ -30,7 +30,7 @@ class NewGroupController(
 	}
 
 	fun onNextButtonClick() {
-		view?.navigateToNewGroupDetails(selectedUsers.toList())
+		view?.navigateToNewGroupDetails(NewGroupDetailsViewModel(selectedUsers.toList()))
 	}
 
 	private fun select(user: UserViewModel) {

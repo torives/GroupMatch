@@ -14,6 +14,7 @@
     <string name="navigation_graph_labels_searchFragment">Search</string>
     <string name="navigation_graph_labels_groupDetailFragment">Group Details</string>
     <string name="navigation_graph_labels_newGroupFragment">New group</string>
+    <string name="navigation_graph_labels_newGroupDetailsFragment">New group</string>
     <!--endregion-->
 
     <!--region Server -->

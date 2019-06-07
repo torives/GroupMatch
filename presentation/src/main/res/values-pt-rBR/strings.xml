@@ -12,6 +12,7 @@
     <string name="navigation_graph_labels_searchFragment">Buscar</string>
     <string name="navigation_graph_labels_groupDetailFragment">Detalhes do Grupo</string>
     <string name="navigation_graph_labels_newGroupFragment">Novo grupo</string>
+    <string name="navigation_graph_labels_newGroupDetailsFragment">Novo grupo</string>
     <!--endregion-->
 
     <!--region Server -->
