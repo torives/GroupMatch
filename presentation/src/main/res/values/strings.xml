@@ -47,4 +47,12 @@
     <!--region Group Details-->
     <string name="group_details_membersTitle">Members</string>
     <!--endregion-->
+
+    <!--region NewGroup-->
+    <string name="new_group_toolbarSubtitle">Add members</string>
+    <!--endregion-->
+
+    <!--region NewGroupDetails-->
+    <string name="new_group_details_toolbarSubtitle">Add name</string>
+    <!--endregion-->
 </resources>

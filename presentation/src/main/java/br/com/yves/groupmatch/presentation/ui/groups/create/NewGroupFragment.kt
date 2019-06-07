@@ -31,7 +31,7 @@ class NewGroupFragment : Fragment(), NewGroupView, UserAdapter.Listener {
 	override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 		super.onViewCreated(view, savedInstanceState)
 
-		(activity as AppCompatActivity).supportActionBar?.subtitle = "Adicionar participantes"
+		(activity as AppCompatActivity).supportActionBar?.subtitle = getString(R.string.new_group_toolbarSubtitle)
 		controller = NewGroupController(this, FirestoreUserRepository(), UserPresenterImpl())
 
 		adapter = UserAdapter(Glide.with(this), listener = this)

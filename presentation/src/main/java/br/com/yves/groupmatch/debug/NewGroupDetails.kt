@@ -18,6 +18,6 @@ class NewGroupDetails : Fragment() {
 
 	override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 		super.onViewCreated(view, savedInstanceState)
-		(activity as AppCompatActivity).supportActionBar?.subtitle = "Adicionar nome"
+		(activity as AppCompatActivity).supportActionBar?.subtitle = getString(R.string.new_group_details_toolbarSubtitle)
 	}
 }
