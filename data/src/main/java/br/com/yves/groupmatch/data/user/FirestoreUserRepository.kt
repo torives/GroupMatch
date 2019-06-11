@@ -12,7 +12,7 @@ import com.google.firebase.firestore.SetOptions
 class FirestoreUserRepository : UserRepository {
 	private val firestore get() = FirebaseFirestore.getInstance()
 
-	override fun getAllUsers(callback: UserRepository.GetAllUsersCallback) {
+	override fun getAllUsers(callback: UserRepository.GetUsersCallback) {
 		firestore.collection(USERS_COLLECTION).orderBy("name").get()
 				.addOnSuccessListener { query ->
 					val userDocs = query.documents

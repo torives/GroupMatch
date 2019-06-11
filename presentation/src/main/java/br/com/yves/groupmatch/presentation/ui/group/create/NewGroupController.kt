@@ -9,7 +9,7 @@ class NewGroupController(
 		view: NewGroupView,
 		private val repository: UserRepository,
 		private val presenter: UserPresenter
-) : UserRepository.GetAllUsersCallback {
+) : UserRepository.GetUsersCallback {
 
 	private val selectedUsers = mutableSetOf<UserViewModel>()
 	private lateinit var users: List<UserViewModel>
@@ -50,7 +50,7 @@ class NewGroupController(
 		}
 	}
 
-	//region GetAllUsersCallback
+	//region GetUsersCallback
 	override fun onSuccess(users: List<User>) {
 		this.users = users.map { presenter.format(it) }
 		view?.displayUsers(this.users)

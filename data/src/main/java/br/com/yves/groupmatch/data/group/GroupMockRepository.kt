@@ -34,4 +34,8 @@ class GroupMockRepository : GroupRepository {
 		)
 		callback.onSuccess(groups)
 	}
+
+	override fun createGroup(group: Group, callback: GroupRepository.CreateGroupCallback) {
+		callback.onSuccess("")
+	}
 }
