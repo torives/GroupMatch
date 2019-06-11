@@ -1,4 +1,4 @@
-package br.com.yves.groupmatch.presentation.ui.groups.create
+package br.com.yves.groupmatch.presentation.ui.group.create
 
 
 import android.os.Bundle
@@ -15,6 +15,7 @@ import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.fragment_new_group.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.fragment.findNavController
+import br.com.yves.groupmatch.presentation.ui.group.create.details.NewGroupDetailsViewModel
 
 
 class NewGroupFragment : Fragment(), NewGroupView, UserAdapter.Listener {

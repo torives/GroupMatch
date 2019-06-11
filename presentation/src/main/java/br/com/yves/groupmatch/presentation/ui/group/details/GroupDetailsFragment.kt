@@ -1,4 +1,4 @@
-package br.com.yves.groupmatch.presentation.ui.groups.details
+package br.com.yves.groupmatch.presentation.ui.group.details
 
 
 import android.graphics.drawable.Drawable
@@ -21,11 +21,8 @@ import br.com.yves.groupmatch.presentation.runOnBackground
 import br.com.yves.groupmatch.presentation.runOnUiThread
 import br.com.yves.groupmatch.presentation.ui.account.UserViewModel
 import com.bumptech.glide.Glide
-import com.bumptech.glide.request.Request
 import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.request.target.CustomTarget
-import com.bumptech.glide.request.target.SizeReadyCallback
-import com.bumptech.glide.request.target.Target
 import com.bumptech.glide.request.transition.Transition
 import kotlinx.android.synthetic.main.fragment_group_detail.*
 import kotlinx.android.synthetic.main.group_detail_content.*

@@ -1,4 +1,4 @@
-package br.com.yves.groupmatch.presentation.ui.groups
+package br.com.yves.groupmatch.presentation.ui.group
 
 import br.com.yves.groupmatch.domain.account.AuthenticationService
 import br.com.yves.groupmatch.domain.group.Group

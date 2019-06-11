@@ -1,4 +1,4 @@
-package br.com.yves.groupmatch.presentation.ui.groups
+package br.com.yves.groupmatch.presentation.ui.group
 
 import android.view.LayoutInflater
 import android.view.View

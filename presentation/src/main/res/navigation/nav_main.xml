@@ -17,7 +17,7 @@
         tools:layout="@layout/fragment_calendar" />
     <fragment
         android:id="@+id/groupsFragment"
-        android:name="br.com.yves.groupmatch.presentation.ui.groups.GroupFragment"
+        android:name="br.com.yves.groupmatch.presentation.ui.group.GroupFragment"
         android:label="@string/navigation_graph_labels_groupsFragment"
         tools:layout="@layout/fragment_groups">
         <action
@@ -37,12 +37,12 @@
     </fragment>
     <fragment
         android:id="@+id/groupDetailFragment"
-        android:name="br.com.yves.groupmatch.presentation.ui.groups.details.GroupDetailsFragment"
+        android:name="br.com.yves.groupmatch.presentation.ui.group.details.GroupDetailsFragment"
         android:label="@string/navigation_graph_labels_groupDetailFragment"
         tools:layout="@layout/fragment_group_detail">
         <argument
             android:name="groupDetails"
-            app:argType="br.com.yves.groupmatch.presentation.ui.groups.details.GroupDetailsViewModel" />
+            app:argType="br.com.yves.groupmatch.presentation.ui.group.details.GroupDetailsViewModel" />
     </fragment>
     <navigation
         android:id="@+id/nav_search"
@@ -101,7 +101,7 @@
     </navigation>
     <fragment
         android:id="@+id/newGroupFragment"
-        android:name="br.com.yves.groupmatch.presentation.ui.groups.create.NewGroupFragment"
+        android:name="br.com.yves.groupmatch.presentation.ui.group.create.NewGroupFragment"
         android:label="@string/navigation_graph_labels_newGroupFragment"
         tools:layout="@layout/fragment_new_group">
         <action
@@ -114,10 +114,10 @@
     </fragment>
     <fragment
         android:id="@+id/newGroupDetails"
-        android:name="br.com.yves.groupmatch.debug.NewGroupDetails"
+        android:name="br.com.yves.groupmatch.presentation.ui.group.create.details.NewGroupDetailsFragment"
         android:label="@string/navigation_graph_labels_newGroupDetailsFragment"
         tools:layout="@layout/fragment_new_group_details">
-        <argument android:name="members"
-            app:argType="br.com.yves.groupmatch.presentation.ui.groups.create.NewGroupDetailsViewModel" />
+        <argument android:name="viewModel"
+            app:argType="br.com.yves.groupmatch.presentation.ui.group.create.details.NewGroupDetailsViewModel" />
     </fragment>
 </navigation>

@@ -1,7 +1,8 @@
-package br.com.yves.groupmatch.presentation.ui.groups.create
+package br.com.yves.groupmatch.presentation.ui.group.create
 
 import br.com.yves.groupmatch.domain.user.User
 import br.com.yves.groupmatch.domain.user.UserRepository
+import br.com.yves.groupmatch.presentation.ui.group.create.details.NewGroupDetailsViewModel
 import java.lang.ref.WeakReference
 
 class NewGroupController(

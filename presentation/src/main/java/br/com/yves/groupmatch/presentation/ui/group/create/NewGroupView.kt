@@ -1,4 +1,6 @@
-package br.com.yves.groupmatch.presentation.ui.groups.create
+package br.com.yves.groupmatch.presentation.ui.group.create
+
+import br.com.yves.groupmatch.presentation.ui.group.create.details.NewGroupDetailsViewModel
 
 interface NewGroupView {
 	fun displayUsers(users: List<UserViewModel>)

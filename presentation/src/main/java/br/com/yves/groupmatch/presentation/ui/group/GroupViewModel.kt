@@ -1,4 +1,4 @@
-package br.com.yves.groupmatch.presentation.ui.groups
+package br.com.yves.groupmatch.presentation.ui.group
 
 data class GroupViewModel(
 		val id: String,

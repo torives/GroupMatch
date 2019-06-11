@@ -1,7 +1,7 @@
-package br.com.yves.groupmatch.presentation.ui.groups
+package br.com.yves.groupmatch.presentation.ui.group
 
 import br.com.yves.groupmatch.domain.group.Group
-import br.com.yves.groupmatch.presentation.ui.groups.details.GroupDetailsViewModel
+import br.com.yves.groupmatch.presentation.ui.group.details.GroupDetailsViewModel
 
 class GroupPresenterImpl : GroupPresenter {
 	override fun format(group: Group): GroupDetailsViewModel {
