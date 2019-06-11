@@ -1,4 +1,4 @@
-package br.com.yves.groupmatch.presentation.ui.group.create.details
+package br.com.yves.groupmatch.presentation.ui.group.create.data
 
 import br.com.yves.groupmatch.presentation.ui.group.create.UserViewModel
 import java.io.Serializable

@@ -1,4 +1,4 @@
-package br.com.yves.groupmatch.presentation.ui.group.create.details
+package br.com.yves.groupmatch.presentation.ui.group.create.data
 
 
 import android.os.Bundle
@@ -7,13 +7,14 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.navArgs
 import br.com.yves.groupmatch.R
-import br.com.yves.groupmatch.presentation.ui.group.create.UserViewModel
 import br.com.yves.groupmatch.presentation.ui.group.details.GridAutofitLayoutManager
 import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.fragment_new_group_details.*
 
-class NewGroupDetailsFragment : Fragment() {
+class NewGroupDataFragment : Fragment() {
+	private val args: NewGroupDetailsFragmentArgs by navArgs()
 	private lateinit var adapter: GroupMemberAdapter2
 
 	//region Lifecycle
@@ -27,17 +28,17 @@ class NewGroupDetailsFragment : Fragment() {
 
 		(activity as AppCompatActivity).supportActionBar?.subtitle = getString(R.string.new_group_details_toolbarSubtitle)
 
-		adapter = GroupMemberAdapter2(listOf(
-				UserViewModel("Fulaninho de Tal", "", false,"https://i.redd.it/4fz0ct0l7mo11.jpg"),
-				UserViewModel("Fulaninho de Tal", "", false,"https://i.redd.it/4fz0ct0l7mo11.jpg"),
-				UserViewModel("Fulaninho de Tal", "", false,"https://i.redd.it/4fz0ct0l7mo11.jpg"),
-				UserViewModel("Fulaninho de Tal", "", false,"https://i.redd.it/4fz0ct0l7mo11.jpg"),
-				UserViewModel("Fulaninho de Tal", "", false,"https://i.redd.it/4fz0ct0l7mo11.jpg"),
-				UserViewModel("Fulaninho de Tal", "", false,"https://i.redd.it/4fz0ct0l7mo11.jpg")
-		), Glide.with(this))
-
+		adapter = GroupMemberAdapter2(args.viewModel.members, Glide.with(this))
 		new_group_details_membersRecyclerView.layoutManager = GridAutofitLayoutManager(context!!, 250)
 		new_group_details_membersRecyclerView.adapter = adapter
+
+		new_group_details_checkButton.setOnClickListener {
+			onCheckButtonClick()
+		}
 	}
 	//endregion
+
+	private fun onCheckButtonClick() {
+		val name = new_group_details_nameEditText.text.toString()
+	}
 }

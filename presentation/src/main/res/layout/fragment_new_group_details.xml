@@ -106,7 +106,7 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab"
+        android:id="@+id/new_group_details_checkButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
 

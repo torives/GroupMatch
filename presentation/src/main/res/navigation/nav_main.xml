@@ -114,7 +114,7 @@
     </fragment>
     <fragment
         android:id="@+id/newGroupDetails"
-        android:name="br.com.yves.groupmatch.presentation.ui.group.create.details.NewGroupDetailsFragment"
+        android:name="br.com.yves.groupmatch.presentation.ui.group.create.data.NewGroupDataFragment"
         android:label="@string/navigation_graph_labels_newGroupDetailsFragment"
         tools:layout="@layout/fragment_new_group_details">
         <argument android:name="viewModel"
