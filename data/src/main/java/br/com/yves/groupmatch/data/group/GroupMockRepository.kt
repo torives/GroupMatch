@@ -16,21 +16,21 @@ class GroupMockRepository : GroupRepository {
 	)
 
 	override fun getGroup(groupId: String, callback: GroupRepository.GetGroupCallback) {
-		val group = Group("","Nome do Grupo", "https://i.redd.it/4fz0ct0l7mo11.jpg", members, members.first(), LocalDateTime.now())
+		val group = Group("","Nome do Grupo", "https://i.redd.it/4fz0ct0l7mo11.jpg", members, listOf(members.first()))
 		callback.onSuccess(group)
 	}
 
 
 	override fun getAllGroups(userId: String, callback: GroupRepository.GetAllGroupsCallback) {
 		val groups = listOf(
-				Group("","Nome do Grupo", "https://i.redd.it/4fz0ct0l7mo11.jpg", members, members.first(), LocalDateTime.now()),
-				Group("","Nome do Grupo", "https://i.redd.it/4fz0ct0l7mo11.jpg", members, members.first(), LocalDateTime.now()),
-				Group("","Nome do Grupo", "https://i.redd.it/4fz0ct0l7mo11.jpg", members, members.first(), LocalDateTime.now()),
-				Group("","Nome do Grupo", "https://i.redd.it/4fz0ct0l7mo11.jpg", members, members.first(), LocalDateTime.now()),
-				Group("","Nome do Grupo", "https://i.redd.it/4fz0ct0l7mo11.jpg", members, members.first(), LocalDateTime.now()),
-				Group("","Nome do Grupo", "https://i.redd.it/4fz0ct0l7mo11.jpg", members, members.first(), LocalDateTime.now()),
-				Group("","Nome do Grupo", "https://i.redd.it/4fz0ct0l7mo11.jpg", members, members.first(), LocalDateTime.now()),
-				Group("","Nome do Grupo", "https://i.redd.it/4fz0ct0l7mo11.jpg", members, members.first(), LocalDateTime.now())
+				Group("","Nome do Grupo", "https://i.redd.it/4fz0ct0l7mo11.jpg", members, listOf(members.first())),
+				Group("","Nome do Grupo", "https://i.redd.it/4fz0ct0l7mo11.jpg", members, listOf(members.first())),
+				Group("","Nome do Grupo", "https://i.redd.it/4fz0ct0l7mo11.jpg", members, listOf(members.first())),
+				Group("","Nome do Grupo", "https://i.redd.it/4fz0ct0l7mo11.jpg", members, listOf(members.first())),
+				Group("","Nome do Grupo", "https://i.redd.it/4fz0ct0l7mo11.jpg", members, listOf(members.first())),
+				Group("","Nome do Grupo", "https://i.redd.it/4fz0ct0l7mo11.jpg", members, listOf(members.first())),
+				Group("","Nome do Grupo", "https://i.redd.it/4fz0ct0l7mo11.jpg", members, listOf(members.first())),
+				Group("","Nome do Grupo", "https://i.redd.it/4fz0ct0l7mo11.jpg", members, listOf(members.first()))
 		)
 		callback.onSuccess(groups)
 	}

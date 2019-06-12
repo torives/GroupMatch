@@ -118,6 +118,6 @@
         android:label="@string/navigation_graph_labels_newGroupDetailsFragment"
         tools:layout="@layout/fragment_new_group_details">
         <argument android:name="viewModel"
-            app:argType="br.com.yves.groupmatch.presentation.ui.group.create.details.NewGroupDetailsViewModel" />
+            app:argType="br.com.yves.groupmatch.presentation.ui.group.create.data.NewGroupDetailsViewModel" />
     </fragment>
 </navigation>

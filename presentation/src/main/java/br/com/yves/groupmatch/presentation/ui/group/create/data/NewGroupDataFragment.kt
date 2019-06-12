@@ -14,7 +14,7 @@ import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.fragment_new_group_details.*
 
 class NewGroupDataFragment : Fragment() {
-	private val args: NewGroupDetailsFragmentArgs by navArgs()
+	private val args: NewGroupDataFragmentArgs by navArgs()
 	private lateinit var adapter: GroupMemberAdapter2
 
 	//region Lifecycle

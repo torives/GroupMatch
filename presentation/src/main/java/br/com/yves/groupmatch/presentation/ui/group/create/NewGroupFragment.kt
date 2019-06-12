@@ -16,6 +16,8 @@ import kotlinx.android.synthetic.main.fragment_new_group.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.*
 import androidx.navigation.fragment.findNavController
+import br.com.yves.groupmatch.domain.user.User
+import br.com.yves.groupmatch.domain.user.UserRepository
 import br.com.yves.groupmatch.presentation.ui.group.create.data.NewGroupDetailsViewModel
 
 
@@ -87,9 +89,6 @@ class NewGroupFragment : Fragment(), NewGroupView, UserAdapter.Listener {
 	}
 
 	override fun navigateToNewGroupDetails(viewModel: NewGroupDetailsViewModel) = runOnUiThread {
-
-		ViewModelProviders.of(this).get()
-
 		val action = NewGroupFragmentDirections.actionNewGroupFragmentToNewGroupDetails(viewModel)
 		findNavController().navigate(action)
 	}
