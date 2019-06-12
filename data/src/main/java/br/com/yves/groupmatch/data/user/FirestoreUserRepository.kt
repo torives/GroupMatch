@@ -12,6 +12,21 @@ import com.google.firebase.firestore.SetOptions
 class FirestoreUserRepository : UserRepository {
 	private val firestore get() = FirebaseFirestore.getInstance()
 
+
+	override fun getUsers(userIDs: List<String>, callback: UserRepository.GetUsersCallback) {
+		firestore.collection(USERS_COLLECTION).get()
+				.addOnSuccessListener { query ->
+					val userDocs = query.documents
+					val users = userDocs.filter { userIDs.contains(it.id) }
+							.map { FirestoreUserMapper.from(it) }
+					callback.onSuccess(users)
+				}
+				.addOnFailureListener {
+					//TODO: handle error
+					callback.onFailure(Error(it))
+				}
+	}
+
 	override fun getAllUsers(callback: UserRepository.GetUsersCallback) {
 		firestore.collection(USERS_COLLECTION).orderBy("name").get()
 				.addOnSuccessListener { query ->
@@ -21,7 +36,7 @@ class FirestoreUserRepository : UserRepository {
 					callback.onSuccess(users)
 				}.addOnFailureListener {
 					//TODO: Corrigir tipo de erro
-					callback.onFailure(UserRepositoryError.UserCreationFailed(it))
+					callback.onFailure(Error(it))
 				}
 	}
 
