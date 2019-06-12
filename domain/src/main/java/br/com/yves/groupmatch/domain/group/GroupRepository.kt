@@ -8,7 +8,7 @@ interface GroupRepository {
 	fun createGroup(group: Group, callback: CreateGroupCallback)
 
 	interface GetGroupCallback {
-		fun onSuccess(group: Group){}
+		fun onSuccess(group: Group)
 		fun onFailure(error: Error)
 	}
 
