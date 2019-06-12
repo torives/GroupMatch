@@ -5,27 +5,23 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import br.com.yves.groupmatch.R
 import br.com.yves.groupmatch.data.user.FirestoreUserRepository
 import br.com.yves.groupmatch.presentation.runOnBackground
 import br.com.yves.groupmatch.presentation.runOnUiThread
+import br.com.yves.groupmatch.presentation.ui.group.create.data.NewGroupDetailsViewModel
 import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.fragment_new_group.*
-import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.*
-import androidx.navigation.fragment.findNavController
-import br.com.yves.groupmatch.domain.user.User
-import br.com.yves.groupmatch.domain.user.UserRepository
-import br.com.yves.groupmatch.presentation.ui.group.create.data.NewGroupDetailsViewModel
 
 
 class NewGroupFragment : Fragment(), NewGroupView, UserAdapter.Listener {
 
 	private lateinit var adapter: UserAdapter
 	private lateinit var controller: NewGroupController
-	private lateinit var newGroupDataViewModel: NewGroupDataViewModel
 
 	//region Lifecycle
 	override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -37,7 +33,6 @@ class NewGroupFragment : Fragment(), NewGroupView, UserAdapter.Listener {
 		super.onViewCreated(view, savedInstanceState)
 
 		setupToolbar()
-		setupViewModel()
 		setupRecyclerView()
 		setupListeners()
 
@@ -59,13 +54,6 @@ class NewGroupFragment : Fragment(), NewGroupView, UserAdapter.Listener {
 				controller.onNextButtonClick()
 			}
 		}
-	}
-
-	private fun setupViewModel() {
-		newGroupDataViewModel = ViewModelProviders.of(this).get(NewGroupDataViewModel::class.java)
-		newGroupDataViewModel.groupName.observe(this, Observer<String> {
-
-		})
 	}
 
 	private fun setupRecyclerView() {
@@ -101,15 +89,4 @@ class NewGroupFragment : Fragment(), NewGroupView, UserAdapter.Listener {
 		}
 	}
 	//endregion
-
-}
-
-class NewGroupDataViewModel: ViewModel() {
-	var groupName = MutableLiveData<String>()
-	var groupImageURL = MutableLiveData<String>()
-
-	fun setGroupData(name: String, imageURL: String?) {
-		groupName.value = name
-		groupImageURL.value = imageURL
-	}
 }
