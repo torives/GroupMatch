@@ -21,7 +21,7 @@ class GroupMockRepository : GroupRepository {
 	}
 
 
-	override fun getAllGroups(userId: String, callback: GroupRepository.GetGroupCallback) {
+	override fun getAllGroups(userId: String, callback: GroupRepository.GetAllGroupsCallback) {
 		val groups = listOf(
 				Group("","Nome do Grupo", "https://i.redd.it/4fz0ct0l7mo11.jpg", members, members.first(), LocalDateTime.now()),
 				Group("","Nome do Grupo", "https://i.redd.it/4fz0ct0l7mo11.jpg", members, members.first(), LocalDateTime.now()),
@@ -36,6 +36,6 @@ class GroupMockRepository : GroupRepository {
 	}
 
 	override fun createGroup(group: Group, callback: GroupRepository.CreateGroupCallback) {
-		callback.onSuccess("")
+		callback.onSuccess()
 	}
 }

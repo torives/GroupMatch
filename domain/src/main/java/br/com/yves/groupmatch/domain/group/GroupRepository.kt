@@ -4,7 +4,7 @@ import java.lang.Error
 
 interface GroupRepository {
 	fun getGroup(groupId: String, callback: GetGroupCallback)
-	fun getAllGroups(userId: String, callback: GetAllGroupCallback)
+	fun getAllGroups(userId: String, callback: GetAllGroupsCallback)
 	fun createGroup(group: Group, callback: CreateGroupCallback)
 
 	interface GetGroupCallback {
@@ -12,7 +12,7 @@ interface GroupRepository {
 		fun onFailure(error: Error)
 	}
 
-	interface GetAllGroupCallback {
+	interface GetAllGroupsCallback {
 		fun onSuccess(groups: List<Group>){}
 		fun onFailure(error: Error)
 	}

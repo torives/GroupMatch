@@ -19,7 +19,7 @@ class FirestoreGroupRepository(private val userRepository: UserRepository) : Gro
                 }
     }
 
-    override fun getAllGroups(userId: String, callback: GroupRepository.GetAllGroupCallback) {
+    override fun getAllGroups(userId: String, callback: GroupRepository.GetAllGroupsCallback) {
         firestore.collection(GROUP_COLLECTION)
                 .whereArrayContains(FIELD_MEMBERS, userId)
                 .orderBy(FIELD_NAME) //TODO: order by last interaction date
@@ -47,7 +47,7 @@ class FirestoreGroupRepository(private val userRepository: UserRepository) : Gro
                 }
     }
 
-    private fun handleGetAllGroupsSuccess(groups: List<FirestoreGroup>, callback: GroupRepository.GetAllGroupCallback) {
+    private fun handleGetAllGroupsSuccess(groups: List<FirestoreGroup>, callback: GroupRepository.GetAllGroupsCallback) {
         val userIds = groups.flatMap { it.members }
         userRepository.getUsers(userIds, object : UserRepository.GetUsersCallback {
 
