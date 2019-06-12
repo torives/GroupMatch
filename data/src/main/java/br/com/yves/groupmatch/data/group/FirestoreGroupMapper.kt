@@ -14,7 +14,7 @@ object FirestoreGroupMapper {
 		val image = data["image"] as String
 		val members = data["members"] as? List<String> ?: emptyList()
 		val admins = data["admins"] as? List<String> ?: emptyList()
-		val currentMatch = data["current_match"] as Match
+		val currentMatch = data["current_match"] as? Match
 
 		return FirestoreGroup(
 				document.id,
