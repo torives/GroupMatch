@@ -23,7 +23,7 @@ class GroupDetailsController(
 				view?.displayGroupMembers(members)
 			}
 
-			override fun onFailure() {
+			override fun onFailure(error: Error) {
 				TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
 			}
 		})

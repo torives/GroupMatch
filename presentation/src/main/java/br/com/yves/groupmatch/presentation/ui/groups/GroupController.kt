@@ -3,6 +3,7 @@ package br.com.yves.groupmatch.presentation.ui.groups
 import br.com.yves.groupmatch.domain.account.AuthenticationService
 import br.com.yves.groupmatch.domain.group.Group
 import br.com.yves.groupmatch.domain.group.GroupRepository
+import java.lang.Error
 import java.lang.ref.WeakReference
 
 class GroupController(
@@ -18,13 +19,13 @@ class GroupController(
 
 	fun onViewCreated() {
 		userRepository.getLoggedInUser()?.id?.let {
-			groupRepository.getAllGroups(it, object : GroupRepository.GetGroupCallback {
+			groupRepository.getAllGroups(it, object : GroupRepository.GetAllGroupsCallback {
 				override fun onSuccess(groups: List<Group>) {
 					val viewModels = presenter.format(groups)
 					view?.displayGroups(viewModels)
 				}
 
-				override fun onFailure() {}
+				override fun onFailure(error: Error) {}
 			})
 		} ?: view?.displayLoggedOutLayout()
 	}
