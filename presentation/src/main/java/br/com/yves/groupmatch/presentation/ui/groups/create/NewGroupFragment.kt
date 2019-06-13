@@ -30,22 +30,39 @@ class NewGroupFragment : Fragment(), NewGroupView, UserAdapter.Listener {
 	override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 		super.onViewCreated(view, savedInstanceState)
 
-		(activity as AppCompatActivity).supportActionBar?.subtitle = getString(R.string.new_group_toolbarSubtitle)
+		setupToolbar()
+		setupRecyclerView()
+		setupListeners()
+
+		//TODO: Create NewGroupInjection
 		controller = NewGroupController(this, FirestoreUserRepository(), UserPresenterImpl())
 
-		adapter = UserAdapter(Glide.with(this), listener = this)
-		new_group_userRecyclerView.layoutManager = LinearLayoutManager(context)
-		new_group_userRecyclerView.adapter = adapter
+		runOnBackground {
+			controller.onViewCreated()
+		}
+	}
 
+	override fun onDestroy() {
+		super.onDestroy()
+		(activity as AppCompatActivity).supportActionBar?.subtitle = ""
+	}
+
+	private fun setupToolbar() {
+		(activity as AppCompatActivity).supportActionBar?.subtitle = getString(R.string.new_group_toolbarSubtitle)
+	}
+
+	private fun setupListeners() {
 		new_group_nextButton.setOnClickListener {
 			runOnBackground {
 				controller.onNextButtonClick()
 			}
 		}
+	}
 
-		runOnBackground {
-			controller.onViewCreated()
-		}
+	private fun setupRecyclerView() {
+		adapter = UserAdapter(Glide.with(this), listener = this)
+		new_group_userRecyclerView.layoutManager = LinearLayoutManager(context)
+		new_group_userRecyclerView.adapter = adapter
 	}
 	//endregion
 
@@ -74,5 +91,4 @@ class NewGroupFragment : Fragment(), NewGroupView, UserAdapter.Listener {
 		}
 	}
 	//endregion
-
 }
