@@ -44,6 +44,11 @@ class NewGroupFragment : Fragment(), NewGroupView, UserAdapter.Listener {
 		}
 	}
 
+	override fun onDestroy() {
+		super.onDestroy()
+		(activity as AppCompatActivity).supportActionBar?.subtitle = ""
+	}
+
 	private fun setupToolbar() {
 		(activity as AppCompatActivity).supportActionBar?.subtitle = getString(R.string.new_group_toolbarSubtitle)
 	}
