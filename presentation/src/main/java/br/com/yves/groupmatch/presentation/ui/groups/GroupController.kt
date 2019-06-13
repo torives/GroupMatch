@@ -10,24 +10,18 @@ class GroupController(
 		view: GroupView,
 		private val presenter: GroupPresenter,
 		private val groupRepository: GroupRepository,
-		private val userRepository: AuthenticationService
+		private val authenticationService: AuthenticationService
 ) {
-
 	private val viewWeakReference = WeakReference(view)
 	private val view: GroupView?
 		get() = viewWeakReference.get()
 
 	fun onViewCreated() {
-		userRepository.getLoggedInUser()?.id?.let {
-			groupRepository.getAllGroups(it, object : GroupRepository.GetAllGroupsCallback {
-				override fun onSuccess(groups: List<Group>) {
-					val viewModels = presenter.format(groups)
-					view?.displayGroups(viewModels)
-				}
+		fetchGroupsForCurrentUser()
+	}
 
-				override fun onFailure(error: Error) {}
-			})
-		} ?: view?.displayLoggedOutLayout()
+	fun onViewResumed() {
+		fetchGroupsForCurrentUser()
 	}
 
 	fun onGroupSelected(groupId: String) {
@@ -40,5 +34,18 @@ class GroupController(
 
 	fun onGroupCreationAttempt() {
 		view?.navigateToNewGroup()
+	}
+
+	private fun fetchGroupsForCurrentUser() {
+		authenticationService.getLoggedInUser()?.id?.let {
+			groupRepository.getAllGroups(it, object : GroupRepository.GetAllGroupsCallback {
+				override fun onSuccess(groups: List<Group>) {
+					val viewModels = presenter.format(groups)
+					view?.displayGroups(viewModels)
+				}
+
+				override fun onFailure(error: Error) {}
+			})
+		} ?: view?.displayLoggedOutLayout()
 	}
 }

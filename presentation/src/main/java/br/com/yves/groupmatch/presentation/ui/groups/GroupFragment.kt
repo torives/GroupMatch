@@ -41,6 +41,13 @@ class GroupFragment : Fragment(),
 		}
 	}
 
+	override fun onResume() {
+		super.onResume()
+		runOnBackground {
+			controller.onViewResumed()
+		}
+	}
+
 	override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
 		inflater.inflate(R.menu.group_menu, menu)
 		super.onCreateOptionsMenu(menu, inflater)
