@@ -2,13 +2,19 @@ package br.com.yves.groupmatch.presentation.ui.groups.create
 
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import br.com.yves.groupmatch.R
+import br.com.yves.groupmatch.data.auth.GroupMatchAuth
+import br.com.yves.groupmatch.data.group.FirestoreGroupRepository
 import br.com.yves.groupmatch.data.user.FirestoreUserRepository
 import br.com.yves.groupmatch.presentation.runOnBackground
 import br.com.yves.groupmatch.presentation.runOnUiThread
@@ -35,7 +41,14 @@ class NewGroupFragment : Fragment(), NewGroupView, UserAdapter.Listener {
 		setupListeners()
 
 		//TODO: Create NewGroupInjection
-		controller = NewGroupController(this, FirestoreUserRepository(), UserPresenterImpl())
+		val userRepository = FirestoreUserRepository()
+		controller = NewGroupController(
+				this,
+				userRepository,
+				FirestoreGroupRepository(userRepository),
+				GroupMatchAuth.instance,
+				UserPresenterImpl()
+		)
 
 		runOnBackground {
 			controller.onViewCreated()
@@ -80,7 +93,31 @@ class NewGroupFragment : Fragment(), NewGroupView, UserAdapter.Listener {
 	}
 
 	override fun navigateToNewGroupDetails() = runOnUiThread {
-		TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+		val editText = EditText(context!!).apply {
+			setSingleLine()
+		}
+		val alert = AlertDialog.Builder(context!!)
+				.setTitle("Escolha um nome para o novo grupo:")
+				.setView(editText)
+				.setPositiveButton("Criar") { dialog, _ ->
+					val groupName = editText.text.toString()
+
+					runOnBackground {
+						controller.onCreateGroupAttempt(groupName)
+					}
+				}
+				.setNegativeButton("Cancelar") { _, _ ->
+					Log.d("", "")
+				}
+				.create()
+
+		alert.show()
+//		val action = NewGroupFragmentDirections.actionNewGroupFragmentToNewGroupDetails(viewModel)
+//		findNavController().navigate(action)
+	}
+
+	override fun navigateToGroups() {
+		findNavController().popBackStack()
 	}
 	//endregion
 

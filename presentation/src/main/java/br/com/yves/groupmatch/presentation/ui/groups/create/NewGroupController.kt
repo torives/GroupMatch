@@ -1,14 +1,19 @@
 package br.com.yves.groupmatch.presentation.ui.groups.create
 
+import br.com.yves.groupmatch.domain.account.AuthenticationService
+import br.com.yves.groupmatch.domain.group.Group
+import br.com.yves.groupmatch.domain.group.GroupRepository
 import br.com.yves.groupmatch.domain.user.User
 import br.com.yves.groupmatch.domain.user.UserRepository
 import java.lang.ref.WeakReference
 
 class NewGroupController(
 		view: NewGroupView,
-		private val repository: UserRepository,
+		private val userRepository: UserRepository,
+		private val groupRepository: GroupRepository,
+		private val authenticationService: AuthenticationService,
 		private val presenter: UserPresenter
-) : UserRepository.GetUsersCallback {
+) : UserRepository.GetUsersCallback, GroupRepository.CreateGroupCallback {
 
 	private val selectedUsers = mutableSetOf<UserViewModel>()
 	private lateinit var users: List<UserViewModel>
@@ -17,7 +22,7 @@ class NewGroupController(
 		get() = viewRef.get()
 
 	fun onViewCreated() {
-		repository.getAllUsers(this)
+		userRepository.getAllUsers(this)
 	}
 
 	fun onUserSelected(user: UserViewModel) {
@@ -31,6 +36,22 @@ class NewGroupController(
 
 	fun onNextButtonClick() {
 		view?.navigateToNewGroupDetails()
+	}
+
+	fun onCreateGroupAttempt(name: String) {
+		val loggedUser = authenticationService.getLoggedInUser()!!
+		val groupMembers = selectedUsers.map { User("", it.name, "") }.toMutableList()
+		groupMembers.add(loggedUser)
+		val admins = listOf(loggedUser)
+
+		val newGroup = Group(
+				name = name,
+				imageURL = "",
+				members = groupMembers,
+				admins = admins
+		)
+
+		groupRepository.createGroup(newGroup, this)
 	}
 
 	private fun select(user: UserViewModel) {
@@ -59,4 +80,13 @@ class NewGroupController(
 		TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
 	}
 	//endregion
+
+	//region //region GetUsersCallback
+	override fun onSuccess() {
+		view?.navigateToGroups()
+	}
+
+	//TODO: Change error type so error handling is correct
+	//endregion
+
 }

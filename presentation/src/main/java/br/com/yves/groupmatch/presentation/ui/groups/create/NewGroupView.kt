@@ -5,4 +5,5 @@ interface NewGroupView {
 	fun displayNextButton()
 	fun hideNextButton()
 	fun navigateToNewGroupDetails()
+	fun navigateToGroups()
 }
