@@ -7,4 +7,5 @@ interface NewGroupView {
 	fun displayNextButton()
 	fun hideNextButton()
 	fun navigateToNewGroupDetails(viewModel: NewGroupDetailsViewModel)
+	fun navigateToGroups()
 }

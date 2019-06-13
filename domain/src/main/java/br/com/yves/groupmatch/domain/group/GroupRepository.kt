@@ -18,7 +18,7 @@ interface GroupRepository {
 	}
 
 	interface CreateGroupCallback {
-		fun onSuccess(){}
+		fun onSuccess()
 		fun onFailure(error: Error)
 	}
 }
