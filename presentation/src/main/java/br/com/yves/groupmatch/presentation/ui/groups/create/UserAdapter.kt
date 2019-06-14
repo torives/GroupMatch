@@ -66,6 +66,7 @@ class UserAdapter(
 }
 
 class UserViewModel(
+		val id: String,
 		val name: String,
 		val email: String,
 		var isSelected: Boolean,

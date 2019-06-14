@@ -40,7 +40,7 @@ class NewGroupController(
 
 	fun onCreateGroupAttempt(name: String) {
 		val loggedUser = authenticationService.getLoggedInUser()!!
-		val groupMembers = selectedUsers.map { User("", it.name, "") }.toMutableList()
+		val groupMembers = selectedUsers.map { User(it.id, it.name, it.email) }.toMutableList()
 		groupMembers.add(loggedUser)
 		val admins = listOf(loggedUser)
 
@@ -72,7 +72,9 @@ class NewGroupController(
 
 	//region GetUsersCallback
 	override fun onSuccess(users: List<User>) {
-		this.users = users.map { presenter.format(it) }
+		val loggedUser = authenticationService.getLoggedInUser()!!
+		this.users = users.filter { it.id != loggedUser.id }
+				.map { presenter.format(it) }
 		view?.displayUsers(this.users)
 	}
 
@@ -81,7 +83,7 @@ class NewGroupController(
 	}
 	//endregion
 
-	//region //region GetUsersCallback
+	//region GetUsersCallback
 	override fun onSuccess() {
 		view?.navigateToGroups()
 	}
