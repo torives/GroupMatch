@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
+import android.widget.FrameLayout
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
@@ -93,12 +94,21 @@ class NewGroupFragment : Fragment(), NewGroupView, UserAdapter.Listener {
 	}
 
 	override fun navigateToNewGroupDetails() = runOnUiThread {
+
+		val params = FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT).apply {
+			leftMargin = 64
+			rightMargin = 64
+		}
 		val editText = EditText(context!!).apply {
 			setSingleLine()
+			layoutParams = params
 		}
+		val container = FrameLayout(context!!)
+		container.addView(editText)
+
 		val alert = AlertDialog.Builder(context!!)
 				.setTitle("Escolha um nome para o novo grupo:")
-				.setView(editText)
+				.setView(container)
 				.setPositiveButton("Criar") { dialog, _ ->
 					val groupName = editText.text.toString()
 
