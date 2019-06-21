@@ -16,6 +16,6 @@ class SendCalendar(
 
 	override fun execute() {
 		val payload = encoder.encode(calendar)
-		bluetoothService.send(payload)
+		bluetoothService.send(payload as ByteArray)
 	}
 }

@@ -13,8 +13,13 @@ class CalendarBinaryMapper : CalendarEncoder, CalendarDecoder {
 		return gson.toJson(calendar).toByteArray()
 	}
 
-	override fun decode(data: ByteArray): Calendar {
-		val message = String(data)
-		return gson.fromJson(message, Calendar::class.java)
+	override fun decode(data: Any): Calendar? {
+		return when (data) {
+			is ByteArray -> {
+				val message = String(data)
+				gson.fromJson(message, Calendar::class.java)
+			}
+			else -> null
+		}
 	}
 }
