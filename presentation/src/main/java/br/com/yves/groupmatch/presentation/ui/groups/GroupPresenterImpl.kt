@@ -26,7 +26,7 @@ class GroupPresenterImpl : GroupPresenter {
 					group.name,
 					members,
 					group.imageURL,
-					false,
+					group.match?.status,
 					""
 			)
 		}

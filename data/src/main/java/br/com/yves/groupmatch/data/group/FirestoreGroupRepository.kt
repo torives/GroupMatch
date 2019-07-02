@@ -2,11 +2,13 @@ package br.com.yves.groupmatch.data.group
 
 import br.com.yves.groupmatch.domain.group.Group
 import br.com.yves.groupmatch.domain.group.GroupRepository
+import br.com.yves.groupmatch.domain.match.Match
+import br.com.yves.groupmatch.domain.match.MatchRepository
 import br.com.yves.groupmatch.domain.user.User
 import br.com.yves.groupmatch.domain.user.UserRepository
 import com.google.firebase.firestore.FirebaseFirestore
 
-class FirestoreGroupRepository(private val userRepository: UserRepository) : GroupRepository {
+class FirestoreGroupRepository(private val userRepository: UserRepository, private val matchRepository: MatchRepository) : GroupRepository {
     private val firestore get() = FirebaseFirestore.getInstance()
 
     override fun getGroup(groupId: String, callback: GroupRepository.GetGroupCallback) {
@@ -52,24 +54,41 @@ class FirestoreGroupRepository(private val userRepository: UserRepository) : Gro
         userRepository.getUsers(userIds, object : UserRepository.GetUsersCallback {
 
             override fun onSuccess(users: List<User>) {
-                val newGroups = groups.map { group ->
-                    val members = users.filter { group.members.contains(it.id) }
-                    val admins = users.filter { group.admins.contains(it.id) }
-                    Group(
-                            group.id,
-                            group.name,
-                            group.image,
-                            members,
-                            admins
-                    )
-                }
-                callback.onSuccess(newGroups)
+                handleGetUsersSuccess(groups, users, callback)
             }
 
             override fun onFailure(error: Error) {
                 callback.onFailure(error)
             }
         })
+    }
+
+    private fun handleGetUsersSuccess(groups: List<FirestoreGroup>, users: List<User>, callback: GroupRepository.GetAllGroupsCallback) {
+        val finalGroups: MutableList<Group> = mutableListOf()
+
+        groups.forEach { group ->
+            matchRepository.getMatch(group.id, object : MatchRepository.GetMatchCallback {
+                override fun onSuccess(match: Match) {
+                    val members = users.filter { group.members.contains(it.id) }
+                    val admins = users.filter { group.admins.contains(it.id) }
+                    val newGroup = Group(
+                            group.id,
+                            group.name,
+                            group.image,
+                            members,
+                            admins,
+                            match
+                    )
+                    finalGroups.add(newGroup)
+                }
+
+                override fun onFailure(error: Error) {
+                    callback.onFailure(error)
+                }
+            })
+        }
+
+        callback.onSuccess(finalGroups)
     }
 
     private fun handleGetGroupSuccess(firestoreGroup: FirestoreGroup, callback: GroupRepository.GetGroupCallback) {
@@ -98,4 +117,3 @@ class FirestoreGroupRepository(private val userRepository: UserRepository) : Gro
         private const val FIELD_MEMBERS = "members"
     }
 }
-
