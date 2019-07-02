@@ -57,6 +57,7 @@ class GroupAdapter(
 
 			glide.load(viewModel.imageURL)
 					.apply(RequestOptions.circleCropTransform())
+					.placeholder(R.drawable.ic_group)
 					.into(itemView.item_group_image)
 
 			itemView.setOnClickListener { listener.get()?.onGroupSelected(viewModel) }
