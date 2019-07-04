@@ -13,6 +13,8 @@ import br.com.yves.groupmatch.R
 import br.com.yves.groupmatch.presentation.injection.GroupInjection
 import br.com.yves.groupmatch.presentation.runOnBackground
 import br.com.yves.groupmatch.presentation.runOnUiThread
+import br.com.yves.groupmatch.presentation.ui.bluetooth.result.MatchResultFragment
+import br.com.yves.groupmatch.presentation.ui.bluetooth.server.MatchResultViewModel
 import br.com.yves.groupmatch.presentation.ui.groups.details.GroupDetailsViewModel
 import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.fragment_groups.*
@@ -91,6 +93,13 @@ class GroupFragment : Fragment(),
 
 	override fun navigateToNewGroup() = runOnUiThread {
 		findNavController().navigate(R.id.newGroupFragment)
+	}
+
+	override fun navigateToMatchResult(result: MatchResultViewModel) {
+		val args = Bundle().apply {
+			putSerializable(MatchResultFragment.ARG_MATCH_RESULT, result)
+		}
+		findNavController().navigate(R.id.matchResultFragment, args)
 	}
 	//endregion
 
