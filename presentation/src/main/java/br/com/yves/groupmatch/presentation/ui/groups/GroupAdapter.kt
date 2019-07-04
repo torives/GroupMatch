@@ -52,7 +52,7 @@ class GroupAdapter(
 				itemView.item_group_name.text = name
 				itemView.item_group_members.text = members
 				itemView.item_group_lastInteractionDate.text = lasInteractionDate
-				itemView.item_group_notificationIcon.visibility = if (hasUpdates) View.VISIBLE else View.GONE
+				itemView.item_group_notificationIcon.visibility = if (matchStatus != null) View.VISIBLE else View.GONE
 			}
 
 			glide.load(viewModel.imageURL)

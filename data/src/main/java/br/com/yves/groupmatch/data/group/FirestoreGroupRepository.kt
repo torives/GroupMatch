@@ -64,22 +64,13 @@ class FirestoreGroupRepository(private val userRepository: UserRepository, priva
     }
 
     private fun handleGetUsersSuccess(groups: List<FirestoreGroup>, users: List<User>, callback: GroupRepository.GetAllGroupsCallback) {
-        val finalGroups: MutableList<Group> = mutableListOf()
-
-        groups.forEach { group ->
-            matchRepository.getMatch(group.id, object : MatchRepository.GetMatchCallback {
-                override fun onSuccess(match: Match) {
-                    val members = users.filter { group.members.contains(it.id) }
-                    val admins = users.filter { group.admins.contains(it.id) }
-                    val newGroup = Group(
-                            group.id,
-                            group.name,
-                            group.image,
-                            members,
-                            admins,
-                            match
-                    )
-                    finalGroups.add(newGroup)
+        val matchIds = groups.mapNotNull { it.currentMatchId }
+        if (matchIds.isEmpty()) {
+            buildGroups(emptyList(), groups, users, callback)
+        } else {
+            matchRepository.getMatches(matchIds, object : MatchRepository.GetMatchesCallback {
+                override fun onSuccess(matches: List<Match>) {
+                   buildGroups(matches, groups, users, callback)
                 }
 
                 override fun onFailure(error: Error) {
@@ -87,7 +78,22 @@ class FirestoreGroupRepository(private val userRepository: UserRepository, priva
                 }
             })
         }
+    }
 
+    private fun buildGroups(matches: List<Match>, groups: List<FirestoreGroup>, users: List<User>, callback: GroupRepository.GetAllGroupsCallback) {
+        val finalGroups = groups.map { group ->
+            val members = users.filter { group.members.contains(it.id) }
+            val admins = users.filter { group.admins.contains(it.id) }
+            val match = matches.firstOrNull { it.id == group.currentMatchId }
+            Group(
+                    group.id,
+                    group.name,
+                    group.image,
+                    members,
+                    admins,
+                    match
+            )
+        }
         callback.onSuccess(finalGroups)
     }
 

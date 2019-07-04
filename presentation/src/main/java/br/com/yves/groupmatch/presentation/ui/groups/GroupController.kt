@@ -16,9 +16,7 @@ class GroupController(
 	private val view: GroupView?
 		get() = viewWeakReference.get()
 
-	fun onViewCreated() {
-		fetchGroupsForCurrentUser()
-	}
+	fun onViewCreated() {}
 
 	fun onViewResumed() {
 		fetchGroupsForCurrentUser()

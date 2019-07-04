@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import br.com.yves.groupmatch.R
 import br.com.yves.groupmatch.data.auth.GroupMatchAuth
 import br.com.yves.groupmatch.data.group.FirestoreGroupRepository
+import br.com.yves.groupmatch.data.match.FirestoreMatchRepository
 import br.com.yves.groupmatch.data.user.FirestoreUserRepository
 import br.com.yves.groupmatch.presentation.runOnBackground
 import br.com.yves.groupmatch.presentation.runOnUiThread
@@ -46,7 +47,7 @@ class NewGroupFragment : Fragment(), NewGroupView, UserAdapter.Listener {
 		controller = NewGroupController(
 				this,
 				userRepository,
-				FirestoreGroupRepository(userRepository),
+				FirestoreGroupRepository(userRepository, FirestoreMatchRepository()),
 				GroupMatchAuth.instance,
 				UserPresenterImpl()
 		)
