@@ -4,9 +4,14 @@ import android.util.Log
 import br.com.yves.groupmatch.domain.account.AuthenticationService
 import br.com.yves.groupmatch.domain.group.Group
 import br.com.yves.groupmatch.domain.group.GroupRepository
+import br.com.yves.groupmatch.domain.loadCalendar.LoadCalendar
 import br.com.yves.groupmatch.domain.match.Match
 import br.com.yves.groupmatch.domain.match.MatchRepository
+import br.com.yves.groupmatch.domain.models.calendar.Calendar
 import br.com.yves.groupmatch.domain.models.slots.TimeSlot
+import br.com.yves.groupmatch.domain.user.User
+import br.com.yves.groupmatch.presentation.factory.CalendarRepositoryFactory
+import br.com.yves.groupmatch.presentation.factory.showCalendar.LoadCalendarFactory
 import br.com.yves.groupmatch.presentation.ui.bluetooth.server.MatchResultViewModel
 import org.threeten.bp.format.DateTimeFormatter
 import org.threeten.bp.format.FormatStyle
@@ -33,11 +38,11 @@ class GroupController(
     }
 
     fun onGroupSelected(groupId: String) {
-        groups?.firstOrNull { it.id == groupId }.let { group ->
-            when (group?.match?.status) {
+        groups?.firstOrNull { it.id == groupId }?.let { group ->
+            when (group.match?.status) {
                 Match.Status.FINISHED -> displayMatchResult(group.match?.result)
                 Match.Status.ONGOING, Match.Status.STARTED -> { } //do nothing
-                else -> shouldStartMatch(groupId)
+                else -> shouldStartMatch(group)
             }
         }
     }
@@ -49,17 +54,24 @@ class GroupController(
         }
     }
 
-    private fun shouldStartMatch(groupId: String) {
+    private fun shouldStartMatch(group: Group) {
         view?.displayDialog(
                 "Iniciar novo Match",
                 "Os dados da sua agenda serão compartilhados com o grupo. Deseja continuar?",
-                onPositiveResponse = { startMatch(groupId) },
+                onPositiveResponse = { startMatch(group) },
                 onNegativeResponse = { }
         )
     }
 
-    private fun startMatch(groupId: String) {
-        matchRepository.startMatch(groupId, object : MatchRepository.StartMatchCallback {
+    private fun startMatch(group: Group) {
+        val creator: User = authenticationService.getLoggedInUser()!! //FIXME: force unwrap
+        val calendar = LoadCalendarFactory.create(CalendarRepositoryFactory.create()).execute() //TODO: send only busy
+
+        startMatch(group, creator, calendar)
+    }
+
+    private fun startMatch(group: Group, creator: User, localCalendar: Calendar) {
+        matchRepository.startMatch(group, creator, localCalendar, object : MatchRepository.StartMatchCallback {
             override fun onSuccess() {
                 fetchGroupsForCurrentUser()
             }

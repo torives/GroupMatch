@@ -14,6 +14,7 @@ class GroupInjection {
 			view,
 			GroupPresenterImpl(),
 			FirestoreGroupRepository(FirestoreUserRepository(), FirestoreMatchRepository()),
+			FirestoreMatchRepository(),
 			GroupMatchAuth.instance
 	)
 }

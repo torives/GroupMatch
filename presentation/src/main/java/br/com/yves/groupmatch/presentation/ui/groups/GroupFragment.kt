@@ -92,8 +92,8 @@ class GroupFragment : Fragment(),
 	override fun displayDialog(title: String, message: String, onPositiveResponse: () -> Unit, onNegativeResponse: () -> Unit) {
 		activity?.runOnUiThread {
 			alert(message, title) {
-				yesButton { onPositiveResponse.invoke() }
-				noButton { onNegativeResponse.invoke() }
+				yesButton { runOnBackground { onPositiveResponse.invoke() } }
+				noButton { runOnBackground { onNegativeResponse.invoke() } }
 			}.apply {
 				isCancelable = false
 				show()
@@ -110,7 +110,7 @@ class GroupFragment : Fragment(),
 		findNavController().navigate(R.id.newGroupFragment)
 	}
 
-	override fun navigateToMatchResult(result: MatchResultViewModel) {
+	override fun navigateToMatchResult(result: MatchResultViewModel) = runOnUiThread {
 		val args = Bundle().apply {
 			putSerializable(MatchResultFragment.ARG_MATCH_RESULT, result)
 		}
