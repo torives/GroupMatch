@@ -18,6 +18,9 @@ import br.com.yves.groupmatch.presentation.ui.bluetooth.server.MatchResultViewMo
 import br.com.yves.groupmatch.presentation.ui.groups.details.GroupDetailsViewModel
 import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.fragment_groups.*
+import org.jetbrains.anko.noButton
+import org.jetbrains.anko.support.v4.alert
+import org.jetbrains.anko.yesButton
 
 class GroupFragment : Fragment(),
 		GroupView,
@@ -84,6 +87,18 @@ class GroupFragment : Fragment(),
 	override fun displayLoggedOutLayout() = runOnUiThread {
 		fragment_group_loggedOutLayout.visibility = VISIBLE
 		recyclerview_groups_list.visibility = GONE
+	}
+
+	override fun displayDialog(title: String, message: String, onPositiveResponse: () -> Unit, onNegativeResponse: () -> Unit) {
+		activity?.runOnUiThread {
+			alert(message, title) {
+				yesButton { onPositiveResponse.invoke() }
+				noButton { onNegativeResponse.invoke() }
+			}.apply {
+				isCancelable = false
+				show()
+			}
+		}
 	}
 
 	override fun navigateToGroupDetails(details: GroupDetailsViewModel) = runOnUiThread {

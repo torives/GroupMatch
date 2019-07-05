@@ -31,6 +31,10 @@ class FirestoreMatchRepository : MatchRepository {
                 }
     }
 
+    override fun startMatch(groupId: String, callback: MatchRepository.StartMatchCallback) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
     companion object {
         private const val MATCH_COLLECTION = "matches"
     }
