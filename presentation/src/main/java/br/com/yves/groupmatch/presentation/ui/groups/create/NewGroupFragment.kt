@@ -44,13 +44,13 @@ class NewGroupFragment : Fragment(), NewGroupView, UserAdapter.Listener {
 
 		//TODO: Create NewGroupInjection
 		val userRepository = FirestoreUserRepository()
-		controller = NewGroupController(
-				this,
-				userRepository,
-				FirestoreGroupRepository(userRepository, FirestoreMatchRepository()),
-				GroupMatchAuth.instance,
-				UserPresenterImpl()
-		)
+//		controller = NewGroupController(
+//				this,
+//				userRepository,
+//				FirestoreGroupRepository(userRepository, FirestoreMatchRepository()),
+//				GroupMatchAuth.instance,
+//				UserPresenterImpl()
+//		)
 
 		runOnBackground {
 			controller.onViewCreated()
