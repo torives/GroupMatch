@@ -58,7 +58,7 @@ class GroupAdapter(
                 if (matchStatus != null) {
                     itemView.item_group_notificationIcon.visibility = View.VISIBLE
                     val tint = when (matchStatus) {
-                        Match.Status.STARTED -> Color.YELLOW
+                        Match.Status.CREATED -> Color.YELLOW
                         Match.Status.ONGOING -> Color.CYAN
                         Match.Status.FINISHED -> Color.GREEN
                     }

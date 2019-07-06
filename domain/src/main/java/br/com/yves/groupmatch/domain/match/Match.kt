@@ -9,6 +9,6 @@ data class Match(
         val result: List<TimeSlot>?
 ) {
     enum class Status {
-        STARTED, ONGOING, FINISHED;
+        CREATED, ONGOING, FINISHED;
     }
 }

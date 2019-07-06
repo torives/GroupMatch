@@ -41,7 +41,7 @@ class GroupController(
         groups?.firstOrNull { it.id == groupId }?.let { group ->
             when (group.match?.status) {
                 Match.Status.FINISHED -> displayMatchResult(group.match?.result)
-                Match.Status.ONGOING, Match.Status.STARTED -> { } //do nothing
+                Match.Status.ONGOING, Match.Status.CREATED -> { } //do nothing
                 else -> shouldStartMatch(group)
             }
         }
