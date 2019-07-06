@@ -18,6 +18,7 @@ import br.com.yves.groupmatch.data.auth.GroupMatchAuth
 import br.com.yves.groupmatch.data.group.FirestoreGroupRepository
 import br.com.yves.groupmatch.data.match.FirestoreMatchRepository
 import br.com.yves.groupmatch.data.user.FirestoreUserRepository
+import br.com.yves.groupmatch.presentation.injection.GroupInjection
 import br.com.yves.groupmatch.presentation.runOnBackground
 import br.com.yves.groupmatch.presentation.runOnUiThread
 import com.bumptech.glide.Glide
@@ -44,13 +45,13 @@ class NewGroupFragment : Fragment(), NewGroupView, UserAdapter.Listener {
 
 		//TODO: Create NewGroupInjection
 		val userRepository = FirestoreUserRepository()
-//		controller = NewGroupController(
-//				this,
-//				userRepository,
-//				FirestoreGroupRepository(userRepository, FirestoreMatchRepository()),
-//				GroupMatchAuth.instance,
-//				UserPresenterImpl()
-//		)
+		controller = NewGroupController(
+				this,
+				userRepository,
+				FirestoreGroupRepository(userRepository, FirestoreMatchRepository(GroupInjection.service)),
+				GroupMatchAuth.instance,
+				UserPresenterImpl()
+		)
 
 		runOnBackground {
 			controller.onViewCreated()

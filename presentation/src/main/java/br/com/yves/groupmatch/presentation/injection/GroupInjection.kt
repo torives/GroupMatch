@@ -12,12 +12,15 @@ import br.com.yves.groupmatch.presentation.ui.groups.GroupController
 import br.com.yves.groupmatch.presentation.ui.groups.GroupFragment
 import br.com.yves.groupmatch.presentation.ui.groups.GroupPresenterImpl
 
-class GroupInjection {
+object GroupInjection {
+	val service by lazy {
+		ServiceGenerator.createService(
+			GroupMatchService::class.java,
+			GroupMatchApplication.instance.getString(R.string.groupmatch_service_url))
+	}
+
 	fun make(view: GroupFragment): GroupController {
-		val service = ServiceGenerator.createService(
-				GroupMatchService::class.java,
-				view.getString(R.string.groupmatch_service_url)
-		)
+
 		val firestoreUserRepository = FirestoreMatchRepository(service)
 
 		return GroupController(

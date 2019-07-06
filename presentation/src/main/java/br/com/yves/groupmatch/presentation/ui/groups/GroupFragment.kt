@@ -26,7 +26,7 @@ class GroupFragment : Fragment(),
 		GroupView,
 		GroupAdapter.SelectionListener {
 
-	private val controller = GroupInjection().make(this)
+	private lateinit var controller: GroupController
 	private lateinit var groupAdapter: GroupAdapter
 
 	//region Lifecycle
@@ -40,6 +40,7 @@ class GroupFragment : Fragment(),
 		super.onViewCreated(view, savedInstanceState)
 
 		setupRecyclerView()
+		controller = GroupInjection.make(this)
 
 		runOnBackground {
 			controller.onViewCreated()
