@@ -31,7 +31,9 @@ object FirestoreMatchMapper {
 		val calendar = FirestoreCalendar(
 				SimpleUser(creator.id, creator.name),
 				SimpleWeek(localCalendar.week.start.toString(), localCalendar.week.end.toString()),
-				localCalendar.calendarTimeSlots.map { Event(it.start.toString(), it.end.toString()) }
+				localCalendar.calendarTimeSlots
+						.filter { it.isBusy }
+						.map { Event(it.start.toString(), it.end.toString()) }
 		)
 		val matchCreator = MatchCreator(creator.id, creator.name, calendar)
 
