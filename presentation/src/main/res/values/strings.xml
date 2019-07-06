@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name" translatable="false">GroupMatch</string>
     <string name="notifications_default_channel_name">Default</string>
-    <string name="groupmatch_service_url" translatable="false">localhost:5000/api/v1/</string>
+    <string name="groupmatch_service_url" translatable="false">https://d5f50d9f.ngrok.io/api/v1/</string>
 
     <!--region ConnectionRoleFragment UI Elements-->
     <string name="fragment_connection_role_server_button">Server</string>
