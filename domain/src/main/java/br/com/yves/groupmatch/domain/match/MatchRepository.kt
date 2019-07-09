@@ -8,6 +8,7 @@ interface MatchRepository {
     fun getMatch(matchId: String, callback: GetMatchCallback)
     fun getMatches(matchIds: List<String>, callback: GetMatchesCallback)
     fun startMatch(group: Group, creator: User, localCalendar: Calendar, callback: StartMatchCallback)
+    fun sendAnswer(matchId: String, user: User, localCalendar: Calendar, callback: SendAnswerCallback)
 
     interface GetMatchCallback {
         fun onSuccess(match: Match)
@@ -20,6 +21,11 @@ interface MatchRepository {
     }
 
     interface StartMatchCallback {
+        fun onSuccess()
+        fun onFailure(error: Error)
+    }
+
+    interface SendAnswerCallback {
         fun onSuccess()
         fun onFailure(error: Error)
     }

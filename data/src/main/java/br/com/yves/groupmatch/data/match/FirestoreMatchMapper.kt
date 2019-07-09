@@ -27,14 +27,7 @@ object FirestoreMatchMapper {
 	fun from(group: Group, creator: User, localCalendar: Calendar): RemoteMatch {
 		val simpleGroup = SimpleGroup(group.id, group.name)
 		val participants = group.members.map { SimpleUser(it.id, it.name) }
-
-		val calendar = FirestoreCalendar(
-				SimpleUser(creator.id, creator.name),
-				SimpleWeek(localCalendar.week.start.toString(), localCalendar.week.end.toString()),
-				localCalendar.calendarTimeSlots
-						.filter { it.isBusy }
-						.map { Event(it.start.toString(), it.end.toString()) }
-		)
+		val calendar = FirestoreCalendarMapper.from(creator, localCalendar)
 		val matchCreator = MatchCreator(creator.id, creator.name, calendar)
 
 		return RemoteMatch(simpleGroup, participants, matchCreator)

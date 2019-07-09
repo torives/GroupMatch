@@ -53,6 +53,23 @@ class FirestoreMatchRepository(private val service: GroupMatchService) : MatchRe
         })
     }
 
+	override fun sendAnswer(matchId: String, user: User, localCalendar: Calendar, callback: MatchRepository.SendAnswerCallback) {
+		val answer = FirestoreAnswerMapper.from(user, localCalendar)
+		service.sendAnswer(matchId, answer).enqueue(object : Callback<GroupMatchService.Response> {
+			override fun onFailure(call: Call<GroupMatchService.Response>, t: Throwable) {
+				callback.onFailure(Error(t))
+			}
+
+			override fun onResponse(call: Call<GroupMatchService.Response>, response: Response<GroupMatchService.Response>) {
+				if(response.isSuccessful) {
+					callback.onSuccess()
+				} else {
+					callback.onFailure(Error(response.body()?.message))
+				}
+			}
+		})
+	}
+
     companion object {
         private const val MATCH_COLLECTION = "matches"
     }
