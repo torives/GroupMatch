@@ -6,6 +6,8 @@ import br.com.yves.groupmatch.domain.models.calendar.Calendar
 import br.com.yves.groupmatch.domain.models.slots.TimeSlot
 import br.com.yves.groupmatch.domain.user.User
 import com.google.firebase.firestore.DocumentSnapshot
+import org.threeten.bp.LocalDateTime
+import org.threeten.bp.format.DateTimeFormatter
 
 object FirestoreMatchMapper {
 	fun from(document: DocumentSnapshot): Match {
@@ -14,7 +16,12 @@ object FirestoreMatchMapper {
 		val groupId = (data["group"] as Map<*, *>)["id"] as String
 
 		//FIXME: vai dar merda
-		val result = data["result"] as? List<TimeSlot>
+		val semiResult = data["result"] as? List<HashMap<String, String>>
+		val result = semiResult?.map {
+			val start = LocalDateTime.parse(it["start"], DateTimeFormatter.ISO_DATE_TIME)
+			val end = LocalDateTime.parse(it["end"], DateTimeFormatter.ISO_DATE_TIME)
+			TimeSlot(start, end)
+		}
 
 		return Match(
 				document.id,
@@ -68,6 +75,11 @@ data class SimpleWeek(
 )
 
 data class Event(
+		var start: String = "",
+		var end: String = ""
+)
+
+data class FirestoreTimeSlot(
 		var start: String = "",
 		var end: String = ""
 )
