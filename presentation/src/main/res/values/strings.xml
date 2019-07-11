@@ -14,6 +14,7 @@
     <string name="navigation_graph_labels_accountFragment">Account</string>
     <string name="navigation_graph_labels_searchFragment">Search</string>
     <string name="navigation_graph_labels_groupDetailFragment">Group Details</string>
+    <string name="navigation_graph_labels_matchResultFragment">Match Result</string>
     <string name="navigation_graph_labels_newGroupFragment">New group</string>
     <!--endregion-->
 

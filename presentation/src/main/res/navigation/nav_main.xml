@@ -6,6 +6,11 @@
     app:startDestination="@id/groupsFragment">
 
     <fragment
+        android:id="@+id/matchResultFragment"
+        android:name="br.com.yves.groupmatch.presentation.ui.bluetooth.result.MatchResultFragment"
+        android:label="@string/navigation_graph_labels_matchResultFragment"
+        tools:layout="@layout/fragment_matchresult_list" />
+    <fragment
         android:id="@+id/accountFragment"
         android:name="br.com.yves.groupmatch.presentation.ui.account.AccountFragment"
         android:label="@string/navigation_graph_labels_accountFragment"
@@ -24,6 +29,13 @@
             android:id="@+id/action_groupsFragment_to_groupDetailFragment"
             app:destination="@id/groupDetailFragment" />
         <action android:id="@+id/action_groupsFragment_to_newGroupFragment" app:destination="@id/newGroupFragment"/>
+        <action
+            android:id="@+id/action_groupsFragment_to_matchResultFragment"
+            app:destination="@id/matchResultFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
     </fragment>
     <fragment
         android:id="@+id/groupDetailFragment"

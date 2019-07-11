@@ -11,6 +11,7 @@
     <string name="navigation_graph_labels_accountFragment">Conta</string>
     <string name="navigation_graph_labels_searchFragment">Buscar</string>
     <string name="navigation_graph_labels_groupDetailFragment">Detalhes do Grupo</string>
+    <string name="navigation_graph_labels_matchResultFragment">Resultado do Match</string>
     <string name="navigation_graph_labels_newGroupFragment">Novo grupo</string>
     <!--endregion-->
 
