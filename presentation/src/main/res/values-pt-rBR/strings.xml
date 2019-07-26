@@ -1,15 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!--region ConnectionRoleFragment UI Elements-->
-    <string name="fragment_connection_role_server_button">Servidor</string>
-    <string name="fragment_connection_role_client_button">Cliente</string>
-    <!--endregion-->
-
     <!--region BottomNavigationMenut UI Elements-->
     <string name="navigation_graph_labels_groupsFragment">Grupos</string>
     <string name="navigation_graph_labels_calendarFragment">Agenda</string>
     <string name="navigation_graph_labels_accountFragment">Conta</string>
-    <string name="navigation_graph_labels_searchFragment">Buscar</string>
+    <string name="navigation_graph_labels_searchFragment">Match Bluetooth</string>
+    <string name="navigation_graph_labels_searchIconName">Match local</string>
+    <string name="navigation_graph_labels_bluetoothClientFragment">Cliente de Match</string>
+    <string name="navigation_graph_labels_bluetoothServerFragment">Host de Match</string>
     <string name="navigation_graph_labels_groupDetailFragment">Detalhes do Grupo</string>
     <string name="navigation_graph_labels_matchResultFragment">Resultado do Match</string>
     <string name="navigation_graph_labels_newGroupFragment">Novo grupo</string>

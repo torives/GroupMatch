@@ -3,16 +3,14 @@
     <string name="notifications_default_channel_name">Default</string>
     <string name="groupmatch_service_url" translatable="false">https://d2ba03cb.ngrok.io/api/v1/</string>
 
-    <!--region ConnectionRoleFragment UI Elements-->
-    <string name="fragment_connection_role_server_button">Server</string>
-    <string name="fragment_connection_role_client_button">Client</string>
-    <!--endregion-->
-
     <!--region BottomNavigationMenut UI Elements-->
     <string name="navigation_graph_labels_groupsFragment">Groups</string>
     <string name="navigation_graph_labels_calendarFragment">Calendar</string>
     <string name="navigation_graph_labels_accountFragment">Account</string>
-    <string name="navigation_graph_labels_searchFragment">Search</string>
+    <string name="navigation_graph_labels_searchFragment">Bluetooth Match</string>
+    <string name="navigation_graph_labels_searchIconName">Local Match</string>
+    <string name="navigation_graph_labels_bluetoothClientFragment">Match Client</string>
+    <string name="navigation_graph_labels_bluetoothServerFragment">Match Host</string>
     <string name="navigation_graph_labels_groupDetailFragment">Group Details</string>
     <string name="navigation_graph_labels_matchResultFragment">Match Result</string>
     <string name="navigation_graph_labels_newGroupFragment">New group</string>

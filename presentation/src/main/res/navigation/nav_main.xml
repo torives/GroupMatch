@@ -36,6 +36,9 @@
             app:exitAnim="@anim/nav_default_exit_anim"
             app:popEnterAnim="@anim/nav_default_pop_enter_anim"
             app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+        <action
+            android:id="@+id/action_groupsFragment_to_nav_search"
+            app:destination="@id/nav_search" />
     </fragment>
     <fragment
         android:id="@+id/groupDetailFragment"
@@ -52,7 +55,7 @@
         <fragment
             android:id="@+id/bluetoothServer"
             android:name="br.com.yves.groupmatch.presentation.ui.bluetooth.server.BluetoothServerFragment"
-            android:label="fragment_bluetooth_server">
+            android:label="@string/navigation_graph_labels_bluetoothServerFragment">
             <action
                 android:id="@+id/action_bluetoothServer_to_matchResultFragment"
                 app:destination="@id/matchResultFragment"
@@ -65,7 +68,7 @@
         <fragment
             android:id="@+id/connectionRoleFragment"
             android:name="br.com.yves.groupmatch.presentation.ui.bluetooth.availability.ConnectionRoleFragment"
-            android:label="ConnectionRoleFragment"
+            android:label="@string/navigation_graph_labels_searchFragment"
             tools:layout="@layout/fragment_connection_role">
             <action
                 android:id="@+id/action_connectionRoleFragment_to_searchBluetoothClientsFragment"
@@ -85,7 +88,7 @@
         <fragment
             android:id="@+id/bluetoothClient"
             android:name="br.com.yves.groupmatch.presentation.ui.bluetooth.client.BluetoothClientFragment"
-            android:label="fragment_bluetooth_client"
+            android:label="@string/navigation_graph_labels_bluetoothClientFragment"
             tools:layout="@layout/fragment_bluetooth_client">
             <action
                 android:id="@+id/action_bluetoothClient_to_matchResultFragment"
@@ -98,7 +101,7 @@
         <fragment
             android:id="@+id/matchResultFragment"
             android:name="br.com.yves.groupmatch.presentation.ui.bluetooth.result.MatchResultFragment"
-            android:label="fragment_matchresult_list"
+            android:label="@string/navigation_graph_labels_matchResultFragment"
             tools:layout="@layout/fragment_matchresult_list" />
     </navigation>
     <fragment
