@@ -2,11 +2,14 @@ package br.com.yves.groupmatch.presentation.ui.notifications
 
 import android.app.NotificationChannel
 import android.app.NotificationManager
+import android.app.PendingIntent
+import android.content.Intent
 import android.os.Build
 import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
+import androidx.core.app.TaskStackBuilder
 import br.com.yves.groupmatch.R
 import br.com.yves.groupmatch.data.auth.GroupMatchAuth
 import br.com.yves.groupmatch.data.user.FirestoreUserRepository
@@ -14,6 +17,7 @@ import br.com.yves.groupmatch.domain.account.AuthenticationService
 import br.com.yves.groupmatch.domain.user.Tokens
 import br.com.yves.groupmatch.domain.user.UserRepository
 import br.com.yves.groupmatch.presentation.GroupMatchApplication
+import br.com.yves.groupmatch.presentation.ui.main.MainActivity
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 
@@ -34,6 +38,13 @@ class NotificationsService : FirebaseMessagingService() {
 	override fun onMessageReceived(p0: RemoteMessage?) {
 		super.onMessageReceived(p0)
 
+		val notifyIntent = Intent(this, MainActivity::class.java).apply {
+			flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+		}
+		val notifyPendingIntent = PendingIntent.getActivity(
+				this, 0, notifyIntent, PendingIntent.FLAG_UPDATE_CURRENT
+		)
+
 		p0?.notification?.let { notification ->
 			val builder = createNotificationBuilder()
 					.setContentTitle(notification.title)
@@ -41,6 +52,7 @@ class NotificationsService : FirebaseMessagingService() {
 					.setSmallIcon(R.drawable.ic_notification)
 					.setPriority(NotificationCompat.PRIORITY_DEFAULT)
 					.setAutoCancel(true)
+					.setContentIntent(notifyPendingIntent)
 
 			with(NotificationManagerCompat.from(GroupMatchApplication.instance)) {
 				notify(999, builder.build())
