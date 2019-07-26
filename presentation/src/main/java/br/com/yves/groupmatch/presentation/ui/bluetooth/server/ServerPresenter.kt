@@ -126,7 +126,7 @@ class ServerPresenter(
 			receivedCalendars.add(busyCalendar)
 
 			if (BuildConfig.DEBUG) {
-				view.displayToast(busyCalendar.toString())
+				//view.displayToast(busyCalendar.toString())
 				Log.d(TAG, busyCalendar.toString())
 			}
 
