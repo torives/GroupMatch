@@ -11,6 +11,8 @@
     <string name="navigation_graph_labels_accountFragment">Conta</string>
     <string name="navigation_graph_labels_searchFragment">Buscar</string>
     <string name="navigation_graph_labels_groupDetailFragment">Detalhes do Grupo</string>
+    <string name="navigation_graph_labels_matchResultFragment">Resultado do Match</string>
+    <string name="navigation_graph_labels_newGroupFragment">Novo grupo</string>
     <!--endregion-->
 
     <!--region Server -->
@@ -42,5 +44,10 @@
 
     <!--region Group Details-->
     <string name="group_details_membersTitle">Membros</string>
+    <string name="group_menu_newGroup">Novo grupo</string>
+    <!--endregion-->
+
+    <!--region NewGroup-->
+    <string name="new_group_toolbarSubtitle">Adicionar participantes</string>
     <!--endregion-->
 </resources>

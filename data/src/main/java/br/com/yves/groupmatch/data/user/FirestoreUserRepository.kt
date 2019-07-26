@@ -6,8 +6,37 @@ import br.com.yves.groupmatch.domain.user.UserRepositoryError
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.SetOptions
 
+
 class FirestoreUserRepository : UserRepository {
 	private val firestore get() = FirebaseFirestore.getInstance()
+
+
+	override fun getUsers(userIDs: List<String>, callback: UserRepository.GetUsersCallback) {
+		firestore.collection(USERS_COLLECTION).get()
+				.addOnSuccessListener { query ->
+					val userDocs = query.documents
+					val users = userDocs.filter { userIDs.contains(it.id) }
+							.map { FirestoreUserMapper.from(it) }
+					callback.onSuccess(users)
+				}
+				.addOnFailureListener {
+					//TODO: handle error
+					callback.onFailure(Error(it))
+				}
+	}
+
+	override fun getAllUsers(callback: UserRepository.GetUsersCallback) {
+		firestore.collection(USERS_COLLECTION).orderBy("name").get()
+				.addOnSuccessListener { query ->
+					val userDocs = query.documents
+					val users = userDocs.mapNotNull { FirestoreUserMapper.from(it) }
+
+					callback.onSuccess(users)
+				}.addOnFailureListener {
+					//TODO: Corrigir tipo de erro
+					callback.onFailure(Error(it))
+				}
+	}
 
 	override fun createUser(user: User, callback: UserRepository.CreateUserCallback) {
 		val userData = FirestoreUserMapper.from(user)
@@ -39,16 +68,5 @@ class FirestoreUserRepository : UserRepository {
 
 	companion object {
 		private const val USERS_COLLECTION = "users"
-	}
-}
-
-object FirestoreUserMapper {
-	fun from(user: User): Map<String, Any?> {
-		return mapOf(
-				"name" to user.name,
-				"email" to user.email,
-				"profileImage" to user.profileImageURL,
-				"tokens" to user.tokens?.mapKeys { it.key.name }
-		)
 	}
 }

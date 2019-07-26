@@ -8,7 +8,7 @@ class GroupPresenterImpl : GroupPresenter {
 		return GroupDetailsViewModel(
 				group.id,
 				group.name,
-				group.thumbnailURL
+				group.imageURL
 		)
 	}
 
@@ -25,8 +25,8 @@ class GroupPresenterImpl : GroupPresenter {
 					group.id,
 					group.name,
 					members,
-					group.thumbnailURL,
-					false,
+					group.imageURL,
+					group.match?.status,
 					""
 			)
 		}

@@ -7,7 +7,7 @@ import java.io.Serializable
 open class TimeSlot(
 		val start: LocalDateTime,
 		val end: LocalDateTime,
-		var isBusy: Boolean
+		var isBusy: Boolean = false
 ) : Serializable {
 	val duration: Duration = Duration.between(start, end)
 
