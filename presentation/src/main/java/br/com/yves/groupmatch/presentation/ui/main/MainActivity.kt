@@ -26,7 +26,8 @@ class MainActivity : AppCompatActivity() {
 				setOf(
 						R.id.groupsFragment,
 						R.id.calendarFragment,
-						R.id.accountFragment
+						R.id.accountFragment,
+						R.id.nav_search
 				)
 		)
 		toolbar.setupWithNavController(navController, appBarConfiguration)
